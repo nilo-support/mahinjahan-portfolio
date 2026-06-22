@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 440" preserveAspectRatio="xMidYMax slice">
+  <defs>
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <!-- farthest ridge, faintest -->
+  <path d="M0,176 C210,126 370,156 560,146 C760,135 905,170 1120,156 C1285,145 1440,164 1440,164 L1440,440 L0,440 Z" fill="#bcc9e7" opacity="0.34"/>
+  <!-- mid ridge -->
+  <path d="M0,246 C250,200 470,242 720,222 C980,201 1185,250 1440,230 L1440,440 L0,440 Z" fill="#a7bae1" opacity="0.5"/>
+  <!-- near ridge, deepest -->
+  <path d="M0,318 C300,282 560,326 880,306 C1105,292 1300,326 1440,314 L1440,440 L0,440 Z" fill="#94a9d7" opacity="0.62"/>
+  <!-- soft ground haze -->
+  <rect x="0" y="300" width="1440" height="140" fill="url(#fog)"/>
+</svg>

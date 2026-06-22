@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jobi — Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+<style>
+/* Jobi chat — self-contained portfolio simulation embedded as the canvas
+   sidebar. No backend, no dependencies. Auto-plays a scripted conversation:
+   a user request is typed, sent, Jobi "thinks", then streams a reply. */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #171717;
+  --bg2:       #1F1F1F;
+  --bg3:       #262626;
+  --bg4:       #2D2D2D;
+  --border:    #3E3E3E;
+  --border2:   #4a4a4a;
+  --text:      #F7F4F2;
+  --text2:     #B5AEA8;
+  --text3:     #8A8480;
+  --accent:    #F29FA0;
+  --accent-press: #E58E8F;
+  --user-bubble: #F29FA0;
+  --user-text: #171717;
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Panel fills the embedding frame */
+.panel {
+  width: 100%; height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Minimal icon nav (decorative) */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px 6px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; gap: 6px; }
+.icon-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: none; color: var(--text3);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .14s ease, color .14s ease;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.05); color: var(--text2); }
+.icon-btn.active { background: var(--bg2); color: var(--text); }
+.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn.has-dot { position: relative; }
+.icon-btn.has-dot::after {
+  content: ""; position: absolute; top: 5px; right: 5px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); border: 1.5px solid var(--bg);
+}
+
+/* Chat view */
+.chat-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+
+.chat-messages {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column;
+  padding: 12px 0 8px;
+}
+.chat-messages::-webkit-scrollbar { width: 0; }
+.chat-messages.is-welcome { justify-content: center; }
+
+.chat-suggest { flex-shrink: 0; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+.chat-suggest-label { font-size: 10px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text3); padding: 10px 16px 0; }
+.chat-chips-row { display: flex; gap: 7px; padding: 7px 16px 0; overflow-x: auto; }
+.chat-chips-row::-webkit-scrollbar { display: none; }
+.sugg-chip {
+  flex-shrink: 0; padding: 8px 16px; border-radius: 18px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--text);
+  white-space: nowrap; cursor: pointer;
+  transition: background .14s ease;
+  animation: chipPop .42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.sugg-chip:hover { background: rgba(255,255,255,0.10); }
+@keyframes chipPop { 0%{opacity:0;transform:translateY(14px) scale(.92)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+
+/* Welcome (empty) state */
+.welcome { display: flex; flex-direction: column; align-items: center; gap: 26px; padding: 0 24px; transition: opacity .4s ease; }
+.welcome.hide { opacity: 0; pointer-events: none; }
+.mascot { width: 116px; animation: float 5.5s ease-in-out infinite; }
+.mascot svg { width: 100%; height: auto; display: block; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+.welcome-greeting {
+  font-family: var(--font-serif); font-size: 23px; line-height: 1.35;
+  color: var(--text2); text-align: center; letter-spacing: -0.01em; font-weight: 500;
+}
+.welcome-greeting em { color: var(--text); font-style: normal; font-weight: 600; }
+
+/* Messages */
+.msg { display: flex; flex-direction: column; padding: 12px 16px 0; }
+.msg.ai   { align-self: stretch; }
+.msg.user { align-self: flex-end; max-width: 82%; }
+
+.msg-bubble { font-size: 13.5px; line-height: 1.55; }
+.msg.ai .msg-bubble { color: var(--text); }
+.msg.user .msg-bubble {
+  background: var(--user-bubble); color: var(--user-text);
+  padding: 11px 15px; border-radius: 18px; border-bottom-right-radius: 5px;
+}
+
+.msg-bubble-fresh { animation: bubblePop .24s cubic-bezier(0.16,1,0.3,1) both; }
+.msg.ai   .msg-bubble-fresh { transform-origin: bottom left;  }
+.msg.user .msg-bubble-fresh { transform-origin: bottom right; }
+@keyframes bubblePop { from{opacity:0;transform:scale(.88) translateY(4px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+.md-p { margin: 0; line-height: 1.6; }
+.md-p + .md-p, .md-p + .md-ul, .md-ul + .md-p { margin-top: 9px; }
+.md-ul { list-style: none; margin: 4px 0 0; padding-left: 18px; }
+.md-ul li { position: relative; line-height: 1.55; padding-left: 2px; margin: 3px 0; }
+.md-ul li::before { content: ""; position: absolute; left: -12px; top: 0.62em; width: 4px; height: 4px; border-radius: 50%; background: var(--text3); }
+.msg.ai strong { font-weight: 600; }
+.msg.ai em { font-style: italic; }
+
+.shimmer {
+  font-family: var(--font-sans);
+  background: linear-gradient(90deg, var(--text2) 0%, var(--text) 50%, var(--text2) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer 2.4s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* Composer (the zero-JS-feel input pill) */
+.composer { flex-shrink: 0; padding: 12px 16px 16px; background: var(--bg); }
+.input-pill {
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  background: rgba(255,255,255,0.05); border: none;
+  border-radius: 22px; padding: 6px; min-height: 92px;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+  transition: background .14s ease;
+}
+.input-field {
+  flex: 1 1 100%; order: -1; min-width: 0;
+  background: transparent; border: none; outline: none; resize: none;
+  font-family: var(--font-sans); font-size: 13.5px; color: var(--text);
+  line-height: 1.45; padding: 12px 8px; field-sizing: content;
+  max-height: 140px; overflow-y: auto;
+}
+.input-field::placeholder { color: var(--text3); }
+.icon-row { display: flex; align-items: center; width: 100%; gap: 4px; }
+.pill-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: none; color: var(--text3);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: color .14s ease, background .14s ease;
+}
+.pill-btn:hover { color: var(--text2); background: rgba(255,255,255,0.05); }
+.pill-btn svg { width: 17px; height: 17px; }
+.spacer { margin-left: auto; }
+.mic-btn.listening { color: var(--accent); background: rgba(242,159,160,0.16); animation: micPulse 1.6s ease-in-out infinite; }
+@keyframes micPulse { 0%,100%{box-shadow:0 0 0 0 rgba(242,159,160,0.4)} 50%{box-shadow:0 0 0 6px rgba(242,159,160,0)} }
+.send-btn {
+  width: 34px; height: 34px; margin-left: 6px; padding: 0;
+  background: var(--accent); color: #222222; border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity .2s ease, background .14s ease, transform .15s var(--ease-out);
+}
+.input-pill.has-text .send-btn { opacity: 1; }
+.send-btn:hover { background: var(--accent-press); }
+.send-btn svg { width: 16px; height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot, .sugg-chip, .msg-bubble-fresh, .shimmer { animation: none !important; }
+}
+</style>
+</head>
+<body>
+  <div class="panel" role="img" aria-label="Jobi chat demo: a user asks whether to apply to a role and tailor their CV, and Jobi responds.">
+    <header class="header">
+      <div class="header-left">
+        <button class="icon-btn active" title="Chat" aria-hidden="true" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </button>
+        <button class="icon-btn has-dot" title="Jobs" aria-hidden="true" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </button>
+        <button class="icon-btn" title="My Plan" aria-hidden="true" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.7" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
+      <button class="icon-btn" title="Settings" aria-hidden="true" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </header>
+
+    <div class="chat-view">
+      <div class="chat-suggest" id="suggest" style="display:none" aria-hidden="true">
+        <div class="chat-suggest-label">Suggestions</div>
+        <div class="chat-chips-row" id="suggest-row"></div>
+      </div>
+      <div class="chat-messages is-welcome" id="messages">
+        <div class="welcome" id="welcome">
+          <div class="mascot" aria-hidden="true">
+            <svg viewBox="0 0 258 263" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M152.895 0.00497343C153.338 0.0033322 153.781 0.00169097 154.238 0C157.939 0.0118568 161.489 0.362215 165.105 1.14545C165.384 1.20538 165.663 1.26532 165.95 1.32708C183.322 5.20152 198.829 15.7302 208.595 30.6107C215.789 41.9664 218.624 54.5489 219.336 67.8045C219.374 68.4863 219.413 69.168 219.451 69.8498C219.552 71.6293 219.651 73.409 219.748 75.1887C219.905 78.0452 220.065 80.9016 220.227 83.7579C220.282 84.7504 220.336 85.7429 220.39 86.7354C220.424 87.3457 220.459 87.9559 220.493 88.5662C220.507 88.839 220.522 89.1119 220.536 89.393C220.628 90.9939 220.8 92.5569 221.049 94.1412C221.303 93.9145 221.557 93.6878 221.819 93.4541C224.52 91.1154 227.263 89.2967 230.433 87.6532C230.94 87.3855 230.94 87.3855 231.458 87.1125C236.06 84.8449 241.222 83.9766 246.201 85.3553C250.479 86.8151 253.315 89.3595 255.427 93.3302C256.899 96.4374 257.676 99.7249 257.864 103.152C257.892 103.629 257.892 103.629 257.921 104.116C258.433 121.263 249.48 137.285 238.183 149.56C234.62 153.251 229.457 157.867 224.297 159.022C224.323 159.351 224.323 159.351 224.349 159.687C224.978 167.936 225.437 176.194 225.894 184.454C226.003 186.419 226.112 188.383 226.222 190.347C226.405 193.635 226.588 196.922 226.77 200.21C226.98 204.004 227.191 207.799 227.403 211.593C227.586 214.87 227.769 218.146 227.95 221.422C228.059 223.371 228.167 225.321 228.276 227.27C228.378 229.096 228.479 230.922 228.58 232.748C228.617 233.417 228.654 234.085 228.692 234.753C228.743 235.667 228.793 236.581 228.843 237.495C228.858 237.758 228.873 238.02 228.889 238.29C229.129 242.751 229.063 246.27 226.102 249.855C223.027 253.129 219.767 253.77 215.391 254.005C215.118 254.021 214.845 254.036 214.563 254.053C213.647 254.105 212.731 254.155 211.814 254.206C211.151 254.243 210.487 254.28 209.824 254.318C208 254.421 206.176 254.522 204.352 254.624C202.385 254.733 200.418 254.844 198.45 254.955C194.594 255.171 190.738 255.387 186.881 255.601C183.743 255.776 180.605 255.951 177.467 256.127C170.011 256.543 162.555 256.96 155.099 257.374C154.861 257.388 154.622 257.401 154.377 257.415C153.168 257.482 151.959 257.549 150.75 257.616C150.265 257.643 149.78 257.67 149.295 257.697C148.934 257.717 148.934 257.717 148.566 257.738C141.03 258.157 133.494 258.578 125.959 259.001C117.483 259.477 109.007 259.95 100.532 260.422C96.0477 260.671 91.564 260.921 87.0804 261.173C83.2586 261.389 79.4367 261.602 75.6147 261.813C73.6683 261.92 71.7219 262.028 69.7757 262.139C56.3991 262.898 56.3991 262.898 50.4601 262.973C49.8995 262.986 49.8995 262.986 49.3276 263C46.0601 263.003 43.1918 262.099 40.7756 259.839C37.9928 256.755 37.5889 253.476 37.3496 249.472C37.3064 248.8 37.3064 248.8 37.2623 248.114C37.1615 246.532 37.0678 244.949 36.9746 243.367C36.9567 243.066 36.9389 242.765 36.9205 242.456C36.6537 237.963 36.3987 233.47 36.1491 228.976C36.0469 227.137 35.9429 225.298 35.8384 223.459C35.757 222.021 35.6768 220.583 35.5969 219.145C35.5591 218.467 35.5208 217.789 35.4821 217.11C35.2755 213.483 35.1088 209.876 35.1699 206.241C34.8159 206.498 34.4618 206.755 34.097 207.019C27.4936 211.732 20.7672 214.885 12.4596 213.654C8.41853 212.619 5.27826 210.058 3.0472 206.601C0.689063 202.463 -0.042129 197.974 0.00185255 193.265C0.00484767 192.843 0.00783178 192.421 0.0109177 191.987C0.286262 177.622 7.35865 163.9 17.1235 153.615C17.2829 153.444 17.4424 153.273 17.6067 153.097C21.5944 148.84 26.0163 145.803 31.1997 143.162C30.985 136.328 30.668 129.506 30.2782 122.679C30.2023 121.347 30.1278 120.016 30.053 118.684C29.9241 116.388 29.7944 114.092 29.6643 111.796C29.4758 108.469 29.2888 105.142 29.1022 101.815C28.7988 96.4034 28.4948 90.9918 28.1901 85.5802C28.1719 85.258 28.1538 84.9357 28.1351 84.6037C27.8772 80.0241 27.6187 75.4446 27.36 70.8651C27.3417 70.542 27.3235 70.2188 27.3046 69.8859C27.2864 69.5632 27.2682 69.2405 27.2494 68.908C26.9445 63.51 26.6411 58.1119 26.339 52.7138C26.1534 49.3979 25.9665 46.082 25.7778 42.7662C25.6487 40.4938 25.521 38.2214 25.3944 35.9488C25.3216 34.6426 25.2481 33.3363 25.1729 32.0302C24.6567 23.0564 24.6567 23.0564 24.6301 18.6249C24.6256 18.1972 24.6256 18.1972 24.6209 17.7609C24.6291 15.5671 25.0126 13.833 26.1467 11.9589C26.2733 11.7289 26.3998 11.4989 26.5302 11.2619C28.0637 8.78931 30.6048 7.30527 33.3653 6.55218C34.8125 6.37061 36.2632 6.27791 37.7184 6.18488C38.3638 6.14054 38.3638 6.14054 39.0222 6.09532C43.8749 5.76762 48.7308 5.49091 53.587 5.22003C54.595 5.16326 55.6029 5.10625 56.6109 5.04926C59.5987 4.88054 62.5865 4.71347 65.5744 4.54657C66.992 4.46734 68.4095 4.38791 69.8271 4.3085C74.5544 4.04375 79.2817 3.77936 84.0091 3.51623C84.4599 3.49114 84.4599 3.49114 84.9198 3.46554C85.2209 3.44877 85.5221 3.43201 85.8323 3.41474C86.4422 3.38079 87.0521 3.34684 87.6621 3.31289C88.1158 3.28763 88.1158 3.28763 88.5788 3.26186C93.4793 2.989 98.3796 2.7135 103.28 2.43688C108.343 2.15109 113.407 1.86761 118.47 1.58634C121.3 1.42908 124.131 1.27089 126.961 1.11012C129.369 0.973293 131.778 0.838607 134.187 0.706511C135.41 0.639389 136.633 0.571052 137.856 0.500635C142.87 0.212489 147.872 0.0168262 152.895 0.00497343Z" fill="#FFFFFF"/>
+              <path d="M178.563 74.63C182.397 78.3762 185.801 83.14 187.483 89.3513C188.401 97.8017 188.616 104.575 185.269 111.714C182.084 117.342 178.66 120.619 173.615 121.861C168.086 122.313 164.286 121.678 159.669 116.895C155.545 111.467 153.221 105.758 152.661 97.8056C152.702 89.4813 154.616 83.5238 158.701 77.8139C164.594 70.7402 171.463 69.3456 178.563 74.63Z" fill="#1A1A1A"/>
+              <path d="M106.499 78.9382C110.393 82.6221 113.873 87.3304 115.655 93.5137C116.71 101.948 117.033 108.717 113.802 115.91C110.708 121.587 107.337 124.919 102.313 126.243C96.7918 126.784 92.9825 126.21 88.289 121.503C84.0777 116.142 81.6625 110.471 80.9741 102.528C80.8812 94.2046 82.6988 88.217 86.6905 82.442C92.4689 75.2742 99.3143 73.769 106.499 78.9382Z" fill="#1A1A1A"/>
+            </svg>
+          </div>
+          <div class="welcome-greeting">Good to see you, <em>Mahin.</em></div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="input-pill" id="pill">
+          <textarea class="input-field" id="input" placeholder="Ask Jobi anything" rows="1" readonly aria-hidden="true"></textarea>
+          <div class="icon-row">
+            <button class="pill-btn" tabindex="-1" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+            <button class="pill-btn mic-btn spacer" id="mic" tabindex="-1" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M8 21h8"/></svg>
+            </button>
+            <button class="send-btn" id="send" tabindex="-1" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* Streaming-safe, injection-safe markdown renderer */
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function renderInline(esc){
+  let out = esc.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
+  return out;
+}
+function renderMarkdown(raw){
+  if(!raw) return '';
+  const esc = escHtml(raw);
+  const lines = esc.split('\n');
+  const blocks = []; let para = [], bullets = [];
+  const flushPara = ()=>{ if(para.length){ blocks.push('<p class="md-p">'+renderInline(para.join('<br>'))+'</p>'); para=[]; } };
+  const flushBullets = ()=>{ if(bullets.length){ blocks.push('<ul class="md-ul">'+bullets.map(b=>'<li>'+renderInline(b)+'</li>').join('')+'</ul>'); bullets=[]; } };
+  for(const line of lines){
+    const t = line.trim();
+    const bm = t.match(/^[-*]\s+(.*)$/);
+    if(bm){ flushPara(); bullets.push(bm[1]); }
+    else if(t===''){ flushPara(); flushBullets(); }
+    else { flushBullets(); para.push(t); }
+  }
+  flushPara(); flushBullets();
+  return blocks.join('');
+}
+
+const $ = id => document.getElementById(id);
+const messages = $('messages'), welcome = $('welcome'), pill = $('pill'),
+      input = $('input'), mic = $('mic'),
+      suggest = $('suggest'), suggestRow = $('suggest-row');
+const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const scrollDown = () => { messages.scrollTop = messages.scrollHeight; };
+
+let runToken = 0;
+const cancelled = tok => tok !== runToken;
+
+const SCRIPT = [
+  {
+    user: "Should I apply to this Product Designer role at Linear?",
+    ai: "Honestly, strong fit. Your design-systems work and the fintech experience line up well with what they're after.\n\nOne real gap: they lean on native mobile, which isn't on your CV yet.\n\nWant me to tailor your CV to this one, or frame the adjacent experience?",
+    chips: ["Tailor my CV", "Frame the experience"]
+  },
+  {
+    user: "Tailor my CV, please",
+    ai: "On it. I pulled the three experiences that map best to this role and rewrote the bullets to lead with impact.\n\n**Senior Product Designer, Monzo**\n- Built a design system used across 40+ screens\n- Cut onboarding drop-off by 18%\n\nWant a downloadable CV, or shall I draft the cover letter next?",
+    chips: ["Download as CV", "Draft the cover letter"]
+  }
+];
+
+async function typeInto(text, tok){
+  pill.classList.add('has-text');
+  input.value = '';
+  for(let i=0;i<text.length;i++){
+    if(cancelled(tok)) return;
+    input.value = text.slice(0, i+1);
+    await sleep(reduce ? 0 : 26 + Math.random()*34);
+  }
+}
+
+function sendUser(text){
+  const wrap = document.createElement('div');
+  wrap.className = 'msg user';
+  wrap.innerHTML = '<div class="msg-bubble msg-bubble-fresh">'+escHtml(text).replace(/\n/g,'<br>')+'</div>';
+  messages.appendChild(wrap);
+  input.value = '';
+  pill.classList.remove('has-text');
+  scrollDown();
+}
+
+function revealAi(el, full, tok){
+  return new Promise(resolve => {
+    if(reduce){ el.innerHTML = renderMarkdown(full); resolve(); return; }
+    const parts = full.split(' ');
+    const DUR = 4000;
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const start = performance.now();
+    let last = -1;
+    const step = now => {
+      if(cancelled(tok)){ resolve(); return; }
+      const t = Math.min((now - start) / DUR, 1);
+      const cursor = Math.max(1, Math.floor(easeOut(t) * parts.length));
+      if(cursor !== last){ last = cursor; el.innerHTML = renderMarkdown(parts.slice(0, cursor).join(' ')); scrollDown(); }
+      if(t < 1) requestAnimationFrame(step);
+      else { el.innerHTML = renderMarkdown(full); scrollDown(); resolve(); }
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+async function aiTurn(text, tok){
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = '<span class="shimmer">Thinking…</span>';
+  wrap.appendChild(bubble);
+  messages.appendChild(wrap);
+  scrollDown();
+  await sleep(reduce ? 200 : 1100);
+  if(cancelled(tok)) return;
+  await revealAi(bubble, text, tok);
+}
+
+function showSuggestions(chips){
+  suggestRow.innerHTML = '';
+  chips.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.className = 'sugg-chip'; b.tabIndex = -1; b.textContent = c;
+    b.style.animationDelay = (i * 70) + 'ms';
+    suggestRow.appendChild(b);
+  });
+  suggest.style.display = 'block';
+}
+function hideSuggestions(){ suggest.style.display = 'none'; suggestRow.innerHTML = ''; }
+
+function reset(){
+  messages.querySelectorAll('.msg').forEach(n => n.remove());
+  hideSuggestions();
+  messages.classList.add('is-welcome');
+  welcome.style.display = '';
+  welcome.classList.remove('hide');
+  pill.classList.remove('has-text');
+  input.value = '';
+  mic.classList.remove('listening');
+}
+
+async function run(){
+  const tok = ++runToken;
+  reset();
+  await sleep(reduce ? 300 : 1400);
+  if(cancelled(tok)) return;
+
+  for(let i=0;i<SCRIPT.length;i++){
+    const turn = SCRIPT[i];
+
+    await sleep(reduce ? 0 : 500);
+    if(cancelled(tok)) return;
+
+    await typeInto(turn.user, tok);
+    if(cancelled(tok)) return;
+    await sleep(reduce ? 0 : 380);
+    if(cancelled(tok)) return;
+
+    if(i === 0){
+      welcome.classList.add('hide');
+      await sleep(reduce ? 0 : 340);
+      if(cancelled(tok)) return;
+      welcome.style.display = 'none';
+      messages.classList.remove('is-welcome');
+    }
+    hideSuggestions();
+    sendUser(turn.user);
+    await sleep(reduce ? 0 : 450);
+    if(cancelled(tok)) return;
+
+    await aiTurn(turn.ai, tok);
+    if(cancelled(tok)) return;
+
+    if(turn.chips) showSuggestions(turn.chips);
+
+    await sleep(reduce ? 600 : 2800);
+  }
+
+  if(!reduce){
+    await sleep(2200);
+    if(cancelled(tok)) return;
+    run();
+  }
+}
+
+run();
+</script>
+</body>
+</html>

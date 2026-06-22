@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMin slice">
+  <defs>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="wisp" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <radialGradient id="puff" cx="50%" cy="62%" r="62%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="0.7" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- one cumulus: overlapping puffs with a soft flat base -->
+    <g id="cloud" fill="url(#puff)">
+      <ellipse cx="60"  cy="118" rx="74" ry="40"/>
+      <ellipse cx="150" cy="92"  rx="88" ry="58"/>
+      <ellipse cx="248" cy="104" rx="74" ry="50"/>
+      <ellipse cx="206" cy="70"  rx="56" ry="44"/>
+      <ellipse cx="320" cy="122" rx="60" ry="38"/>
+      <rect x="6" y="120" width="372" height="34" rx="17"/>
+    </g>
+  </defs>
+  <g filter="url(#soft)">
+    <!-- upper row -->
+    <use href="#cloud" transform="translate(10,20)    scale(1.12)" opacity="0.62"/>
+    <use href="#cloud" transform="translate(430,4)    scale(0.86)" opacity="0.50"/>
+    <use href="#cloud" transform="translate(800,34)   scale(1.30)" opacity="0.66"/>
+    <use href="#cloud" transform="translate(1180,14)  scale(0.80)" opacity="0.46"/>
+    <!-- lower row, offset for natural drift -->
+    <use href="#cloud" transform="translate(180,250)  scale(1.04)" opacity="0.52"/>
+    <use href="#cloud" transform="translate(600,300)  scale(0.92)" opacity="0.44"/>
+    <use href="#cloud" transform="translate(990,268)  scale(1.16)" opacity="0.56"/>
+    <use href="#cloud" transform="translate(1300,310) scale(0.70)" opacity="0.40"/>
+  </g>
+  <!-- thin drifting streaks for depth -->
+  <g filter="url(#wisp)" fill="#ffffff">
+    <ellipse cx="430" cy="200" rx="300" ry="12" opacity="0.28"/>
+    <ellipse cx="1080" cy="240" rx="360" ry="14" opacity="0.24"/>
+    <ellipse cx="300" cy="470" rx="260" ry="11" opacity="0.22"/>
+    <ellipse cx="900" cy="500" rx="320" ry="13" opacity="0.20"/>
+  </g>
+</svg>

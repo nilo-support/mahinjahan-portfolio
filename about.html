@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Me - Mahin Jahan Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<!-- Social share preview. NOTE: once a domain exists, set og:image & twitter:image to the FULL absolute URL, e.g. https://yourdomain.com/og-image.png -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Me - Mahin Jahan">
+<meta property="og:description" content="A product designer in London. Say hi.">
+<meta property="og:image" content="https://mahinjahan.com/og-image.png">
+<meta property="og:image:width" content="2254">
+<meta property="og:image:height" content="1178">
+<meta property="og:image:alt" content="Mahin Jahan portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Me - Mahin Jahan">
+<meta name="twitter:description" content="A product designer in London. Say hi.">
+<meta name="twitter:image" content="https://mahinjahan.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="page-transitions">
+@media (prefers-reduced-motion: no-preference) {
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 500ms ease-out both vtFadeOut; }
+::view-transition-new(root) { animation: 700ms ease-in-out both vtFadeIn; }
+@keyframes vtFadeOut { to { opacity: 0; } }
+@keyframes vtFadeIn { from { opacity: 0; } }
+}
+</style>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; height: 100vh; overflow: hidden;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1d1d1f; -webkit-font-smoothing: antialiased;
+  /* full-screen cloudy sky */
+  background:
+    url("decor/clouds-full.svg") no-repeat center center / cover,
+    radial-gradient(1200px 820px at 50% 48%, rgba(255,255,255,0.45) 0%, transparent 60%),
+    linear-gradient(180deg, #eaf1fb 0%, #dde7f6 56%, #d6e2f4 100%);
+}
+/* grain film */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  background: url("decor/grain.svg"); background-size: 200px 200px;
+  opacity: 0.06; mix-blend-mode: multiply;
+}
+
+/* nav */
+.pg-nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 72px; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+}
+.pg-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: #1d1d1f; text-decoration: none; transition: transform 160ms cubic-bezier(0.23,1,0.32,1); }
+.pg-name:active { transform: scale(0.96); }
+.pg-links { display: flex; gap: 28px; }
+.pg-links a { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: #6b7280; text-decoration: none; transition: color .25s ease, transform 160ms cubic-bezier(0.23,1,0.32,1); }
+.pg-links a.is-on { color: #1d1d1f; }
+@media (hover: hover) and (pointer: fine) { .pg-links a:hover { color: #1d1d1f; } }
+.pg-links a:active { transform: scale(0.95); }
+
+/* stage — one film, centred */
+.ab-stage {
+  height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 30px;
+  padding: 96px 24px 44px;
+}
+.ab-film {
+  width: min(940px, 82vw); aspect-ratio: 16 / 9; position: relative;
+}
+.ab-film video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  opacity: 0.7; transition: opacity .5s ease;
+  /* borders feather out into the sky — soft-edged rectangle:
+     two linear masks intersected so every side fades evenly */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 17%, #000 83%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 17%, #000 83%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  mask-composite: intersect;
+}
+/* once playing, the film goes fully opaque; at rest the thumbnail stays translucent */
+.ab-film video.is-playing { opacity: 1; }
+/* glass cloud-mascot play button (silhouette only, frosted-glass fill) */
+.ab-play {
+  position: absolute; left: 50%; top: 50%;
+  width: 150.0px; height: 112.42px;
+  margin: 0; padding: 0; border: 0; background: none;
+  transform: translate(-50%, -50%); transform-origin: center;
+  cursor: pointer; z-index: 3;
+  filter: drop-shadow(0 -1px 0.5px rgba(255, 255, 255, 0.5)) drop-shadow(0 14px 30px rgba(60, 58, 90, 0.34));
+  transition: transform .3s cubic-bezier(.23,1,.32,1), opacity .35s ease;
+}
+.ab-play-cloud {
+  position: absolute; inset: 0;
+  clip-path: url(#abCloudClip);
+  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.5));
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+}
+.ab-play-tri {
+  position: absolute; left: 52%; top: 50%; transform: translate(-50%, -50%);
+  width: 0; height: 0; border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent rgba(30, 30, 46, 0.7);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ab-play:hover { transform: translate(-50%, -50%) scale(1.06); }
+}
+.ab-play:active { transform: translate(-50%, -50%) scale(0.96); }
+.ab-play.is-hidden { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.82); }
+
+/* quiet contact line */
+.ab-say { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 18px; font-size: 14.5px; }
+.ab-say b { font-weight: 600; color: #1d1d1f; }
+.ab-say a { color: #6b7280; text-decoration: none; transition: color .2s ease; }
+@media (hover: hover) and (pointer: fine) { .ab-say a:hover { color: #1d1d1f; } }
+
+/* entrance */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes abIn { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
+  .ab-film { animation: abIn .8s cubic-bezier(0.23,1,0.32,1) both; }
+  .ab-say { animation: abIn .8s cubic-bezier(0.23,1,0.32,1) .12s both; }
+}
+
+/* phones */
+@media (max-width: 820px) {
+  .pg-nav { padding: 0 20px; }
+  .ab-stage { padding: 92px 18px 36px; gap: 24px; }
+  .ab-film { width: 100%; }
+  .pg-links { gap: 20px; }
+  .pg-links a { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+  <nav class="pg-nav">
+    <a class="pg-name" href="./">Mahin Jahan</a>
+    <div class="pg-links">
+      <a href="./playground.html">Play</a>
+      <a href="./about.html" class="is-on">Me</a>
+      <a href="https://drive.google.com/file/d/1r6-bkMzF8t5xPcERHtHPpfpNNKY_a62-/view" target="_blank" rel="noopener">CV</a>
+    </div>
+  </nav>
+
+  <main class="ab-stage">
+    <div class="ab-film">
+      <video src="play/introportfolio.mp4" poster="play/introportfolio-poster.jpg" preload="metadata" playsinline controlsList="nodownload nofullscreen noplaybackrate noremoteplayback" disablepictureinpicture></video>
+      <button class="ab-play" type="button" aria-label="Play the intro film with sound">
+        <span class="ab-play-cloud"></span>
+        <span class="ab-play-tri" aria-hidden="true"></span>
+      </button>
+      <svg class="ab-clip" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+        <clipPath id="abCloudClip" clipPathUnits="userSpaceOnUse">
+          <path transform="scale(0.87765) translate(0.0040, -1.4391)" d="M104.591 12.9995C109.284 17.1945 112.488 22.8684 114.066 28.9818C114.066 29.3654 114.066 29.749 114.066 30.1442C115.837 30.6619 116.805 30.1773 118.425 29.3711C123.804 26.7846 130.007 27.0495 135.601 28.6912C136.709 29.0928 137.726 29.5767 138.759 30.1442C139.023 30.279 139.288 30.4139 139.56 30.5528C144.107 32.9359 147.491 36.3779 149.957 40.8959C150.092 41.1173 150.227 41.3387 150.367 41.5668C152.911 46.039 153.648 52.2503 152.458 57.2416C152.109 58.5508 151.68 59.8177 151.177 61.0736C150.865 61.9753 150.777 62.4217 150.796 63.3359C150.804 63.6981 150.811 64.0603 150.819 64.4335C151.117 64.5811 151.415 64.7287 151.723 64.8808C159.611 68.808 165.706 74.1241 168.621 82.7406C170.907 90.5935 170.418 98.4202 166.647 105.697C165.668 107.505 164.506 109.09 163.165 110.637C162.996 110.85 162.826 111.063 162.651 111.283C158.681 116.13 153.247 118.821 147.373 120.517C147.114 120.596 146.855 120.674 146.588 120.755C144.358 121.386 142.27 121.526 139.961 121.498C139.607 121.495 139.252 121.492 138.887 121.489C136.348 121.445 134.024 121.262 131.581 120.517C131.297 120.433 131.297 120.433 131.007 120.347C126.582 119.004 122.744 116.876 119.234 113.833C119.02 113.68 118.805 113.526 118.584 113.368C118.419 113.234 118.255 113.1 118.086 112.962C118.086 112.77 118.086 112.578 118.086 112.381C116.942 112.028 116.942 112.028 115.789 112.09C114.869 112.836 114.203 113.76 113.492 114.705C106.593 122.961 97.1769 127.944 86.5016 128.944C75.0681 129.534 65.2492 125.432 56.8197 117.738C55.6 116.612 54.571 115.423 53.6534 114.031C53.213 113.503 53.213 113.503 52.5453 113.238C51.3553 113.26 50.6694 113.958 49.785 114.687C46.6291 117.154 43.2185 118.979 39.4125 120.226C39.0675 120.341 38.7226 120.455 38.3671 120.573C30.4204 122.944 21.9018 121.254 14.7662 117.329C13.2892 116.486 11.9752 115.541 10.6996 114.415C10.4642 114.211 10.2288 114.008 9.98622 113.798C4.53625 108.976 0.531088 102.182 0.0211774 94.7282C-0.000903796 93.8976 -0.00397233 93.07 0.00400293 92.2392C0.0059461 91.9456 0.00788927 91.652 0.00989132 91.3494C0.116107 83.5679 3.32946 76.3073 8.82895 70.8584C11.8658 67.9542 15.5163 66.1134 19.3134 64.4335C19.483 62.9574 19.1848 61.9609 18.6315 60.5832C16.4073 54.9653 16.9027 48.5229 19.0263 42.93C21.9326 36.2722 26.9655 31.7456 33.5622 29.0181C39.7064 26.8104 45.2435 27.3075 51.39 29.1089C52.196 29.3097 52.9429 29.3402 53.7689 29.2724C53.8163 28.9008 53.8637 28.5292 53.9125 28.1464C54.9689 22.868 58.1639 17.9673 61.8085 14.1618C61.9595 13.9876 62.1106 13.8135 62.2661 13.634C73.2255 1.43909 93.0256 3.02665 104.591 12.9995Z"/>
+        </clipPath>
+      </defs></svg>
+    </div>
+    <div class="ab-say">
+      <b>Say hi —</b>
+      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=mahinjahan.ux@gmail.com" target="_blank" rel="noopener">Email</a>
+      <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://drive.google.com/file/d/1r6-bkMzF8t5xPcERHtHPpfpNNKY_a62-/view" target="_blank" rel="noopener">CV</a>
+    </div>
+  </main>
+  <script>
+  (function () {
+    var film = document.querySelector('.ab-film');
+    if (!film) return;
+    var v = film.querySelector('video');
+    var btn = film.querySelector('.ab-play');
+    if (!v || !btn) return;
+    btn.addEventListener('click', function () {
+      v.controls = true;
+      v.classList.add('is-playing');
+      btn.classList.add('is-hidden');
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  }());
+  </script>
+</body>
+</html>

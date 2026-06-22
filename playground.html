@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play - Mahin Jahan Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<!-- Social share preview. NOTE: once a domain exists, set og:image & twitter:image to the FULL absolute URL, e.g. https://yourdomain.com/og-image.png -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Play - Mahin Jahan">
+<meta property="og:description" content="Motion, experiments, and product films.">
+<meta property="og:image" content="https://mahinjahan.com/og-image.png">
+<meta property="og:image:width" content="2254">
+<meta property="og:image:height" content="1178">
+<meta property="og:image:alt" content="Mahin Jahan portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Play - Mahin Jahan">
+<meta name="twitter:description" content="Motion, experiments, and product films.">
+<meta name="twitter:image" content="https://mahinjahan.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="page-transitions">
+@media (prefers-reduced-motion: no-preference) {
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 500ms ease-out both vtFadeOut; }
+::view-transition-new(root) { animation: 700ms ease-in-out both vtFadeIn; }
+@keyframes vtFadeOut { to { opacity: 0; } }
+@keyframes vtFadeIn { from { opacity: 0; } }
+}
+</style>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; height: 100vh; overflow: hidden;
+  background:
+    radial-gradient(1200px 620px at 50% -12%, rgba(255,255,255,0.55) 0%, transparent 60%),
+    linear-gradient(180deg, #eef3fb 0%, #dde7f6 56%, #d6e2f4 100%);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #141414;
+  -webkit-font-smoothing: antialiased;
+}
+/* grain overlay — sits under the modal (z-100) */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  background: url("decor/grain.svg"); background-size: 200px 200px;
+  opacity: 0.06; mix-blend-mode: multiply;
+}
+
+/* nav — matches home typography, wordmark left (non-home screens) */
+.pg-nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 72px; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+}
+.pg-name {
+  font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  color: rgb(20, 20, 20); text-decoration: none;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pg-name:active { transform: scale(0.96); }
+.pg-links { display: flex; gap: 28px; }
+.pg-links a {
+  font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
+  color: rgb(102, 102, 102); text-decoration: none;
+  transition: color .25s ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pg-links a.is-on { color: rgb(20, 20, 20); }
+@media (hover: hover) and (pointer: fine) { .pg-links a:hover { color: rgb(20, 20, 20); } }
+.pg-links a:active { transform: scale(0.95); }
+
+/* full-bleed justified bento — fills the viewport, no scroll.
+   Row heights and per-tile widths are tuned so every video cell matches
+   its native aspect ratio (no crop). The MHA video + the image are the
+   two flexible "custom-art" slots that absorb the remaining space. */
+.pg-wrap { height: 100vh; padding: 84px 16px 16px; }
+.pg-grid { height: 100%; display: flex; flex-direction: column; gap: 14px; }
+.pg-row { display: flex; gap: 14px; min-height: 0; min-width: 0; }
+/* row heights ~ 258 : 265 : 249 so each video cell lands near its native aspect */
+.pg-row:nth-child(1) { flex: 258 0 0; }
+.pg-row:nth-child(2) { flex: 265 0 0; }
+.pg-row:nth-child(3) { flex: 249 0 0; }
+
+.pg-tile {
+  flex: 1 1 0; min-width: 0; min-height: 0;
+  border-radius: 12px; overflow: hidden;
+  background: rgba(255,255,255,0.4); border: none;
+  box-shadow: 0 12px 32px -18px rgba(40, 38, 70, 0.4);
+}
+.pg-tile video, .pg-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pg-tile { cursor: pointer; }
+.pg-tile:focus-visible { outline: 2px solid #1d1d1f; outline-offset: 2px; }
+
+/* Apple-style detail overlay */
+.pg-modal { position: fixed; inset: 0; z-index: 100; visibility: hidden; transition: visibility 0s linear .42s; }
+.pg-modal.is-open { visibility: visible; transition: visibility 0s; }
+.pg-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.38); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transition: opacity .42s ease; }
+.pg-modal.is-open .pg-modal-backdrop { opacity: 1; }
+.pg-modal-panel {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%) scale(0.94);
+  width: min(840px, 92vw); max-height: 88vh; overflow-y: auto;
+  background: linear-gradient(180deg, rgba(235,242,252,0.86), rgba(217,229,247,0.78));
+  -webkit-backdrop-filter: blur(30px) saturate(1.7); backdrop-filter: blur(30px) saturate(1.7);
+  border: none; border-radius: 20px;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.75), 0 50px 120px -30px rgba(30,30,60,0.5);
+  opacity: 0; transition: opacity .42s ease, transform .5s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.pg-modal-panel::-webkit-scrollbar { display: none; }
+.pg-modal.is-open .pg-modal-panel { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.pg-modal-media { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.pg-modal-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pg-modal-close {
+  position: absolute; top: 16px; right: 16px; z-index: 3;
+  width: 32px; height: 32px; border: none; border-radius: 50%;
+  background: rgba(0,0,0,0.42); color: #fff; cursor: pointer;
+  display: grid; place-items: center;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: background .2s ease, transform .15s ease;
+}
+.pg-modal-close svg { width: 16px; height: 16px; }
+@media (hover: hover) and (pointer: fine) { .pg-modal-close:hover { background: rgba(0,0,0,0.62); } }
+.pg-modal-close:active { transform: scale(0.9); }
+.pg-modal-body { padding: 30px 38px 38px; }
+.pg-modal-tag { margin: 0 0 10px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #5b6b85; }
+.pg-modal-title { margin: 0 0 16px; font-family: "Fraunces", Georgia, serif; font-size: clamp(24px, 3vw, 33px); font-weight: 600; letter-spacing: -0.005em; line-height: 1.1; color: #16181d; }
+.pg-modal-desc p { margin: 0 0 14px; font-size: 16px; line-height: 1.62; color: #36404f; }
+.pg-modal-desc p:last-child { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .pg-modal-backdrop, .pg-modal-panel { transition: opacity .2s ease; }
+  .pg-modal-panel { transform: translate(-50%, -50%); }
+  .pg-modal.is-open .pg-modal-panel { transform: translate(-50%, -50%); }
+}
+
+/* phones: stack into a single scrollable column at natural aspect */
+@media (max-width: 700px) {
+  body { height: auto; overflow: auto; }
+  .pg-nav { padding: 0 20px; }
+  .pg-wrap { height: auto; padding: 92px 16px 28px; }
+  .pg-grid { height: auto; gap: 12px; }
+  .pg-row { flex-direction: column; gap: 12px; flex: none !important; }
+  .pg-tile { flex: none !important; width: 100%; }
+  .pg-tile video, .pg-tile img { height: auto; }
+  .pg-links { gap: 20px; }
+  .pg-links a { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+  <nav class="pg-nav">
+    <a class="pg-name" href="./">Mahin Jahan</a>
+    <div class="pg-links">
+      <a href="./playground.html" class="is-on">Play</a>
+      <a href="./about.html">Me</a>
+      <a href="https://drive.google.com/file/d/1r6-bkMzF8t5xPcERHtHPpfpNNKY_a62-/view" target="_blank" rel="noopener">CV</a>
+    </div>
+  </nav>
+
+  <main class="pg-wrap">
+    <div class="pg-grid">
+      <div class="pg-row">
+        <div class="pg-tile"><video src="play/v5.mp4" autoplay muted loop playsinline></video></div>
+        <div class="pg-tile"><video src="play/v6.mp4" autoplay muted loop playsinline></video></div>
+        <div class="pg-tile"><video src="play/v7.mp4" autoplay muted loop playsinline></video></div>
+      </div>
+      <div class="pg-row">
+        <div class="pg-tile" style="flex-grow:535"><video src="play/v2.mp4" autoplay muted loop playsinline></video></div>
+        <div class="pg-tile" style="flex-grow:493"><video src="play/v1.mp4" autoplay muted loop playsinline></video></div>
+        <div class="pg-tile" style="flex-grow:352"><video src="play/v8.mp4" autoplay muted loop playsinline></video></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="pg-modal" id="pg-modal" aria-hidden="true">
+    <div class="pg-modal-backdrop" data-close></div>
+    <div class="pg-modal-panel" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title">
+      <button class="pg-modal-close" type="button" aria-label="Close" data-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="pg-modal-media"></div>
+      <div class="pg-modal-body">
+        <p class="pg-modal-tag"></p>
+        <h2 class="pg-modal-title" id="pg-modal-title"></h2>
+        <div class="pg-modal-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var DATA = {
+      v5: { tag: 'Nothing OS concept', title: 'Essential Context',
+        desc: "<p>Essential Context is a concept I designed for Nothing OS: a shape-shifting home screen that surfaces only the tools you need for the moment you are in. Rather than hunting through grids of apps, you describe your situation, like 'Date Night', and the OS builds a temporary, curated environment around it.</p><p>Made in 48 hours, it leans into Nothing's minimal, hardware-led language. A persistent status pill keeps it a tap away, smart chips cut the clicks, and the Glyph Matrix on the back of the phone projects your focus state while doubling as an auto-expire timer, pulling the whole ecosystem into one intelligence hub.</p>" },
+      v6: { tag: 'Founder · Quest Up', title: 'Quest Up trailer',
+        desc: "<p>Quest Up is the startup I founded: a mobile app that turns exercise into game quests for gamers who want to be healthier but struggle to stay consistent. The insight that started it was that motivation is not the problem, the format is.</p><p>I led it from research to validation and designed the core Move, Reward, Upgrade loop: binary quests like 'do 10 squats' instead of vague goals, an avatar that levels up like an RPG character, and an energy system that keeps people engaged without burning out. It won the City Ventures Grand Spark startup competition, a &pound;3,000 equity-free grant and an accelerator place, and is now in MVP testing with 50 live users. This trailer pitches the whole idea in under a minute.</p>" },
+      v7: { tag: 'Founder · Quest Up', title: 'Quest Up advert',
+        desc: "<p>A short-form advert for Quest Up, cut for social. Punchier and more playful than the trailer, built to stop the scroll in the first second and land the hook: your workouts, but as quests.</p>" },
+      v2: { tag: 'Chrome extension', title: 'Printl, terms summarised',
+        desc: "<p>Printl is a fully working Chrome extension I built that turns dense Terms of Service into clear, digestible insights without breaking your flow. Rather than making you copy text into a separate tool, it automatically detects and pops up the moment a TOS appears on screen.</p><p>You can also highlight confusing jargon for an instant plain-language explanation, upload external contracts for a full risk assessment, or let the AI securely scan your Gmail to track active subscriptions, monitor payments, and flag any hidden policy changes.</p>" },
+      v1: { tag: 'Interaction', title: 'Discord reply interaction',
+        desc: "<p>This experiment explores Discord's reply interaction, focusing on the subtle motion details: morphing text-field corner radii, and the reply button's circular spin-in with a colour transition.</p>" },
+      v8: { tag: 'Hackathon · Octopus Energy', title: 'Agile, made clear',
+        desc: "<p>A 24-hour hackathon concept for Octopus Energy's Agile tariff, which charges real-time prices that rise and fall through the day. Customers had the data but still ran appliances at peak times, because the pricing felt abstract. Our read was simple: price visibility exists, decision clarity does not.</p><p>As one of the product designers in a team of eight, I worked on the problem framing and UI flows for a real-time experience that turns fluctuating prices into clear, in-the-moment cues: a current cost-window indicator, personalised savings goals, and progress tracking with contextual tips. Prototyped in Figma, judges praised it as a UX-led concept aligned with Octopus's product strategy.</p>" }
+    };
+
+    var modal = document.getElementById('pg-modal');
+    var mediaEl = modal.querySelector('.pg-modal-media');
+    var tagEl = modal.querySelector('.pg-modal-tag');
+    var titleEl = modal.querySelector('.pg-modal-title');
+    var descEl = modal.querySelector('.pg-modal-desc');
+    var lastFocus = null, hideTimer = null;
+
+    function keyOf(tile) {
+      var v = tile.querySelector('video');
+      var m = v && v.getAttribute('src').match(/(v\d+)\.mp4/);
+      return m ? m[1] : null;
+    }
+    function open(key, trigger) {
+      var d = DATA[key]; if (!d) return;
+      lastFocus = trigger || null;
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      mediaEl.innerHTML = '<video src="play/' + key + '.mp4" autoplay muted loop playsinline></video>';
+      tagEl.textContent = d.tag;
+      titleEl.textContent = d.title;
+      descEl.innerHTML = d.desc;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      modal.querySelector('.pg-modal-close').focus();
+    }
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      hideTimer = setTimeout(function () { mediaEl.innerHTML = ''; }, 440);
+      if (lastFocus) lastFocus.focus();
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.pg-tile'), function (tile) {
+      if (!keyOf(tile)) return;
+      tile.setAttribute('role', 'button');
+      tile.setAttribute('tabindex', '0');
+      tile.addEventListener('click', function () { open(keyOf(tile), tile); });
+      tile.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(keyOf(tile), tile); }
+      });
+    });
+    Array.prototype.forEach.call(modal.querySelectorAll('[data-close]'), function (el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+    });
+  })();
+  </script>
+</body>
+</html>
