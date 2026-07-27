@@ -8,14 +8,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
+  /* Bricolage Grotesque (SIL OFL 1.1, (c) 2019 The Bricolage Grotesque Project
+     Authors — https://github.com/ateliertriay/bricolage). Self-hosted variable
+     font, [opsz, wght] axes: the optical size axis keeps small rail text sturdy
+     while display sizes get the tighter, quirkier cut. */
+  @font-face {
+    font-family: 'Bricolage Grotesque';
+    src: url('assets/fonts/BricolageGrotesque-Variable.woff2') format('woff2');
+    font-weight: 200 800;
+    font-display: swap;
+  }
+
   :root {
-    --bg: #e2f4e6;          /* page green */
+    /* site-wide dark theme; the loader/curtain green stays as the brand moment */
+    --bg: #0f1211;          /* page ground */
     --bg-deep: #3ea86a;     /* loader / transition green */
     --hero-ink: #8ed3a2;    /* giant type green */
-    --ink: #1b241e;         /* dark text */
-    --ink-soft: #414a44;
-    --accent: #2b9958;      /* links / highlights */
+    --ink: #f2f5f3;         /* headings / strong text */
+    --ink-soft: #b4bcb6;
+    --accent: #6fd493;      /* links / highlights — lifted to sit on dark */
     --card-radius: 14px;
+    /* case pages: panels step up from the ground, cards step up from panels */
+    --panel: #1a1e1c;       /* was var(--panel) */
+    --card: #242a27;        /* was #fff */
+    --track: #2b312d;       /* ring track / hairlines, was var(--track) */
+    --case-body: #9aa39d;   /* body copy, was var(--case-body) */
+    --case-cap: #737d77;    /* captions / eyebrows, was var(--case-cap) */
     /* home gallery: near-white paper, quiet grey type */
     --hp-bg: #fbfcfb;
     --hp-ink: #575757;
@@ -40,7 +58,7 @@
     overflow-anchor: none; /* keep programmatic smooth-scrolls from being "corrected" as media loads */
   }
 
-  ::selection { background: var(--accent); color: #fff; }
+  ::selection { background: var(--accent); color: var(--bg); }
 
   /* ---------- Loader ---------- */
   #loader {
@@ -86,17 +104,28 @@
   /* ---------- Home ---------- */
   /* Editorial two-column gallery with a fixed reading rail on the left. */
   #home {
-    font-family: 'SF Pro Display', 'SF Pro Text', 'SF Pro', -apple-system,
-                 BlinkMacSystemFont, 'Segoe UI', system-ui, Arial, sans-serif;
+    font-family: 'Bricolage Grotesque', 'SF Pro Display', 'SF Pro Text', 'SF Pro',
+                 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Arial, sans-serif;
     /* type scale borrowed from the case studies: 18px body, 16px UI, 14px caption */
     font-size: 16px; line-height: 1.5; color: var(--hp-ink);
   }
   body.home-active { background: var(--hp-bg); }
 
+  /* Dark homepage tokens — the whole site is dark now, so these just tune the
+     home rail's greys; --accent comes from :root. */
+  body.home-active {
+    --hp-bg: #0f1211;
+    --hp-ink: #9aa39d;
+    --hp-ink-strong: #f2f5f3;
+    --hp-shot: #1a1e1c;
+    --hp-rule: #2b312d;
+  }
+
   .hp {
     --rail-w: 380px;                  /* the reading rail */
     --rail-gap: 106px;                /* air between the rail and the gallery */
-    position: relative; padding: 22px; height: 100vh; height: 100dvh;
+    --pad: 22px;                      /* page margin, matched by the rail's insets */
+    position: relative; padding: var(--pad); height: 100vh; height: 100dvh;
   }
   body.home-active { overflow: hidden; }
 
@@ -111,8 +140,6 @@
 
   #mascot {
     width: 92px; height: 92px; margin-bottom: 4px; cursor: pointer;
-    border-radius: 50%; border: 1px solid var(--hp-rule);
-    background: var(--hp-shot);
   }
 
   .hp-bio { max-width: 34em; font-size: 18px; line-height: 27px; }
@@ -143,9 +170,9 @@
   .hp-clock { font-variant-numeric: tabular-nums; }
 
   /* --- gallery --- */
-  /* The gallery is height-led: two 16:9 rows plus their captions have to fit
-     the viewport, so we derive the grid's width from the space available
-     vertically and let the columns follow. */
+  /* The gallery is height-led: the two stacked 16:9 rows plus their captions
+     fill the same box as the rail (100dvh - 44px), so we derive the grid's
+     width from the space available vertically and let the column follow. */
   .hp-grid {
     --gap: 15px;
     --cap-h: 0px;                                         /* the videos speak for themselves */
@@ -154,15 +181,21 @@
     --row-h: calc((100dvh - 44px - var(--gap)) / 2);
     --shot-h: max(90px, calc(var(--row-h) - var(--cap-h)));
     --offset: calc(var(--rail-w) + var(--rail-gap));
-    margin-left: var(--offset); height: 100%;
+    /* the column is height-led, so on a wide window it can't reach the right
+       edge without cropping. Anchor it to the right instead: the gallery sits
+       one page margin off the window edge, matching its own top and bottom
+       insets, and the slack collects between the rail and the work. */
+    margin-left: var(--rail-w); height: 100%;
+    width: calc(100% - var(--rail-w));
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, min-content);
-    grid-auto-flow: column;   /* fill down each column, not across the rows */
-    align-content: center;    /* even 15px between rows, slack goes to the edges */
+    /* holding back the rail gap keeps that much air to the left of the
+       gallery, so it never crowds the rail on narrow screens */
+    grid-template-columns: min(calc(100% - var(--rail-gap)),
+                               calc(var(--shot-h) * 16 / 9));
+    grid-template-rows: repeat(2, min-content);   /* two projects, stacked */
+    align-content: center;    /* vertical slack to the edges, not between */
+    justify-content: end;     /* anchored right, slack falls to the left */
     gap: var(--gap);
-    width: min(calc(100% - var(--offset)),
-               calc(var(--shot-h) * 16 / 9 * 2 + var(--gap)));
   }
   .hp-item {
     display: flex; flex-direction: column; min-height: 0;
@@ -269,7 +302,7 @@
     width: 40px; height: 40px;
     font-size: 17px; color: var(--ink-soft);
     text-decoration: none;
-    background: #fff; border-radius: 999px;
+    background: var(--card); border-radius: 999px;
     transition: transform .2s, color .2s;
   }
   .case-back.show { display: inline-flex; }
@@ -286,9 +319,8 @@
     font-family: 'SF Pro Display', 'SF Pro Text', 'SF Pro', -apple-system,
                  BlinkMacSystemFont, 'Segoe UI', system-ui, Arial, sans-serif;
   }
-  /* Case pages sit on a near-white ground so the media panels read as panels.
-     The reference gets its calm from that contrast; a flat green wash loses it. */
-  body.case-active { background: #fafcfb; }
+  /* Case pages share the dark ground; the media panels step up from it. */
+  body.case-active { background: var(--bg); }
   /* project mark above the title, like the reference's app icon */
   /* app icon and title side by side */
   .case-head {
@@ -298,7 +330,7 @@
   .case-head h1 { margin: 0; }
   .case-logo {
     width: 54px; height: 54px; border-radius: 14px;
-    background: var(--accent); color: #fff;
+    background: var(--accent); color: var(--bg);
     display: flex; align-items: center; justify-content: center;
     font-size: 24px; font-weight: 700; letter-spacing: -.02em;
     flex-shrink: 0;
@@ -336,7 +368,7 @@
   .case-wordmark { display: block; height: 42px; width: auto; }
   .case-sub {
     margin-top: 16px;
-    font-size: 18px; line-height: 27px; font-weight: 400; color: #5b6560;
+    font-size: 18px; line-height: 27px; font-weight: 400; color: var(--case-body);
   }
   .case-meta { display: block; }
   .case-meta > div { margin-bottom: 16px; }
@@ -357,7 +389,7 @@
   }
   .case-figure figcaption {
     margin-top: 16px; text-align: center;
-    font-size: 14px; color: #8e9a92;
+    font-size: 14px; color: var(--case-cap);
   }
 
   /* same card treatment as the other card rows */
@@ -365,15 +397,15 @@
     margin-top: 32px; display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
   }
-  .stat { background: #F1F5F9; border-radius: 12px; padding: 20px; }
+  .stat { background: var(--panel); border-radius: 12px; padding: 20px; }
   .stat b { display: block; font-size: 28px; font-weight: 600; color: var(--accent); }
-  .stat span { display: block; margin-top: 8px; font-size: 15px; line-height: 22px; font-weight: 400; color: #5b6560; }
+  .stat span { display: block; margin-top: 8px; font-size: 15px; line-height: 22px; font-weight: 400; color: var(--case-body); }
 
   /* ---------- research artefacts ---------- */
   /* Secondary-research figures: rings inside a recessed panel, so the numbers
      read as a cited exhibit rather than as the author's own claims. */
   .stat-panel {
-    margin-top: 32px; background: #F1F5F9; border-radius: 12px;
+    margin-top: 32px; background: var(--panel); border-radius: 12px;
     padding: clamp(24px, 4vw, 48px);
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(12px, 2vw, 20px);
@@ -389,7 +421,7 @@
   .stat-ring.flipped .stat-inner { transform: rotateY(180deg); }
   .stat-face, .stat-source {
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    background: #fff; border-radius: 10px;
+    background: var(--card); border-radius: 10px;
   }
   .stat-face {
     position: relative; height: 100%; box-sizing: border-box;
@@ -412,18 +444,18 @@
     font-size: 15px; line-height: 22px; font-weight: 500; color: var(--ink);
   }
   .case section .stat-source .cite {
-    font-size: 12.5px; line-height: 18px; font-weight: 400; color: #8e9a92;
+    font-size: 12.5px; line-height: 18px; font-weight: 400; color: var(--case-cap);
   }
   .stat-source a {
     margin-top: 2px; font-size: 12.5px; color: var(--accent);
     text-decoration: none; border-bottom: 1px solid currentColor;
     align-self: flex-start;
   }
-  .stat-ring .flip-hint { font-size: 12px; background: #F1F5F9; }
+  .stat-ring .flip-hint { font-size: 12px; background: var(--panel); }
   @media (prefers-reduced-motion: reduce) { .stat-inner { transition: none; } }
   .stat-ring figure { position: relative; width: 116px; height: 116px; }
   .stat-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-  .ring-track { fill: none; stroke: #E6EDF1; stroke-width: 9; }
+  .ring-track { fill: none; stroke: var(--track); stroke-width: 9; }
   .ring-fill {
     fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round;
     stroke-dasharray: 327;
@@ -438,7 +470,7 @@
   }
   .case section .stat-ring p {
     margin-top: 16px; max-width: 22ch;
-    font-size: 14px; line-height: 21px; color: #5b6560;
+    font-size: 14px; line-height: 21px; color: var(--case-body);
   }
 
   /* the questions the interviews were built to answer */
@@ -447,7 +479,7 @@
     grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
   }
   .focus {
-    background: #F1F5F9; border-radius: 12px; padding: 24px 22px 26px;
+    background: var(--panel); border-radius: 12px; padding: 24px 22px 26px;
   }
   .focus .num {
     font-size: 13px; font-weight: 600; letter-spacing: .08em;
@@ -468,7 +500,7 @@
   .eyebrow + h2 { margin-top: 8px !important; }
   .eyebrow {
     display: flex; align-items: center; gap: 7px;
-    font-size: 16px; font-weight: 400; color: #8e9a92;
+    font-size: 16px; font-weight: 400; color: var(--case-cap);
   }
   .eyebrow svg { display: none; }   /* the reference label is plain text */
   /* text runs the full content width, matching the media panels */
@@ -479,14 +511,14 @@
   }
   .case h3 { margin-top: 48px; font-size: 18px; font-weight: 600; color: var(--ink); }
   .case section p {
-    font-size: 18px; line-height: 27px; font-weight: 400; color: #5b6560;
+    font-size: 18px; line-height: 27px; font-weight: 400; color: var(--case-body);
   }
 
   /* the section's climax: the reframe, centred on a card */
   .hmw-card {
     position: relative;
     margin-top: 48px;
-    background: #F1F5F9; border-radius: 12px;
+    background: var(--panel); border-radius: 12px;
     padding: 48px clamp(24px, 6vw, 64px);
     text-align: center;
   }
@@ -507,7 +539,7 @@
     font-size: 26px; line-height: 36px; font-weight: 600;
     letter-spacing: -.01em; color: var(--ink);
   }
-  .hmw-card span { display: block; margin-top: 16px; font-size: 15px; color: #8e9a92; }
+  .hmw-card span { display: block; margin-top: 16px; font-size: 15px; color: var(--case-cap); }
   /* inline emphasis inside body copy reads near-black, like the card captions */
   .case section p b { color: var(--ink); font-weight: 600; }
 
@@ -519,7 +551,7 @@
   }
   .pullquote cite {
     display: block; margin-top: 16px;
-    font-style: normal; font-size: 15px; color: #8e9a92;
+    font-style: normal; font-size: 15px; color: var(--case-cap);
   }
 
   .callout {
@@ -536,9 +568,9 @@
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
-  .insight-num { font-size: 15px; font-weight: 400; color: #8e9a92; }
+  .insight-num { font-size: 15px; font-weight: 400; color: var(--case-cap); }
   .insight h4 { margin-top: 8px; font-size: 19px; font-weight: 600; line-height: 1.35; color: var(--ink); }
-  .case section .insight p { margin-top: 8px; font-size: 16px; line-height: 24px; color: #5b6560; }
+  .case section .insight p { margin-top: 8px; font-size: 16px; line-height: 24px; color: var(--case-body); }
   /* each card flips to the interview quotes behind its finding */
   .insight { perspective: 1200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .insight:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
@@ -553,7 +585,7 @@
   .insight-back {
     position: absolute; inset: 0;
     transform: rotateY(180deg);
-    background: #F1F5F9; border-radius: 12px;
+    background: var(--panel); border-radius: 12px;
     padding: 28px;
     display: flex; flex-direction: column; justify-content: center; gap: 16px;
     overflow: hidden;
@@ -561,11 +593,11 @@
   .insight-back .tag { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
   .insight-back blockquote { margin: 0; }
   .insight-back blockquote p { font-size: 15px; line-height: 22px; font-weight: 500; color: var(--ink); }
-  .insight-back cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; color: #8e9a92; }
+  .insight-back cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; color: var(--case-cap); }
   .flip-hint {
     position: absolute; top: 12px; right: 12px;
     width: 28px; height: 28px; border-radius: 50%;
-    background: #fff; color: var(--accent);
+    background: var(--card); color: var(--accent);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px;
   }
@@ -574,7 +606,7 @@
   .insight-figure {
     position: relative;
     margin-top: 0; height: 100%; box-sizing: border-box;
-    background: #F1F5F9; border-radius: 12px;
+    background: var(--panel); border-radius: 12px;
     padding: 24px 24px 28px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: space-between;
@@ -583,25 +615,25 @@
   .insight-figure svg { width: 100%; max-width: 320px; height: auto; display: block; }
   .insight-cap {
     margin-top: 24px; text-align: center;
-    font-size: 15px; line-height: 22px; color: #5b6560;
+    font-size: 15px; line-height: 22px; color: var(--case-body);
   }
   .insight-cap b { color: var(--ink); font-weight: 600; }
   @media (max-width: 760px) { .insights { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
 
   .case-cards { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .case-card { background: #F1F5F9; border-radius: 12px; padding: 20px; }
+  .case-card { background: var(--panel); border-radius: 12px; padding: 20px; }
   .case-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); }
-  .case section .case-card p { margin-top: 8px; font-size: 15px; line-height: 22px; color: #5b6560; }
+  .case section .case-card p { margin-top: 8px; font-size: 15px; line-height: 22px; color: var(--case-body); }
 
-  .takeaway { margin-top: 24px; background: #F1F5F9; border-radius: 12px; padding: 22px 24px; }
-  .takeaway .tag { font-size: 14px; font-weight: 400; color: #8e9a92; }
+  .takeaway { margin-top: 24px; background: var(--panel); border-radius: 12px; padding: 22px 24px; }
+  .takeaway .tag { font-size: 14px; font-weight: 400; color: var(--case-cap); }
   .takeaway h4 { margin-top: 8px; font-size: 17px; font-weight: 600; }
   .case section .takeaway p { margin-top: 8px; font-size: 16px; line-height: 24px; color: var(--ink-soft); }
 
   @media (max-width: 640px) { .case-stats { grid-template-columns: 1fr; } }
   .case-card video {
     width: 100%; margin-top: 12px; border-radius: 8px; display: block;
-    aspect-ratio: 16 / 9; object-fit: cover; background: #F1F5F9;
+    aspect-ratio: 16 / 9; object-fit: cover; background: var(--panel);
   }
   .case-card img { width: 100%; margin-top: 12px; border-radius: 8px; display: block; }
   .case section, #c-tldr { scroll-margin-top: 90px; }
@@ -644,7 +676,7 @@
   .decision-open .decision-num::after {
     content: 'Still open'; margin-left: 10px;
     padding: 2px 8px; border-radius: 999px;
-    background: #F1F5F9; color: #8e9a92;
+    background: var(--panel); color: var(--case-cap);
     font-size: 11px; letter-spacing: .04em;
   }
 
@@ -661,7 +693,7 @@
   .car-tabs {
     position: relative;
     display: flex; gap: 2px; margin-bottom: 14px; padding: 4px;
-    background: #F1F5F9; border-radius: 999px;
+    background: var(--panel); border-radius: 999px;
     width: fit-content; max-width: 100%;
     overflow-x: auto; scrollbar-width: none;
   }
@@ -671,7 +703,7 @@
     border: 0; background: none; cursor: pointer;
     padding: 8px 16px; border-radius: 999px;
     font: inherit; font-size: 14px; font-weight: 500;
-    color: #7c8781; white-space: nowrap;
+    color: var(--case-cap); white-space: nowrap;
     transition: color .22s var(--ease-out);
   }
   .car-tab.on { color: var(--ink); }
@@ -682,13 +714,13 @@
   /* the white lozenge slides between tabs rather than snapping */
   .car-pill {
     position: absolute; left: 0; top: 4px; bottom: 4px; z-index: 0;
-    border-radius: 999px; background: #fff;
-    box-shadow: 0 1px 2px rgba(27, 36, 30, .09), 0 3px 10px rgba(27, 36, 30, .06);
+    border-radius: 999px; background: var(--card);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 3px 10px rgba(0, 0, 0, .2);
     transition: transform .4s var(--ease-out), width .4s var(--ease-out);
   }
 
   .car-viewport {
-    overflow: hidden; border-radius: 16px; background: #F1F5F9;
+    overflow: hidden; border-radius: 16px; background: var(--panel);
     cursor: grab; touch-action: pan-y;
   }
   .car-viewport.dragging { cursor: grabbing; user-select: none; }
@@ -700,7 +732,7 @@
   .car-slide.on { opacity: 1; }
   .car-slide video {
     width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
-    border-radius: 8px; display: block; background: #F1F5F9;
+    border-radius: 8px; display: block; background: var(--panel);
   }
   /* the tab already names the slide */
   .car-slide h4 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
@@ -763,12 +795,75 @@
   #contact .socials { margin-top: 34px; display: flex; gap: 22px; }
   #contact .socials a { color: var(--ink-soft); font-weight: 700; text-decoration: none; font-size: 15px; }
   #contact .socials a:hover { color: var(--accent); }
+
+  /* --- custom cursor: precise dot + trailing ring ---
+     Mouse-and-trackpad only; touch devices and reduced-motion users keep the
+     native cursor. Colour rides --accent, which already flips between the dark
+     home and the light case pages. Sits above the curtain (z 100). */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    body.has-cursor, body.has-cursor a, body.has-cursor button,
+    body.has-cursor canvas, body.has-cursor .hp-item { cursor: none; }
+
+    /* carriers: JS owns their transform (translate only) — every visual state
+       lives on the cores inside, so the two never fight over one property */
+    #cursor-dot, #cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      pointer-events: none;
+      opacity: 0;                       /* hidden until the pointer first moves */
+      will-change: transform;
+      transition: opacity .2s;
+    }
+    body.cursor-in #cursor-dot, body.cursor-in #cursor-ring { opacity: 1; }
+
+    #cursor-dot .cur-core {
+      display: block;
+      width: 6px; height: 6px; margin: -3px 0 0 -3px;
+      border-radius: 50%; background: var(--accent);
+      transition: transform .18s var(--ease-out), opacity .18s;
+    }
+    #cursor-ring .cur-core {
+      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; margin: -17px 0 0 -17px;
+      border: 1.5px solid var(--accent); border-radius: 50%;
+      transition: width .28s var(--ease-out), height .28s var(--ease-out),
+                  margin .28s var(--ease-out), background-color .28s var(--ease-out),
+                  transform .18s var(--ease-out);
+    }
+    #cursor-ring .cur-label {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 13px; font-weight: 600; letter-spacing: .02em;
+      color: var(--hp-bg, #fff);
+      opacity: 0; transform: scale(.6);
+      transition: opacity .18s var(--ease-out), transform .18s var(--ease-out);
+    }
+
+    /* over links and buttons the ring swells, the dot tightens */
+    body.cursor-link #cursor-ring .cur-core {
+      width: 52px; height: 52px; margin: -26px 0 0 -26px;
+    }
+    body.cursor-link #cursor-dot .cur-core { transform: scale(.66); }
+
+    /* over a project tile the ring blooms into a filled "View" pill */
+    body.cursor-view #cursor-ring .cur-core {
+      width: 74px; height: 74px; margin: -37px 0 0 -37px;
+      background: var(--accent);
+    }
+    body.cursor-view #cursor-ring .cur-label { opacity: 1; transform: none; }
+    body.cursor-view #cursor-dot .cur-core { opacity: 0; }
+
+    /* pressing squashes both — the site's playful give */
+    body.cursor-down #cursor-ring .cur-core { transform: scale(.85); }
+    body.cursor-down #cursor-dot .cur-core  { transform: scale(.7); }
+    body.cursor-down.cursor-link #cursor-dot .cur-core { transform: scale(.5); }
+  }
 </style>
 </head>
 <body>
 
 <div id="loader"><div class="spinner"></div></div>
 <div id="curtain"></div>
+<div id="cursor-ring" aria-hidden="true"><span class="cur-core"><span class="cur-label">View</span></span></div>
+<div id="cursor-dot" aria-hidden="true"><span class="cur-core"></span></div>
 
 <!-- HOME -->
 <section id="home" class="page current">
@@ -783,8 +878,9 @@
 
       <nav class="hp-list">
         <button data-page="about"><span>01. About Me</span><i>&#8594;</i></button>
-        <a href="mailto:mahinsattarjahan@gmail.com"><span>02. Email</span><i>&#8599;</i></a>
-        <a href="#" target="_blank" rel="noopener"><span>03. LinkedIn</span><i>&#8599;</i></a>
+        <button data-page="playground"><span>02. Playground</span><i>&#8594;</i></button>
+        <a href="mailto:mahinsattarjahan@gmail.com"><span>03. Email</span><i>&#8599;</i></a>
+        <a href="#" target="_blank" rel="noopener"><span>04. LinkedIn</span><i>&#8599;</i></a>
       </nav>
 
       <div class="hp-foot">
@@ -821,23 +917,6 @@
   <a href="#j-emotion">Emotion</a>
   <a href="#j-metrics">Metrics</a>
   <a href="#j-next">What's next</a>
-</nav>
-<nav class="case-nav" data-page="nothing" aria-label="Case study sections">
-  <a href="#n-tldr">TLDR</a>
-  <a href="#n-scenario">Scenario</a>
-  <a href="#n-purpose">Purpose</a>
-  <a href="#n-system">System</a>
-  <a href="#n-decisions">Decisions</a>
-  <a href="#n-future">Future</a>
-</nav>
-<nav class="case-nav" data-page="questup" aria-label="Case study sections">
-  <a href="#q-tldr">TLDR</a>
-  <a href="#q-context">Context</a>
-  <a href="#q-problem">Problem</a>
-  <a href="#q-user">User</a>
-  <a href="#q-solution">Solution</a>
-  <a href="#q-testing">Testing</a>
-  <a href="#q-outcome">Outcome</a>
 </nav>
 <a class="case-back" href="#home" id="case-back"><span aria-hidden="true">&larr;</span><span class="cb-text">Back</span></a>
 
@@ -1140,7 +1219,7 @@
               <g stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4">
                 <line x1="40" y1="140" x2="112" y2="140"/><line x1="144" y1="140" x2="196" y2="140"/>
               </g>
-              <rect x="226" y="131" width="52" height="14" rx="7" fill="#F1F5F9"/>
+              <rect x="226" y="131" width="52" height="14" rx="7" fill="var(--panel)"/>
             </svg>
             <p class="insight-cap">Statuses are <b>logged by hand</b> and go stale.</p>
           </div>
@@ -1202,7 +1281,7 @@
               <rect x="102" y="22" width="52" height="12" rx="4" fill="#CBD5E1"/>
               <rect x="160" y="22" width="52" height="12" rx="4" fill="#fff"/>
               <rect x="218" y="22" width="52" height="12" rx="4" fill="#CBD5E1"/>
-              <rect x="46" y="52" width="228" height="20" rx="10" fill="#F1F5F9"/>
+              <rect x="46" y="52" width="228" height="20" rx="10" fill="var(--panel)"/>
               <circle cx="60" cy="62" r="5" fill="none" stroke="#94A3B8" stroke-width="2"/>
               <path d="M64 66l4 4" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
               <rect x="74" y="59" width="96" height="6" rx="3" fill="#94A3B8"/>
@@ -1245,14 +1324,14 @@
                 <rect x="34" y="56" width="252" height="30" rx="8" fill="#fff"/>
                 <circle cx="52" cy="71" r="7" fill="#E2E8F0"/>
                 <rect x="68" y="68" width="76" height="7" rx="3.5" fill="#CBD5E1"/>
-                <rect x="212" y="64" width="60" height="15" rx="7.5" fill="#F1F5F9"/>
+                <rect x="212" y="64" width="60" height="15" rx="7.5" fill="var(--panel)"/>
                 <rect x="224" y="69" width="36" height="5" rx="2.5" fill="#CBD5E1"/>
               </g>
               <g opacity=".55">
                 <rect x="34" y="94" width="252" height="30" rx="8" fill="#fff"/>
                 <circle cx="52" cy="109" r="7" fill="#E2E8F0"/>
                 <rect x="68" y="106" width="64" height="7" rx="3.5" fill="#CBD5E1"/>
-                <rect x="212" y="102" width="60" height="15" rx="7.5" fill="#F1F5F9"/>
+                <rect x="212" y="102" width="60" height="15" rx="7.5" fill="var(--panel)"/>
               </g>
               <g opacity=".3">
                 <rect x="34" y="132" width="252" height="30" rx="8" fill="#fff"/>
@@ -1504,192 +1583,6 @@
   </div>
 </section>
 
-<!-- CASE STUDY: NOTHING -->
-<section id="nothing" class="page">
-  <div class="case">
-    <div id="n-tldr" data-nav>
-    <h1>Nothing</h1>
-    <p class="case-sub">The right tools, exactly when you need them. Essential Context is a situational environment generator for Nothing OS. I designed a shape-shifting home screen concept that instantly surfaces tailored tools to eliminate the cognitive load of hunting through isolated app grids.</p>
-
-    <dl class="case-meta">
-      <div><dt>Type</dt><dd>Conceptual Work</dd></div>
-      <div><dt>Role</dt><dd>Product Designer</dd></div>
-      <div><dt>Timeline</dt><dd>48 Hours</dd></div>
-      <div><dt>Platform</dt><dd>Mobile OS</dd></div>
-    </dl>
-
-    <video class="case-video" src="assets/case-nothing/hero-nothing.mp4" autoplay muted loop playsinline></video>
-
-    <h3>TLDR: Stop Searching, Start Living</h3>
-    <div class="case-cards">
-      <div class="case-card"><h4>The Challenge</h4><p>Current smartphone OS environments force users to dig through endless app grids to navigate a single moment. Hunting for isolated tools like jumping between Uber, Messages, and Wallet just for a date, creates unnecessary cognitive load and friction.</p></div>
-      <div class="case-card"><h4>The Solution</h4><p>Essential Context intelligently surfaces tools exactly when you need them. By holding a button and stating your situation, the OS instantly generates a personalized, temporary home screen tailored to that specific moment.</p></div>
-    </div>
-    </div>
-
-    <section id="n-scenario" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Scenario</div>
-      <h2>A Shape-Shifting Canvas for Real-World Moments</h2>
-      <p>Imagine heading out for the evening. Instead of hunting through cluttered app drawers for ride-shares and reservations, the OS does the heavy lifting. It instantly generates a distraction-free, temporary environment containing only the relevant tools, keeping you focused on the physical world.</p>
-      <img class="case-media" src="assets/case-nothing/scenario-canvas.jpg" alt="Shape-shifting canvas scenario">
-      <h3>Mapping the Journey</h3>
-      <p>Holding the essential button from the lock screen opens the configuration menu alongside a sweeping light animation. After selecting "Date Night," the system drops the user into their curated home screen and updates the hardware to display an "Auto-Expire" progress bar. A persistent yellow status pill remains at the top right, letting users effortlessly tweak settings or exit the context to restore the standard OS.</p>
-      <img class="case-media" src="assets/case-nothing/journey-map.jpg" alt="User journey map">
-    </section>
-
-    <section id="n-purpose" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Purpose</div>
-      <h2>Intentional Usage Through a Unified Ecosystem</h2>
-      <p>Nothing's philosophy centers on intentional smartphone usage: less time navigating apps, more time living in the moment. Essential Context realizes this vision by acting as the central intelligence hub for the entire Nothing ecosystem. By synchronizing with other Essential features, it reduces cognitive load and transforms raw data into a highly focused environment.</p>
-      <p>As illustrated in the Date Night example below, each Essential feature works together to silently curate your experience:</p>
-      <img class="case-media" src="assets/case-nothing/ecosystem.jpg" alt="Essential ecosystem diagram">
-      <p>By unifying these tools, the OS evolves from a passive grid of icons into a shape-shifting, predictive canvas. Ultimately, the more Essential features you use, the more deeply personalized your environment becomes, allowing you to remain fully present in the physical world.</p>
-    </section>
-
-    <section id="n-system" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>System</div>
-      <h2>Synchronizing the System</h2>
-      <p>To truly embed this feature into the Nothing ecosystem, the hardware and software must act as a single, synchronized mechanism:</p>
-      <div class="case-cards">
-        <div class="case-card"><h4>1 &middot; The Trigger</h4><p>Holding the essential button pulls up the Essential Context setup.</p><img src="assets/case-nothing/system-trigger.jpg" alt="The essential button trigger"></div>
-        <div class="case-card"><h4>2 &middot; The Glyph Matrix</h4><p>When active, the back of the phone displays a minimalist, static icon (like a cocktail glass) to project your "focus state" to the physical room.</p><img src="assets/case-nothing/system-glyph-matrix.jpg" alt="Glyph matrix focus icon"></div>
-        <div class="case-card"><h4>3 &middot; The Glyph Lights</h4><p>Classic Glyphs act as a visual timer for the context's "Auto-Expire" progress, and strictly limit light notifications to your pinned priority contacts.</p><img src="assets/case-nothing/system-glyph-lights.jpg" alt="Glyph lights timer"></div>
-      </div>
-    </section>
-
-    <section id="n-decisions" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Decisions</div>
-      <h2>Minimising Clicks, Maximizing Presence</h2>
-      <p>To ensure the interface felt as frictionless as the concept itself, I focused on two core design choices:</p>
-      <div class="case-cards">
-        <div class="case-card"><h4>1 &middot; Smart Chips Over Menus</h4><p>I utilized 1-tap actionable chips (like "Smart App Filter" and "Priority Contact") to eliminate friction by minimizing clicks.</p><img src="assets/case-nothing/decisions-chips.jpg" alt="Smart chips interface"></div>
-        <div class="case-card"><h4>2 &middot; The Status Pill</h4><p>I created a persistent, non-intrusive anchor in the top right of the screen. Tapping it drops down a quick-action menu to Edit or Exit, keeping control exactly one thumb-swipe away without burying it in Android Settings.</p><img src="assets/case-nothing/decisions-pill.jpg" alt="Status pill quick actions"></div>
-      </div>
-    </section>
-
-    <section id="n-future" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Future</div>
-      <h2>Where the OS Goes Next</h2>
-      <p>While the current concept relies on manual triggers, the long-term vision makes the OS entirely proactive:</p>
-      <div class="case-cards">
-        <div class="case-card"><h4>1 &middot; Predictive Environments</h4><p>Moving beyond static home screens, the OS should automatically shape-shift based on your daily habits without requiring manual prompts.</p></div>
-        <div class="case-card"><h4>2 &middot; Intelligent Fallbacks &amp; Learning</h4><p>If a generated context misses a needed tool, Essential Search acts as a frictionless safety net. The system then learns from these manual searches to perfect the environment for your next visit.</p></div>
-        <div class="case-card"><h4>3 &middot; Tactile Hardware Integration</h4><p>Future device generations could allow users to cycle through pre-saved contexts physically, like swiping or tapping the back cover without ever waking the screen.</p></div>
-        <div class="case-card"><h4>4 &middot; Deeper Customization</h4><p>Future iterations should support context-specific widget themes and more complex integrations as Essential Apps develop.</p></div>
-      </div>
-    </section>
-  </div>
-</section>
-
-<!-- CASE STUDY: QUEST UP -->
-<section id="questup" class="page">
-  <div class="case">
-    <div id="q-tldr" data-nav>
-    <h1>Quest Up</h1>
-    <p class="case-sub">Turning a chore into a quest. Quest Up is a gamified health companion for sedentary gamers. I founded this startup to bridge the gap between high motivation and low consistency, adapting the "Quest Loop" mechanic to turn physical activity into a game.</p>
-
-    <dl class="case-meta">
-      <div><dt>Role</dt><dd>Founder &amp; Product Designer</dd></div>
-      <div><dt>Platform</dt><dd>Mobile App</dd></div>
-      <div><dt>Outcome</dt><dd>&pound;3,000 grant winner</dd></div>
-      <div><dt>Status</dt><dd>Developing the MVP</dd></div>
-    </dl>
-
-    <video class="case-video" src="assets/case-questup/hero-quest-up.mp4" autoplay muted loop playsinline></video>
-
-    <h3>TLDR: Motivation Exists; Consistency Breaks</h3>
-    <div class="case-cards">
-      <div class="case-card"><h4>The Challenge</h4><p>Gamers have high cognitive motivation to be healthy but low behavioral consistency. Traditional fitness apps feel like a chore compared to the dopamine-rich loops of gaming.</p></div>
-      <div class="case-card"><h4>The Solution</h4><p>Quest Up adapts the "Quest Loop" mechanic, short, structured missions with instant rewards, to physical activity, lowering the barrier to entry for sedentary users.</p></div>
-    </div>
-    </div>
-
-    <section id="q-context" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Context</div>
-      <h2>Gaming Is Rewarding by Design, Movement Is Not</h2>
-      <p>Games are built to hold attention through clear goals, instant feedback, and visible progress. Fitness, by contrast, feels effortful, unstructured, and slow to reward. Even gamers who want healthier habits default to long sedentary sessions because movement doesn't fit naturally into the way they already spend their time.</p>
-      <img class="case-media" src="assets/case-questup/context-gaming.jpg" alt="Long sedentary gaming sessions">
-      <h3>Why This Is a Problem</h3>
-      <p>Extended inactivity during long gaming sessions contributes to low energy, weight gain, back and eye strain, and declining long-term health. Because fitness feels intimidating and easy to postpone, consistency breaks quickly, making it harder for users to build sustainable habits even when motivation exists.</p>
-      <h3>Solution Overview</h3>
-      <p>I explored how to lower the barrier to fitness by borrowing the mechanics gamers already understand. By reframing movement as short, structured quests with clear progression and rewards, exercise can feel familiar, achievable, and easy to start within a gaming routine.</p>
-      <img class="case-media" src="assets/case-questup/solution-overview.jpg" alt="Solution overview">
-      <h3>Expected Impact</h3>
-      <p>Making movement feel game-like reduces friction at decision time and encourages small, repeatable actions. This approach supports safer, more consistent activity, helping users build healthier habits without giving up the experiences they enjoy.</p>
-    </section>
-
-    <section id="q-problem" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Problem</div>
-      <h2>Motivation Isn't the Problem. The "Format" Is.</h2>
-      <p>Research with 15+ gamers (Discord, Conventions) revealed a paradox: Gamers want to be healthy, but fitness lacks the immediate feedback loops of gaming.</p>
-      <div class="case-cards">
-        <div class="case-card"><h4>Problem</h4><p>Gamers often spend long hours sitting while gaming. "On average, I spend around 3 to 4 hours a day gaming."</p></div>
-        <div class="case-card"><h4>Painpoint</h4><p>Exercise feels like a chore. "I want to be more active, but I don't feel motivated to exercise."</p></div>
-        <div class="case-card"><h4>Opportunity</h4><p>Gamers are interested in gamified fitness. "If I can see my daily progress visually, I might be able to stick with it."</p></div>
-      </div>
-      <div class="callout">
-        <div class="tag">The insight</div>
-        <p>Fitness feels "unstructured and slow," whereas Games are "structured and rewarding."</p>
-      </div>
-      <div class="callout">
-        <div class="tag">The opportunity</div>
-        <p>We don't need to change the gamer; we need to change the interface of fitness to match their mental model.</p>
-      </div>
-    </section>
-
-    <section id="q-user" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Target User</div>
-      <h2>Who I Designed For</h2>
-      <p><strong>Primary users:</strong> Gamers who want to be more active, but struggle to stay consistent. <strong>Secondary users:</strong> People who find fitness intimidating and need a guided, rewarding structure.</p>
-      <p>Meet Adam, a 21 year old computer science student who loves gaming, but is starting to feel the health impact of long sessions. He wants healthier habits, but struggles to stay consistent without giving up what he enjoys.</p>
-      <img class="case-media" src="assets/case-questup/persona-adam.jpg" alt="Persona: Adam">
-      <p>The Journey: I mapped out the typical gamer's lifecycle to identify the exact friction points.</p>
-      <img class="case-media" src="assets/case-questup/user-journey.jpg" alt="User journey map">
-      <p>User Goal: Wants to exercise without breaking their flow state or feeling like they are 'going to the gym'. The focus became lowering the barrier to fitness by making movement feel familiar, rewarding, and easy to start within a gaming routine.</p>
-      <div class="callout">
-        <div class="tag">How might we</div>
-        <p>Motivate gamers to engage in physical activities to improve their long-term health?</p>
-      </div>
-    </section>
-
-    <section id="q-solution" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Solution</div>
-      <h2>Designing the Core Loop: Move &rarr; Reward &rarr; Upgrade</h2>
-      <h3>The "Quest" Metaphor</h3>
-      <p>Design Decision: I reframed vague goals ("exercise more") into binary quests ("Do 10 squats"). This reduces cognitive load and decision fatigue.</p>
-      <img class="case-media" src="assets/case-questup/quest-metaphor.jpg" alt="Quest metaphor UI">
-      <h3>The Retention Layer</h3>
-      <p>Design Decision: To prevent drop-off, I implemented streaks and leaderboards. However, visual progression (leveling up an avatar) proved most effective for this demographic as it aligns with RPG (Role-Playing Game) tropes.</p>
-      <img class="case-media" src="assets/case-questup/retention-layer.png" alt="Retention layer UI">
-      <p>The retention layer reinforces the loop through progress visibility (stats and streaks), social motivation (leaderboards), and self expression (shop and customisation). It keeps users coming back without adding complexity to the core action.</p>
-    </section>
-
-    <section id="q-testing" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>User Testing</div>
-      <h2>The Safety Iteration: Solving for "Grind" Behavior</h2>
-      <p>During usability testing, I discovered a critical behavioral risk: highly motivated users were "grinding" exercises solely to earn currency, risking injury.</p>
-      <img class="case-media" src="assets/case-questup/grind-behavior.jpg" alt="Grind behavior discovered in testing">
-      <div class="callout">
-        <div class="tag">The fix: the energy system</div>
-        <p>Users have limited "energy" to perform quests each day. It enforces pacing, prevents burnout and injury, and paradoxically increases retention by leaving users wanting more for tomorrow.</p>
-      </div>
-      <img class="case-media" src="assets/case-questup/energy-system.jpg" alt="Energy system UI">
-    </section>
-
-    <section id="q-outcome" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Outcome &amp; Impact</div>
-      <h2>A Winning Idea</h2>
-      <p>Quest Up was validated not just by user sentiment, but by market viability.</p>
-      <video class="case-media" src="assets/case-questup/outcome.mp4" autoplay muted loop playsinline></video>
-      <div class="case-cards">
-        <div class="case-card"><h4>Winner</h4><p>City Ventures Grand Spark Startup Competition.</p></div>
-        <div class="case-card"><h4>Awarded</h4><p>&pound;3,000 equity-free grant &amp; Accelerator acceptance.</p></div>
-        <div class="case-card"><h4>Next Steps</h4><p>Developing the MVP to test retention metrics with a live cohort of 50 users.</p></div>
-      </div>
-    </section>
-  </div>
-</section>
-
 <!-- ABOUT -->
 <section id="about" class="page">
   <div class="wrap">
@@ -1706,14 +1599,24 @@
   </div>
 </section>
 
+<!-- PLAYGROUND -->
+<section id="playground" class="page">
+  <div class="wrap">
+    <h1>Playground</h1>
+    <div class="role">Experiments &amp; offcuts</div>
+    <div class="bio">
+      <p>[Placeholder] The half-finished things: motion studies, interaction tests, illustrations and ideas that never grew into a case study.</p>
+      <p>[Placeholder] Drop the pieces in here as you make them.</p>
+    </div>
+  </div>
+</section>
+
 <script src="https://unpkg.com/@rive-app/canvas@2"></script>
 <script>
 /* ---------- placeholder projects ---------- */
 const projects = [
   { title: 'Jobi',    year: '2024', h: 240, video: 'assets/videos/jobi-trailer-web.mp4', page: 'jobi' },
-  { title: 'Nothing', year: '2023', h: 340, video: 'assets/videos/nothing.mp4', page: 'nothing' },
   { title: 'Pactto',  year: '2023', h: 200, video: 'assets/videos/pactto.mp4', page: 'pactto' },
-  { title: 'Quest Up', year: '2022', h: 300, video: 'assets/videos/quest-up.mp4', page: 'questup' },
   { title: 'Project Five',  year: '2022', h: 260, bg: 'linear-gradient(135deg,#0b7a45,#3fd47f)', mark: 'P5' },
   { title: 'Project Six',   year: '2021', h: 220, bg: 'linear-gradient(135deg,#111,#3a3a3a)', mark: 'P6' },
   { title: 'Project Seven', year: '2021', h: 320, bg: 'linear-gradient(135deg,#ff8008,#ffc837)', mark: 'P7' },
@@ -1727,8 +1630,7 @@ window.addEventListener('load', () => {
 
 /* ---------- SPA navigation ---------- */
 const PAGE_NAMES = {
-  jobi: 'Jobi', pactto: 'Pactto', nothing: 'Nothing',
-  questup: 'Quest Up', about: 'About'
+  jobi: 'Jobi', pactto: 'Pactto', about: 'About', playground: 'Playground'
 };
 const curtain = document.getElementById('curtain');
 let navigating = false;
@@ -1808,7 +1710,7 @@ const mascot = new rive.Rive({
 });
 
 /* ---------- home gallery ---------- */
-const featured = [{ i: 0 }, { i: 1 }, { i: 2 }, { i: 3 }];   /* Jobi, Nothing, Pactto, Quest Up */
+const featured = [{ i: 0 }, { i: 1 }];   /* Jobi, Pactto */
 
 document.getElementById('hp-grid').innerHTML = featured.map(f => {
   const pr = projects[f.i];
@@ -1819,7 +1721,8 @@ document.getElementById('hp-grid').innerHTML = featured.map(f => {
   </button>`;
 }).join('');
 
-document.querySelectorAll('.hp-item').forEach(el =>
+/* the grid tiles and the side-rail links both just route to a page */
+document.querySelectorAll('.hp-item, .hp-list [data-page]').forEach(el =>
   el.addEventListener('click', () => goTo(el.dataset.page)));
 
 /* stagger the gallery in on first paint */
@@ -2074,6 +1977,53 @@ mascotCanvas.addEventListener('click', () => {
     { duration: 420, easing: 'cubic-bezier(.3,1.6,.5,1)' }
   );
 });
+
+/* ---------- custom cursor ---------- */
+/* dot tracks 1:1, ring lerps behind; states are body classes so CSS owns the
+   look. Enabled only where the matching media query applies, so touch and
+   reduced-motion setups never lose the native cursor. */
+(() => {
+  const fine = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  if (!fine.matches) return;
+  document.body.classList.add('has-cursor');
+
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = -100, my = -100;         /* pointer (dot) */
+  let rx = -100, ry = -100;         /* ring, easing toward the pointer */
+  let raf = null;
+
+  const frame = () => {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+    /* park the loop once the ring has caught up — no idle rAF churn */
+    if (Math.abs(mx - rx) > .1 || Math.abs(my - ry) > .1) raf = requestAnimationFrame(frame);
+    else raf = null;
+  };
+  const wake = () => { if (raf === null) raf = requestAnimationFrame(frame); };
+
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    document.body.classList.add('cursor-in');
+    wake();
+  }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', () =>
+    document.body.classList.remove('cursor-in'));
+  window.addEventListener('mousedown', () => document.body.classList.add('cursor-down'));
+  window.addEventListener('mouseup', () => document.body.classList.remove('cursor-down'));
+
+  /* reactive states — delegated, so tiles injected later still count.
+     Tiles win over the generic link state. */
+  const HOT = 'a, button, [data-page], #mascot';
+  window.addEventListener('mouseover', e => {
+    const tile = e.target.closest('.hp-item');
+    const hot = e.target.closest(HOT);
+    document.body.classList.toggle('cursor-view', !!tile);
+    document.body.classList.toggle('cursor-link', !tile && !!hot);
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
