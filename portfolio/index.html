@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahin — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e2f4e6;          /* page green */
+    --bg-deep: #3ea86a;     /* loader / transition green */
+    --hero-ink: #8ed3a2;    /* giant type green */
+    --ink: #1b241e;         /* dark text */
+    --ink-soft: #414a44;
+    --accent: #2b9958;      /* links / highlights */
+    --card-radius: 14px;
+    /* home gallery: near-white paper, quiet grey type */
+    --hp-bg: #fbfcfb;
+    --hp-ink: #575757;
+    --hp-ink-strong: #1b241e;
+    --hp-shot: #eef3ef;
+    --hp-rule: #d9e2db;
+    --menu-shadow: 0 6px 24px rgba(40, 120, 70, .18);
+    /* motion tokens — strong curves, built-in CSS easings are too weak */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    overflow-x: hidden;
+    overflow-anchor: none; /* keep programmatic smooth-scrolls from being "corrected" as media loads */
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ---------- Loader ---------- */
+  #loader {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg-deep);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .5s ease, visibility .5s;
+  }
+  #loader.done { opacity: 0; visibility: hidden; }
+  .spinner {
+    width: 64px; height: 64px;
+    border: 6px solid transparent;
+    border-top-color: #fff0f4;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- Page transition curtain ---------- */
+  #curtain {
+    position: fixed; inset: 0; z-index: 90;
+    background: var(--bg-deep);
+    transform: translateY(101%);
+    pointer-events: none;
+  }
+  #curtain.sweep-in  { animation: sweepIn  .38s cubic-bezier(.7,0,.3,1) forwards; }
+  #curtain.sweep-out { animation: sweepOut .38s cubic-bezier(.7,0,.3,1) forwards; }
+  @keyframes sweepIn  { from { transform: translateY(101%); }  to { transform: translateY(0); } }
+  @keyframes sweepOut { from { transform: translateY(0); }     to { transform: translateY(-101%); } }
+
+  /* ---------- Pages ---------- */
+  .page {
+    display: none;
+    min-height: 100vh;
+    animation: pageIn .5s ease both;
+  }
+  .page.current { display: block; }
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Home ---------- */
+  /* Editorial two-column gallery with a fixed reading rail on the left. */
+  #home {
+    font-family: 'SF Pro Display', 'SF Pro Text', 'SF Pro', -apple-system,
+                 BlinkMacSystemFont, 'Segoe UI', system-ui, Arial, sans-serif;
+    /* type scale borrowed from the case studies: 18px body, 16px UI, 14px caption */
+    font-size: 16px; line-height: 1.5; color: var(--hp-ink);
+  }
+  body.home-active { background: var(--hp-bg); }
+
+  .hp {
+    --rail-w: 380px;                  /* the reading rail */
+    --rail-gap: 106px;                /* air between the rail and the gallery */
+    position: relative; padding: 22px; height: 100vh; height: 100dvh;
+  }
+  body.home-active { overflow: hidden; }
+
+  /* --- left rail --- */
+  .hp-side {
+    position: fixed; top: 22px; left: 22px; bottom: 22px;
+    width: var(--rail-w); z-index: 12;
+    display: flex; flex-direction: column; gap: 16px;
+    overflow: auto; scrollbar-width: none;
+  }
+  .hp-side::-webkit-scrollbar { display: none; }
+
+  #mascot {
+    width: 92px; height: 92px; margin-bottom: 4px; cursor: pointer;
+    border-radius: 50%; border: 1px solid var(--hp-rule);
+    background: var(--hp-shot);
+  }
+
+  .hp-bio { max-width: 34em; font-size: 18px; line-height: 27px; }
+  .hp-bio em { font-style: normal; color: var(--hp-ink-strong); }
+
+  /* pushed down so the links and the footer share the bottom of the rail */
+  .hp-list { display: flex; flex-direction: column; margin-top: auto; }
+  .hp-list a, .hp-list button {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; width: 100%;
+    padding: 3px 0; border: 0; background: none;
+    font: inherit; color: var(--hp-ink); text-align: left;
+    text-decoration: none; cursor: pointer;
+    transition: color .18s var(--ease-out);
+  }
+  .hp-list i { font-style: normal; opacity: .55; transition: transform .22s var(--ease-out), opacity .18s; }
+  @media (hover: hover) {
+    .hp-list a:hover, .hp-list button:hover { color: var(--accent); }
+    .hp-list a:hover i, .hp-list button:hover i { opacity: 1; transform: translateX(3px); }
+  }
+  /* keyed to the input device, not the width — tablets are touch at 768px too */
+  @media (hover: none) {
+    .hp-list a, .hp-list button { padding: 9px 0; }   /* ~42px touch target */
+  }
+
+  /* pinned to the bottom of the rail */
+  .hp-foot { padding-top: 18px; font-size: 14px; opacity: .75; }
+  .hp-clock { font-variant-numeric: tabular-nums; }
+
+  /* --- gallery --- */
+  /* The gallery is height-led: two 16:9 rows plus their captions have to fit
+     the viewport, so we derive the grid's width from the space available
+     vertically and let the columns follow. */
+  .hp-grid {
+    --gap: 15px;
+    --cap-h: 0px;                                         /* the videos speak for themselves */
+    /* viewport units, not %, so the maths resolve against height in a
+       width property rather than silently against width */
+    --row-h: calc((100dvh - 44px - var(--gap)) / 2);
+    --shot-h: max(90px, calc(var(--row-h) - var(--cap-h)));
+    --offset: calc(var(--rail-w) + var(--rail-gap));
+    margin-left: var(--offset); height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, min-content);
+    grid-auto-flow: column;   /* fill down each column, not across the rows */
+    align-content: center;    /* even 15px between rows, slack goes to the edges */
+    gap: var(--gap);
+    width: min(calc(100% - var(--offset)),
+               calc(var(--shot-h) * 16 / 9 * 2 + var(--gap)));
+  }
+  .hp-item {
+    display: flex; flex-direction: column; min-height: 0;
+    width: 100%; padding: 0; border: 0; background: none;
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+  }
+  /* every source video is 16:9 — matching it means nothing gets cropped */
+  .hp-item .shot {
+    width: 100%; display: block; overflow: hidden;
+    aspect-ratio: 16 / 9; flex: 0 0 auto;   /* never let the row squash the ratio */
+    background: var(--hp-shot);
+  }
+  .hp-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hp-item .shot { transition: opacity .3s var(--ease-out); }
+  @media (hover: hover) { .hp-item:hover .shot { opacity: .86; } }
+
+
+
+  /* fade the gallery in, one item after another */
+  .hp-item { opacity: 0; transform: translateY(10px); }
+  .hp-item.in {
+    opacity: 1; transform: none;
+    transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
+  }
+
+  /* --- narrow --- */
+  /* laptops: pull the rail in so the two columns keep a usable width */
+  @media (max-width: 1300px) {
+    .hp { --rail-w: 300px; --rail-gap: 64px; }
+    .hp-bio { font-size: 16px; line-height: 24px; }
+  }
+
+  /* short-and-wide (landscape laptops, split screens): the two-up grid is
+     height-led, so give it back the vertical room the rail doesn't need */
+  @media (max-height: 620px) and (min-width: 1000px) {
+    .hp { --rail-gap: 48px; }
+    .hp-bio { font-size: 15px; line-height: 22px; }
+    #mascot { width: 64px; height: 64px; }
+    .hp-side { gap: 12px; }
+  }
+
+  /* tablets and phones: one column, and the page scrolls again.
+     The rail dissolves (display: contents) so its children become siblings of
+     the gallery and can be reordered — intro, then the work, then the links. */
+  @media (max-width: 1000px) {
+    .hp { height: auto; padding-bottom: 56px; display: flex; flex-direction: column; }
+    body.home-active { overflow: auto; }
+    .hp-side { display: contents; }
+    #mascot   { order: 1; margin-bottom: 18px; }
+    .hp-bio   { order: 2; max-width: 46em; }
+    .hp-bio + .hp-bio { margin-top: 14px; }
+    .hp-grid  { order: 3; margin: 32px 0 0; width: auto; height: auto;
+                display: flex; flex-direction: column; gap: 18px; }
+    .hp-list  { order: 4; margin-top: 34px; }
+    /* belt and braces: the stacked layout is touch in practice, whatever
+       the device reports for (hover) */
+    .hp-list a, .hp-list button { padding: 9px 0; }
+    .hp-foot  { order: 5; padding-top: 14px; }
+    #mascot { width: 78px; height: 78px; }
+  }
+
+  /* phones: comfortable tap targets, tighter margins */
+  @media (max-width: 640px) {
+    .hp { padding: 18px 18px 44px; }
+    .hp-bio { max-width: none; }
+    #mascot { width: 68px; height: 68px; }
+  }
+
+  /* ---------- Shared inner layout ---------- */
+  .wrap { max-width: 640px; margin: 0 auto; padding: 140px 24px 100px; }
+
+  /* ---------- About ---------- */
+  #about h1 { font-size: 34px; font-weight: 800; }
+  #about .alias { color: var(--accent); font-size: 19px; font-weight: 700; margin-top: 2px; }
+  #about .role { margin-top: 26px; font-size: 17px; font-weight: 600; }
+  #about .bio { margin-top: 60px; display: grid; gap: 26px; }
+  #about .bio p { font-size: 16.5px; line-height: 1.75; color: var(--ink-soft); }
+  #about .peace { margin-top: 40px; font-size: 22px; }
+
+  .card {
+    position: relative; display: block; text-decoration: none;
+    break-inside: avoid; margin-bottom: 18px;
+    border-radius: var(--card-radius); overflow: hidden;
+    box-shadow: 0 4px 16px rgba(40, 120, 70, .10);
+    transition: transform .22s ease, box-shadow .22s ease;
+    cursor: pointer;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(40,120,70,.22); }
+  .thumb { width: 100%; display: flex; align-items: center; justify-content: center; }
+  .thumb span { font-family: 'Anton', sans-serif; font-size: 40px; color: rgba(255,255,255,.85); text-transform: uppercase; }
+  .card .label {
+    position: absolute; inset: auto 0 0 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: 34px 14px 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,.45));
+    color: #fff; font-size: 13.5px; font-weight: 700;
+  }
+
+  /* ---------- Case study: Pactto ---------- */
+  .case-back {
+    position: fixed; top: 20px; left: clamp(14px, 2vw, 40px);
+    z-index: 40;
+    display: none; align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    font-size: 17px; color: var(--ink-soft);
+    text-decoration: none;
+    background: #fff; border-radius: 999px;
+    transition: transform .2s, color .2s;
+  }
+  .case-back.show { display: inline-flex; }
+  .case-back { transition: transform .16s var(--ease-out), color .18s ease; }
+  .case-back:active { transform: scale(0.94); }
+  @media (hover: hover) and (pointer: fine) {
+    .case-back:hover { transform: translateX(-4px); color: var(--accent); }
+  }
+  .cb-text { display: none; }
+  @media (max-width: 700px) { .case-back { top: 14px; left: 12px; } }
+  /* Case pages follow the reference layout: fixed section nav on the left, a
+     left-offset content column, and quiet system-font typography. */
+  .case, .case-nav, .case-back {
+    font-family: 'SF Pro Display', 'SF Pro Text', 'SF Pro', -apple-system,
+                 BlinkMacSystemFont, 'Segoe UI', system-ui, Arial, sans-serif;
+  }
+  /* Case pages sit on a near-white ground so the media panels read as panels.
+     The reference gets its calm from that contrast; a flat green wash loses it. */
+  body.case-active { background: #fafcfb; }
+  /* project mark above the title, like the reference's app icon */
+  /* app icon and title side by side */
+  .case-head {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 24px;
+  }
+  .case-head h1 { margin: 0; }
+  .case-logo {
+    width: 54px; height: 54px; border-radius: 14px;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 700; letter-spacing: -.02em;
+    flex-shrink: 0;
+  }
+  /* a real app icon supplies its own artwork and background */
+  .case-logo-img { background: none; object-fit: contain; display: block; }
+  /* 992 wide with 24px gutters => a 944px content area, centred on the page */
+  .case {
+    margin: 0 auto;
+    max-width: 992px;
+    padding: 116px 24px 180px;
+  }
+  /* intro: description on the left, metadata in a column beside it */
+  /* the intro spans the same width as the media below it */
+  [id$="-tldr"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 250px);
+    column-gap: 56px; align-items: start;
+  }
+  [id$="-tldr"] > * { grid-column: 1; }
+  /* the icon+title is its own full-width band; description and metadata then
+     share the next row, so they align without any magic offset */
+  [id$="-tldr"] > .case-head { grid-column: 1 / -1; }
+  .tldr-main { grid-column: 1; }
+  /* the head already supplies the gap, so the first paragraph starts flush
+     with the metadata column beside it */
+  .tldr-main > :first-child { margin-top: 0; }
+  [id$="-tldr"] > .case-meta { grid-column: 2; margin-top: 0; }
+  /* media and stat rows run the full content width, not just the text column */
+  [id$="-tldr"] > .case-figure,
+  [id$="-tldr"] > .case-stats,
+  [id$="-tldr"] > .case-cards { grid-column: 1 / -1; }
+
+  .case h1 { font-size: 20.8px; font-weight: 600; color: var(--ink); }
+  .case-wordmark { display: block; height: 42px; width: auto; }
+  .case-sub {
+    margin-top: 16px;
+    font-size: 18px; line-height: 27px; font-weight: 400; color: #5b6560;
+  }
+  .case-meta { display: block; }
+  .case-meta > div { margin-bottom: 16px; }
+  /* line-height chosen so the label's half-leading (25-16)/2 matches the
+     description's (27-18)/2 — otherwise the text sits ~3px high despite the
+     boxes starting on the same line */
+  .case-meta dt { font-size: 16px; font-weight: 500; color: var(--ink); line-height: 25px; }
+  .case-meta dd { margin-top: 2px; font-size: 16px; font-weight: 400; color: var(--ink-soft); opacity: .8; }
+
+  /* Media sits on a large soft panel with the asset centred inside it —
+     the panel runs wider than the text column, as in the reference. */
+  .case-figure { width: 100%; margin-top: 32px; }
+  .case-figure > .case-media,
+  .case-figure > .case-video {
+    display: block; width: 100%; height: auto;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  .case-figure figcaption {
+    margin-top: 16px; text-align: center;
+    font-size: 14px; color: #8e9a92;
+  }
+
+  /* same card treatment as the other card rows */
+  .case-stats {
+    margin-top: 32px; display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+  }
+  .stat { background: #F1F5F9; border-radius: 12px; padding: 20px; }
+  .stat b { display: block; font-size: 28px; font-weight: 600; color: var(--accent); }
+  .stat span { display: block; margin-top: 8px; font-size: 15px; line-height: 22px; font-weight: 400; color: #5b6560; }
+
+  /* ---------- research artefacts ---------- */
+  /* Secondary-research figures: rings inside a recessed panel, so the numbers
+     read as a cited exhibit rather than as the author's own claims. */
+  .stat-panel {
+    margin-top: 32px; background: #F1F5F9; border-radius: 12px;
+    padding: clamp(24px, 4vw, 48px);
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 20px);
+  }
+  /* each figure flips to the study it came from */
+  .stat-ring { perspective: 1200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .stat-ring:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 10px; }
+  .stat-inner {
+    position: relative; height: 100%; min-height: 282px;
+    transform-style: preserve-3d;
+    transition: transform .6s var(--ease-in-out);
+  }
+  .stat-ring.flipped .stat-inner { transform: rotateY(180deg); }
+  .stat-face, .stat-source {
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    background: #fff; border-radius: 10px;
+  }
+  .stat-face {
+    position: relative; height: 100%; box-sizing: border-box;
+    padding: 28px 20px 24px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .stat-source {
+    position: absolute; inset: 0;
+    transform: rotateY(180deg);
+    padding: 22px 20px;
+    display: flex; flex-direction: column; justify-content: center; gap: 7px;
+    text-align: left; overflow: auto;
+  }
+  .stat-source .tag {
+    font-size: 12px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .case section .stat-source p {
+    margin: 0; max-width: none;
+    font-size: 15px; line-height: 22px; font-weight: 500; color: var(--ink);
+  }
+  .case section .stat-source .cite {
+    font-size: 12.5px; line-height: 18px; font-weight: 400; color: #8e9a92;
+  }
+  .stat-source a {
+    margin-top: 2px; font-size: 12.5px; color: var(--accent);
+    text-decoration: none; border-bottom: 1px solid currentColor;
+    align-self: flex-start;
+  }
+  .stat-ring .flip-hint { font-size: 12px; background: #F1F5F9; }
+  @media (prefers-reduced-motion: reduce) { .stat-inner { transition: none; } }
+  .stat-ring figure { position: relative; width: 116px; height: 116px; }
+  .stat-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
+  .ring-track { fill: none; stroke: #E6EDF1; stroke-width: 9; }
+  .ring-fill {
+    fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round;
+    stroke-dasharray: 327;
+    stroke-dashoffset: 327;                 /* undrawn until the card reveals */
+    transition: stroke-dashoffset 1.1s var(--ease-out) .15s;
+  }
+  .reveal.in .ring-fill { stroke-dashoffset: var(--off); }
+  .stat-ring figcaption {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 23px; font-weight: 600; color: var(--ink);
+  }
+  .case section .stat-ring p {
+    margin-top: 16px; max-width: 22ch;
+    font-size: 14px; line-height: 21px; color: #5b6560;
+  }
+
+  /* the questions the interviews were built to answer */
+  .focus-grid {
+    margin-top: 32px; display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+  }
+  .focus {
+    background: #F1F5F9; border-radius: 12px; padding: 24px 22px 26px;
+  }
+  .focus .num {
+    font-size: 13px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .case section .focus p {
+    margin-top: 12px; font-size: 16px; line-height: 24px;
+    font-weight: 500; color: var(--ink);
+  }
+
+  @media (max-width: 760px) {
+    .stat-panel, .focus-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* 82px between sections, 24px between blocks inside one */
+  .case section { margin-top: 82px; }
+  .case section > * + * { margin-top: 24px; }
+  .eyebrow + h2 { margin-top: 8px !important; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 16px; font-weight: 400; color: #8e9a92;
+  }
+  .eyebrow svg { display: none; }   /* the reference label is plain text */
+  /* text runs the full content width, matching the media panels */
+  /* Hierarchy comes from weight AND colour: headings sit near-black at a heavier
+     weight, body text drops to a mid grey so the headings read first. */
+  .case h2 {
+    font-size: 20.8px; font-weight: 600; line-height: 1.35; color: var(--ink);
+  }
+  .case h3 { margin-top: 48px; font-size: 18px; font-weight: 600; color: var(--ink); }
+  .case section p {
+    font-size: 18px; line-height: 27px; font-weight: 400; color: #5b6560;
+  }
+
+  /* the section's climax: the reframe, centred on a card */
+  .hmw-card {
+    position: relative;
+    margin-top: 48px;
+    background: #F1F5F9; border-radius: 12px;
+    padding: 48px clamp(24px, 6vw, 64px);
+    text-align: center;
+  }
+  .hmw-mascot {
+    position: absolute; right: 28px; bottom: 0;
+    width: 118px; height: auto;
+  }
+  @media (max-width: 700px) {
+    .hmw-card { padding-bottom: 104px; }
+    .hmw-mascot { width: 84px; right: 16px; }
+  }
+  .hmw-card .tag {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+  }
+  .case section .hmw-card p {
+    margin: 12px auto 0; max-width: 620px;
+    font-size: 26px; line-height: 36px; font-weight: 600;
+    letter-spacing: -.01em; color: var(--ink);
+  }
+  .hmw-card span { display: block; margin-top: 16px; font-size: 15px; color: #8e9a92; }
+  /* inline emphasis inside body copy reads near-black, like the card captions */
+  .case section p b { color: var(--ink); font-weight: 600; }
+
+  /* participant voice: large, quiet, no chrome */
+  .pullquote { margin-top: 48px; margin-bottom: 48px; }
+  .case section .pullquote p {
+    font-size: 26px; line-height: 36px; font-weight: 600;
+    letter-spacing: -.01em; color: var(--ink);
+  }
+  .pullquote cite {
+    display: block; margin-top: 16px;
+    font-style: normal; font-size: 15px; color: #8e9a92;
+  }
+
+  .callout {
+    margin-top: 32px;
+    border-left: 2px solid var(--accent);
+    padding: 2px 0 2px 20px;
+  }
+  .callout .tag { font-size: 14px; font-weight: 500; color: var(--accent); }
+  .case section .callout p { margin-top: 8px; font-size: 18px; line-height: 27px; font-weight: 400; color: var(--ink); }
+
+  /* research insights: two per row, each with a graphic panel beneath */
+  .insights {
+    margin-top: 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .insight-num { font-size: 15px; font-weight: 400; color: #8e9a92; }
+  .insight h4 { margin-top: 8px; font-size: 19px; font-weight: 600; line-height: 1.35; color: var(--ink); }
+  .case section .insight p { margin-top: 8px; font-size: 16px; line-height: 24px; color: #5b6560; }
+  /* each card flips to the interview quotes behind its finding */
+  .insight { perspective: 1200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .insight:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
+  .insight-inner {
+    position: relative; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .6s var(--ease-in-out);
+  }
+  .insight.flipped .insight-inner { transform: rotateY(180deg); }
+  .insight-front { height: 100%; }
+  .insight-front, .insight-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .insight-back {
+    position: absolute; inset: 0;
+    transform: rotateY(180deg);
+    background: #F1F5F9; border-radius: 12px;
+    padding: 28px;
+    display: flex; flex-direction: column; justify-content: center; gap: 16px;
+    overflow: hidden;
+  }
+  .insight-back .tag { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+  .insight-back blockquote { margin: 0; }
+  .insight-back blockquote p { font-size: 15px; line-height: 22px; font-weight: 500; color: var(--ink); }
+  .insight-back cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; color: #8e9a92; }
+  .flip-hint {
+    position: absolute; top: 12px; right: 12px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #fff; color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  @media (prefers-reduced-motion: reduce) { .insight-inner { transition: none; } }
+
+  .insight-figure {
+    position: relative;
+    margin-top: 0; height: 100%; box-sizing: border-box;
+    background: #F1F5F9; border-radius: 12px;
+    padding: 24px 24px 28px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    min-height: 300px;
+  }
+  .insight-figure svg { width: 100%; max-width: 320px; height: auto; display: block; }
+  .insight-cap {
+    margin-top: 24px; text-align: center;
+    font-size: 15px; line-height: 22px; color: #5b6560;
+  }
+  .insight-cap b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 760px) { .insights { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+
+  .case-cards { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .case-card { background: #F1F5F9; border-radius: 12px; padding: 20px; }
+  .case-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .case section .case-card p { margin-top: 8px; font-size: 15px; line-height: 22px; color: #5b6560; }
+
+  .takeaway { margin-top: 24px; background: #F1F5F9; border-radius: 12px; padding: 22px 24px; }
+  .takeaway .tag { font-size: 14px; font-weight: 400; color: #8e9a92; }
+  .takeaway h4 { margin-top: 8px; font-size: 17px; font-weight: 600; }
+  .case section .takeaway p { margin-top: 8px; font-size: 16px; line-height: 24px; color: var(--ink-soft); }
+
+  @media (max-width: 640px) { .case-stats { grid-template-columns: 1fr; } }
+  .case-card video {
+    width: 100%; margin-top: 12px; border-radius: 8px; display: block;
+    aspect-ratio: 16 / 9; object-fit: cover; background: #F1F5F9;
+  }
+  .case-card img { width: 100%; margin-top: 12px; border-radius: 8px; display: block; }
+  .case section, #c-tldr { scroll-margin-top: 90px; }
+
+  /* Appear animation: opacity 0 -> 1 with a 16px rise. Entrances use ease-out
+     so they start fast and feel responsive. Transitions (not keyframes) so a
+     fast scroll retargets mid-flight instead of restarting. */
+  .reveal { opacity: 0; transform: translateY(16px); }
+  .reveal.in {
+    opacity: 1; transform: translateY(0);
+    transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* keep the fade, drop the movement */
+    .reveal { opacity: 0; transform: none; }
+    .reveal.in { transition: opacity .3s ease; transition-delay: 0ms; }
+  }
+
+  /* stack the intro on narrower screens */
+  @media (max-width: 1180px) {
+    .case { margin-left: auto; margin-right: auto; }
+    [id$="-tldr"] { grid-template-columns: minmax(0, 1fr); }
+    .tldr-main { grid-row: auto; }
+    [id$="-tldr"] > .case-meta { grid-column: 1; grid-row: auto; margin-top: 32px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+    .case-meta > div { margin-bottom: 0; }
+  }
+
+  /* Design decisions, numbered so they read as one running series */
+  .decision { margin-top: 48px; }
+  .case section .decision > * + * { margin-top: 0; }
+  .decision-num {
+    font-size: 13px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .case .decision h3 { margin-top: 6px; }
+  .decision .case-cards { margin-top: 20px; }
+  /* one call is still open, so it is marked rather than dressed as settled */
+  .decision-open .decision-num::after {
+    content: 'Still open'; margin-left: 10px;
+    padding: 2px 8px; border-radius: 999px;
+    background: #F1F5F9; color: #8e9a92;
+    font-size: 11px; letter-spacing: .04em;
+  }
+
+  /* the line that ties a surface back to the finding it answers */
+  .case section p.answers {
+    margin-top: 8px; font-size: 15px; line-height: 22px;
+    color: var(--accent); font-weight: 500;
+  }
+  .case section h3 + p.answers { margin-top: 8px; }
+
+  /* feature carousel: named tabs instead of blind arrows, and it drags */
+  .carousel { margin-top: 32px; }
+
+  .car-tabs {
+    position: relative;
+    display: flex; gap: 2px; margin-bottom: 14px; padding: 4px;
+    background: #F1F5F9; border-radius: 999px;
+    width: fit-content; max-width: 100%;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .car-tabs::-webkit-scrollbar { display: none; }
+  .car-tab {
+    position: relative; z-index: 1;
+    border: 0; background: none; cursor: pointer;
+    padding: 8px 16px; border-radius: 999px;
+    font: inherit; font-size: 14px; font-weight: 500;
+    color: #7c8781; white-space: nowrap;
+    transition: color .22s var(--ease-out);
+  }
+  .car-tab.on { color: var(--ink); }
+  .car-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (hover: hover) and (pointer: fine) {
+    .car-tab:not(.on):hover { color: var(--ink); }
+  }
+  /* the white lozenge slides between tabs rather than snapping */
+  .car-pill {
+    position: absolute; left: 0; top: 4px; bottom: 4px; z-index: 0;
+    border-radius: 999px; background: #fff;
+    box-shadow: 0 1px 2px rgba(27, 36, 30, .09), 0 3px 10px rgba(27, 36, 30, .06);
+    transition: transform .4s var(--ease-out), width .4s var(--ease-out);
+  }
+
+  .car-viewport {
+    overflow: hidden; border-radius: 16px; background: #F1F5F9;
+    cursor: grab; touch-action: pan-y;
+  }
+  .car-viewport.dragging { cursor: grabbing; user-select: none; }
+  .car-track { display: flex; transition: transform .5s var(--ease-out); }
+  .car-slide {
+    flex: 0 0 100%; padding: clamp(14px, 2.4vw, 30px); box-sizing: border-box;
+    opacity: .35; transition: opacity .45s var(--ease-out);
+  }
+  .car-slide.on { opacity: 1; }
+  .car-slide video {
+    width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+    border-radius: 8px; display: block; background: #F1F5F9;
+  }
+  /* the tab already names the slide */
+  .car-slide h4 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .case section .car-slide p { margin-top: 16px; font-size: 15px; line-height: 1.6; max-width: 620px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .car-track, .car-pill, .car-slide { transition: none; }
+  }
+
+  /* ---------- side section nav ---------- */
+  .case-nav {
+    position: fixed; left: clamp(16px, 3vw, 56px); top: 50%;
+    transform: translateY(-50%);
+    display: none; flex-direction: column; gap: 11px;
+    z-index: 40;
+  }
+  .case-nav.show { display: flex; }
+  .case-nav a {
+    font-size: 13.5px; font-weight: 600;
+    color: var(--ink-soft); opacity: .55;
+    text-decoration: none;
+    transition: opacity .18s, color .18s;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .case-nav a:hover { opacity: 1; color: var(--accent); }
+  }
+  .case-nav a.on { opacity: 1; font-weight: 800; color: var(--ink); }
+
+  /* the research steps read as one phase, indented under a shared label */
+  .case-nav .nav-group { display: flex; flex-direction: column; gap: 9px; }
+  .case-nav .nav-head {
+    font-size: 13.5px; font-weight: 600;
+    color: var(--ink-soft); opacity: .55;
+  }
+  .case-nav .nav-group a { padding-left: 12px; font-size: 13px; }
+  /* a hairline ties the indented steps back to their label */
+  .case-nav .nav-group a:first-of-type { margin-top: 1px; }
+  .case-nav .nav-group { position: relative; }
+  .case-nav .nav-group::before {
+    content: ''; position: absolute;
+    left: 3px; top: 24px; bottom: 3px;
+    border-left: 1px solid currentColor; opacity: .18;
+  }
+  @media (max-width: 1180px) { .case-nav { display: none !important; } }
+
+  /* ---------- Contact ---------- */
+  #contact { text-align: center; }
+  #contact .wrap { max-width: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+  .contact-title {
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    color: var(--hero-ink); font-size: clamp(48px, 11vw, 140px); line-height: .95;
+  }
+  #contact .email {
+    margin-top: 42px; font-size: clamp(18px, 3vw, 28px); font-weight: 800;
+    color: var(--ink); text-decoration: none;
+    border-bottom: 3px solid var(--accent);
+    transition: color .2s;
+  }
+  #contact .email:hover { color: var(--accent); }
+  #contact .socials { margin-top: 34px; display: flex; gap: 22px; }
+  #contact .socials a { color: var(--ink-soft); font-weight: 700; text-decoration: none; font-size: 15px; }
+  #contact .socials a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner"></div></div>
+<div id="curtain"></div>
+
+<!-- HOME -->
+<section id="home" class="page current">
+  <div class="hp">
+    <aside class="hp-side">
+      <canvas id="mascot" width="480" height="480" title="hi!"></canvas>
+      <p class="hp-bio">Mahin is a product designer with a love for playful craft and an obsessive
+        commitment to detail. He is interested in building tools that feel human, calm and a little
+        bit alive.</p>
+      <p class="hp-bio">Currently designing and building <em>Jobi</em>. Previously at
+        <em>Pactto</em> and <em>Quest Up</em>.</p>
+
+      <nav class="hp-list">
+        <button data-page="about"><span>01. About Me</span><i>&#8594;</i></button>
+        <a href="mailto:mahinsattarjahan@gmail.com"><span>02. Email</span><i>&#8599;</i></a>
+        <a href="#" target="_blank" rel="noopener"><span>03. LinkedIn</span><i>&#8599;</i></a>
+      </nav>
+
+      <div class="hp-foot">
+        <div class="hp-clock">London, <span id="clock">--:--:--</span></div>
+      </div>
+    </aside>
+    <div class="hp-grid" id="hp-grid"></div>
+  </div>
+</section>
+
+<!-- CASE STUDY: PACTTO -->
+<nav class="case-nav" data-page="pactto" aria-label="Case study sections">
+  <a href="#c-tldr">TLDR</a>
+  <a href="#c-context">Context</a>
+  <a href="#c-research">Research</a>
+  <a href="#c-process">Process</a>
+  <a href="#c-solution">Solution</a>
+  <a href="#c-handoff">Handoff</a>
+  <a href="#c-takeaways">Takeaways</a>
+</nav>
+<nav class="case-nav" data-page="jobi" aria-label="Case study sections">
+  <a href="#j-tldr">TLDR</a>
+  <div class="nav-group">
+    <span class="nav-head">Research</span>
+    <a href="#j-problem">Secondary</a>
+    <a href="#j-focus">Focus</a>
+    <a href="#j-interviews">Interviews</a>
+    <a href="#j-comp">Competitors</a>
+    <a href="#j-analysis">Analysis</a>
+  </div>
+  <a href="#j-principles">Principles</a>
+  <a href="#j-solution">Solution</a>
+  <a href="#j-process">Process</a>
+  <a href="#j-emotion">Emotion</a>
+  <a href="#j-metrics">Metrics</a>
+  <a href="#j-next">What's next</a>
+</nav>
+<nav class="case-nav" data-page="nothing" aria-label="Case study sections">
+  <a href="#n-tldr">TLDR</a>
+  <a href="#n-scenario">Scenario</a>
+  <a href="#n-purpose">Purpose</a>
+  <a href="#n-system">System</a>
+  <a href="#n-decisions">Decisions</a>
+  <a href="#n-future">Future</a>
+</nav>
+<nav class="case-nav" data-page="questup" aria-label="Case study sections">
+  <a href="#q-tldr">TLDR</a>
+  <a href="#q-context">Context</a>
+  <a href="#q-problem">Problem</a>
+  <a href="#q-user">User</a>
+  <a href="#q-solution">Solution</a>
+  <a href="#q-testing">Testing</a>
+  <a href="#q-outcome">Outcome</a>
+</nav>
+<a class="case-back" href="#home" id="case-back"><span aria-hidden="true">&larr;</span><span class="cb-text">Back</span></a>
+
+<section id="pactto" class="page">
+  <div class="case">
+    <div id="c-tldr" data-nav>
+    <h1>Pactto</h1>
+    <p class="case-sub">Pactto is a canvas-based platform designed to centralize the video production lifecycle. My role was to eliminate the context gap between live and async work by introducing a system that anchors feedback directly to the asset. This replaced scattered Slack messages with precise, timeline-based comments and tasks that persist long after the meeting ends.</p>
+
+    <dl class="case-meta">
+      <div><dt>Role</dt><dd>Product Design Intern</dd></div>
+      <div><dt>Team</dt><dd>5 designers</dd></div>
+      <div><dt>Timeline</dt><dd>Oct 2025 &ndash; Jan 2026</dd></div>
+      <div><dt>Platform</dt><dd>Web App</dd></div>
+    </dl>
+
+    <video class="case-video" src="assets/videos/pactto.mp4" autoplay muted loop playsinline></video>
+
+    <div class="case-stats">
+      <div class="stat"><b>~65%</b><span>Less Tool Switching</span></div>
+      <div class="stat"><b>~40%</b><span>Faster Reviews</span></div>
+      <div class="stat"><b>3</b><span>Methods of Commenting</span></div>
+    </div>
+    </div>
+
+    <section id="c-context" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Context</div>
+      <h2>Too Many Tools</h2>
+      <p>The video editing workflow is fragmented. Teams are forced to juggle separate tools for feedback, tasks, and communication, losing critical context with every switch.</p>
+      <img class="case-media" src="assets/case-pactto/too-many-tools.png" alt="Fragmented tools diagram">
+      <h3>Enter Pactto: One Room, Full Story</h3>
+      <p>Pactto unifies live conferencing and the entire video editing workflow into a single, canvas-based "Room." It replaces scattered tools with one intelligent space where feedback, decisions, and production happen together.</p>
+      <video class="case-media" src="assets/case-pactto/one-room.mp4" autoplay muted loop playsinline></video>
+    </section>
+
+    <section id="c-research" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Research</div>
+      <h2>Validating the Friction</h2>
+      <p>We synthesized our research into an affinity map. While we uncovered several friction points, we prioritized one key insight to tackle first.</p>
+      <img class="case-media" src="assets/case-pactto/research-overview.png" alt="Research overview">
+      <img class="case-media" src="assets/case-pactto/affinity-map.png" alt="Affinity map">
+      <h3>Key Insight: The "Async Gap"</h3>
+      <p>With 42.9% of users blocked by unclear feedback, we identified a critical flaw: Pactto was purely synchronous. If a stakeholder joined late or missed a meeting, the context would be missing, forcing them to manually chase colleagues via Email or Slack just to catch up. We needed a Contextual Library to ensure that feedback persists on the asset, not just in the moment.</p>
+      <div class="callout">
+        <div class="tag">How might we</div>
+        <p>Preserve feedback context in async video reviews so decisions stay clear, traceable, and tied to the work?</p>
+      </div>
+      <p>This question guided the design of our core feature: a unified intelligent canvas where feedback organizes itself.</p>
+    </section>
+
+    <section id="c-process" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
+      <h2>We Took an Iterative Approach</h2>
+      <p>We followed a classic iterative design approach, testing and updating our prototypes on a rigorous weekly cycle to ensure constant validation.</p>
+      <img class="case-media" src="assets/case-pactto/design-process.png" alt="Design process diagram">
+      <h3>Accelerating Prototyping with AI</h3>
+      <p>Our stakeholder cycle required us to present functional features every week. Static mocks couldn't capture the complexity of video scrubbing or interaction timing, so we inverted the traditional workflow.</p>
+      <p>Instead of perfecting pixels first, we used Google AI Studio to "vibe code" functional prototypes.</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>The Strategy</h4><p>We built rough, interactive web prototypes in code to validate the feel of the interactions (like drag-to-comment) during weekly reviews.</p></div>
+        <div class="case-card"><h4>The Benefit</h4><p>This allowed us to iterate on complex mechanics in real-time. Once an interaction was validated in code, we moved to Figma to codify the visual specs for the final Design System.</p></div>
+        <div class="case-card"><h4>The Handoff</h4><p>Engineers received a dual handoff: the Code Prototype for exact behavior and the Figma Design System for exact visuals.</p></div>
+      </div>
+    </section>
+
+    <section id="c-solution" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Solution</div>
+      <h2>Designing for Expressive Feedback</h2>
+      <h3>Defining the MVP Together</h3>
+      <p>To filter our ideas into a shipping product, we conducted group reviews in Google Sheets. We weighed Priority against Effort (Design &amp; Eng) to decide exactly which features were critical for the Open Beta and which could wait.</p>
+      <video class="case-media" src="assets/case-pactto/mvp-prioritization.mp4" autoplay muted loop playsinline></video>
+      <h3>Prioritizing Async Collaboration</h3>
+      <p>Research confirmed the "Async Gap" was a critical failure point. With the live tools already stable, we prioritized the Commenting Suite as our absolute P0, building a persistent feedback layer to finally sit alongside the real-time workflow.</p>
+      <img class="case-media" src="assets/case-pactto/features-collage.png" alt="Feature collage">
+      <h3>Foundations: Contextual Commenting</h3>
+      <p>We designed three distinct commenting primitives to handle every type of creative feedback:</p>
+      <div class="carousel" id="comment-carousel">
+        <div class="car-viewport">
+          <div class="car-track">
+            <div class="car-slide">
+              <video src="assets/case-pactto/comment-pin.mp4" autoplay muted loop playsinline></video>
+              <h4>Pin Comments (Spatial)</h4>
+              <p>Allows users to anchor feedback to a precise coordinate on the video frame. By clicking exactly where the issue is, reviewers eliminate ambiguity for specific visual edits, ensuring the editor knows exactly which pixel needs attention.</p>
+            </div>
+            <div class="car-slide">
+              <video src="assets/case-pactto/comment-drag.mp4" autoplay muted loop playsinline></video>
+              <h4>Drag Comments (Area)</h4>
+              <p>Enables users to highlight specific regions or group elements within the frame. By drawing a bounding box around the focus area, reviewers can clearly define the scope of visual changes without needing to describe the location verbally.</p>
+            </div>
+            <div class="car-slide">
+              <video src="assets/case-pactto/comment-timeline.mp4" autoplay muted loop playsinline></video>
+              <h4>Timeline Comments (Temporal)</h4>
+              <p>Permits feedback to span a specific duration rather than a single static frame. This allows reviewers to critique temporal elements like pacing, audio syncing, or action sequences by marking a start and end point directly on the scrubber.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <div class="tag">Design constraint: unified interaction</div>
+        <p>Give users the ability to comment in different ways for different needs using distinct tools, but access them through a Single Interaction Point to minimize cognitive load.</p>
+      </div>
+      <h3>Design Decision: The "Comment vs. Task" Friction</h3>
+      <p>The Crossroads (Simplicity vs. Accountability): We faced a strategic choice: follow the industry standard of generic comments (like Figma) or build for strict accountability. Our research showed that for video editors, generic simplicity created paralysis leaving them unable to distinguish between a casual "maybe" and a critical "must-do" within a flood of feedback.</p>
+      <h3>Unified Activity Panel</h3>
+      <p>We bridged the gap by placing a lightweight "Task" toggle directly inside the comment box. This allows "Chat" and "Work" to coexist in one stream, giving editors the freedom to discuss ideas loosely or filter the feed to reveal a prioritized checklist of mandatory action items.</p>
+      <video class="case-media" src="assets/case-pactto/task-toggle.mp4" autoplay muted loop playsinline></video>
+      <div class="callout">
+        <div class="tag">Design decision trade-off</div>
+        <p>By adding the toggle, we introduced a micro-moment of friction, the user now has to make a choice ("Is this a task?"). However, we accepted this slight increase in cognitive load at input to drastically reduce the cognitive load at review. We sacrificed a minimal UI to gain absolute accountability.</p>
+      </div>
+      <h3>Pactto Intelligence: Smart Voice</h3>
+      <p>While we developed a suite of AI tools, I want to highlight Smart Voice, the feature that solves the conflict between speed and documentation.</p>
+      <p>Smart Voice automatically transcribes spoken feedback and anchors it to the video timeline. By capturing the nuance of voice notes, reviewers can provide detailed context without typing, while editors receive precise, actionable text synced to the exact moment.</p>
+      <video class="case-media" src="assets/case-pactto/smart-voice.mp4" autoplay muted loop playsinline></video>
+      <div class="callout">
+        <div class="tag">Design constraint: integrated AI</div>
+        <p>When designing AI, we required Baked-In Intelligence to avoid disconnected "AI Islands." Smart tools needed to live inside the flow so assistance appears exactly where the user is working, not in a separate tab.</p>
+      </div>
+    </section>
+
+    <section id="c-handoff" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Developer Handoff</div>
+      <h2>From Prototype to Production</h2>
+      <div class="case-cards">
+        <div class="case-card"><h4>The System</h4><p>We expanded Pactto's existing UI into a modular Design System (Typography, Color, Components) to ensure consistency.</p></div>
+        <div class="case-card"><h4>The Logic</h4><p>We mapped every user flow to its corresponding "Vibe Coded" prototype, giving engineers a reference for exact animation behaviors.</p></div>
+        <div class="case-card"><h4>The Priority</h4><p>Crucially, we tagged every feature with MVP Priority Levels, clearly distinguishing "Open Beta Must-Haves" from "Fast-Follows" to prevent scope creep.</p></div>
+      </div>
+      <video class="case-media" src="assets/case-pactto/handoff.mp4" autoplay muted loop playsinline></video>
+    </section>
+
+    <section id="c-takeaways" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Takeaways</div>
+      <h2>The Outcome</h2>
+      <p>We successfully transformed a fragmented "Frankenstein" workflow into a unified, intelligent production environment. By delivering a production-ready Design System and prioritized MVP, we positioned Pactto to launch an Open Beta that reduces feedback loops from days to minutes.</p>
+      <div class="takeaway">
+        <div class="tag">What didn't work?</div>
+        <h4>Vibe Coding for Velocity</h4>
+        <p>We allowed a P1 feature (AI meeting summaries) to block the release of our core Commenting System, costing us a two-week delay. Since the AI feature was ultimately cut from the Open Beta anyway, we learned that prioritizing enhancements over the core feedback loop only hinders essential validation.</p>
+      </div>
+      <div class="takeaway">
+        <div class="tag">What would I do differently?</div>
+        <h4>AI Features Should Be Baked In</h4>
+        <p>I would treat the core utility (Commenting) and the enhancements (AI Summaries) as separate releases. By shipping the essential async tools first, we could have validated the primary workflow immediately, rather than holding it hostage for a secondary feature.</p>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- CASE STUDY: JOBI -->
+<section id="jobi" class="page">
+  <div class="case">
+    <div id="j-tldr" data-nav>
+    <h1>Jobi</h1>
+    <p class="case-sub">Job hunt tools optimise for volume. The evidence says volume is both emotionally corrosive and strategically worse.</p>
+    <p class="case-sub">I designed and built a companion around the user's emotional state instead of engagement metrics, leading two designers and shipping every decision in code.</p>
+
+    <dl class="case-meta">
+      <div><dt>Role</dt><dd>Designer &amp; developer</dd></div>
+      <div><dt>Team</dt><dd>3 designers</dd></div>
+    </dl>
+
+    <video class="case-video" src="assets/videos/jobi-trailer-web.mp4" autoplay muted loop playsinline></video>
+    </div>
+
+    <section id="j-problem" data-nav>
+      <div class="eyebrow">Secondary Research</div>
+      <h2>The Hunt Is Breaking the Hunters</h2>
+      <p>I was living the job hunt myself while building Jobi, which made it tempting to design straight from my own frustration, so we started with desk research instead. The published surveys are unambiguous, and the damage is the majority experience rather than the exception. What none of them explained was <b>why</b> a process with more tooling than ever still costs people this much, and that gap is what our own interviews had to fill.</p>
+      <div class="stat-panel">
+        <div class="stat-ring" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for the source of this figure">
+          <div class="stat-inner">
+            <div class="stat-face">
+              <span class="flip-hint" aria-hidden="true">i</span>
+              <figure>
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-track" cx="60" cy="60" r="52"/>
+                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 91.6px"/>
+                </svg>
+                <figcaption>72%</figcaption>
+              </figure>
+              <p>say the job search has hurt their mental health</p>
+            </div>
+            <div class="stat-source">
+              <div class="tag">Source</div>
+              <p>Resume Genius, Job Seeker Survey</p>
+              <p class="cite">1,000 active US job seekers &middot; August 2024</p>
+              <a href="https://www.forbes.com/sites/bryanrobinson/2024/09/20/72-of-applicants-say-the-job-search-has-harmed-their-mental-health/" target="_blank" rel="noopener">Reported by Forbes &#8599;</a>
+            </div>
+          </div>
+        </div>
+        <div class="stat-ring" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for the source of this figure">
+          <div class="stat-inner">
+            <div class="stat-face">
+              <span class="flip-hint" aria-hidden="true">i</span>
+              <figure>
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-track" cx="60" cy="60" r="52"/>
+                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 98.1px"/>
+                </svg>
+                <figcaption>70%</figcaption>
+              </figure>
+              <p>felt more stressed than usual while out of work</p>
+            </div>
+            <div class="stat-source">
+              <div class="tag">Source</div>
+              <p>Pew Research Center</p>
+              <p class="cite">715 unemployed US adults actively seeking work &middot; January 2021</p>
+              <a href="https://www.pewresearch.org/short-reads/2021/02/10/unemployed-americans-are-feeling-the-emotional-strain-of-job-loss-most-have-considered-changing-occupations/" target="_blank" rel="noopener">pewresearch.org &#8599;</a>
+            </div>
+          </div>
+        </div>
+        <div class="stat-ring" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for the source of this figure">
+          <div class="stat-inner">
+            <div class="stat-face">
+              <span class="flip-hint" aria-hidden="true">i</span>
+              <figure>
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-track" cx="60" cy="60" r="52"/>
+                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 147.2px"/>
+                </svg>
+                <figcaption>55%</figcaption>
+              </figure>
+              <p>are completely burned out by the hunt</p>
+            </div>
+            <div class="stat-source">
+              <div class="tag">Source</div>
+              <p>Insight Global / Atomik Research</p>
+              <p class="cite">501 recently unemployed US adults &middot; July 2023</p>
+              <a href="https://insightglobal.com/news/unemployment-job-hunt-burnout-survey/" target="_blank" rel="noopener">insightglobal.com &#8599;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="j-focus" data-nav>
+      <div class="eyebrow">Primary Research</div>
+      <h2>Three Focus Points for Investigation</h2>
+      <p>The desk research told us the cost was real but not where it came from, so we wrote a discussion guide around three things a survey could not answer. The interviews stayed semi-structured. These were the areas we always returned to, not a script.</p>
+      <div class="focus-grid">
+        <div class="focus">
+          <div class="num">01 Methods</div>
+          <p>How do people actually track applications once the volume climbs?</p>
+        </div>
+        <div class="focus">
+          <div class="num">02 Friction</div>
+          <p>Which parts of applying cost the most time, and which cost the most energy?</p>
+        </div>
+        <div class="focus">
+          <div class="num">03 Emotion</div>
+          <p>What makes someone lose momentum, and what gets them started again?</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="j-interviews" data-nav>
+      <div class="eyebrow">Interviews</div>
+      <h2>Five Job Seekers, All Mid-Hunt</h2>
+      <p>We ran semi-structured interviews with five people at different stages, from four months in at four applications a week to two years in at thirty. We deliberately included the high-volume end, because that is where the tools claim to help most and where we expected the strain to show first.</p>
+      <img class="case-media" src="assets/case-jobi/jobi-research-board.png?v=2" alt="Research board: persona, interview findings and frustrations from five job seekers" data-nocaption>
+    </section>
+
+    <section id="j-comp" data-nav>
+      <div class="eyebrow">Competitive Analysis</div>
+      <h2>The Tools Organise the Grind. None of Them Question It.</h2>
+      <p>Alongside the interviews we audited the two tools people kept naming, Teal and Simplify Copilot. Both are competent at what they set out to do: autofill forms, track statuses, push volume higher. Neither treats the volume itself as the problem, which is exactly what our interviewees were describing. Both also answer it the same way, with dense feature sets and heavy interfaces, which is a lot to hand someone who is already overwhelmed.</p>
+      <img class="case-media" src="assets/case-jobi/jobi-comp-analysis.png" alt="Competitive analysis board comparing Teal and Simplify Copilot against Jobi" data-nocaption>
+    </section>
+
+    <section id="j-analysis" data-nav>
+      <div class="eyebrow">Analysis</div>
+      <h2>Four Key Insights From Interviews</h2>
+      <p>Every quote went onto an affinity map. Four clusters held, and all four sat on the same emotional fatigue rather than on any missing feature. Tap a card to read the quotes behind it.</p>
+      <div class="insights">
+        <div class="insight" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for interview quotes">
+          <div class="insight-inner">
+          <div class="insight-front">
+          <div class="insight-figure">
+            <span class="flip-hint" aria-hidden="true">❝</span>
+            <svg viewBox="0 0 320 190" role="img" aria-label="A hand-built spreadsheet tracker with missing and unclear statuses">
+              <rect x="26" y="14" width="268" height="150" rx="10" fill="#fff"/>
+              <path d="M26 24a10 10 0 0 1 10-10h248a10 10 0 0 1 10 10v16H26z" fill="#E2E8F0"/>
+              <circle cx="42" cy="27" r="3.5" fill="#CBD5E1"/><circle cx="54" cy="27" r="3.5" fill="#CBD5E1"/><circle cx="66" cy="27" r="3.5" fill="#CBD5E1"/>
+              <g stroke="#E2E8F0" stroke-width="1.5">
+                <line x1="26" y1="68" x2="294" y2="68"/><line x1="26" y1="96" x2="294" y2="96"/>
+                <line x1="26" y1="124" x2="294" y2="124"/><line x1="130" y1="40" x2="130" y2="164"/><line x1="212" y1="40" x2="212" y2="164"/>
+              </g>
+              <g fill="#94A3B8">
+                <rect x="40" y="50" width="62" height="7" rx="3.5"/><rect x="144" y="50" width="48" height="7" rx="3.5"/>
+                <rect x="40" y="78" width="70" height="7" rx="3.5"/><rect x="144" y="78" width="40" height="7" rx="3.5"/>
+                <rect x="40" y="106" width="54" height="7" rx="3.5"/>
+              </g>
+              <rect x="226" y="47" width="52" height="14" rx="7" fill="#0CB385" opacity=".18"/>
+              <rect x="232" y="51" width="40" height="6" rx="3" fill="#0CB385"/>
+              <rect x="226" y="75" width="52" height="14" rx="7" fill="#F87171" opacity=".18"/>
+              <rect x="232" y="79" width="30" height="6" rx="3" fill="#F87171"/>
+              <rect x="226" y="103" width="52" height="14" rx="7" fill="#E2E8F0"/>
+              <text x="252" y="114" text-anchor="middle" font-size="11" font-weight="700" fill="#94A3B8">?</text>
+              <g stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4">
+                <line x1="40" y1="140" x2="112" y2="140"/><line x1="144" y1="140" x2="196" y2="140"/>
+              </g>
+              <rect x="226" y="131" width="52" height="14" rx="7" fill="#F1F5F9"/>
+            </svg>
+            <p class="insight-cap">Statuses are <b>logged by hand</b> and go stale.</p>
+          </div>
+          </div>
+          <div class="insight-back">
+            <div class="tag">From the interviews</div>
+            <blockquote><p>“On my phone it's so quick to apply… I forget to log it into Excel.”</p><cite>2 years in · ~30 applications a week</cite></blockquote>
+            <blockquote><p>“Sometimes I get confused during HR calls because I've applied to so many jobs.”</p><cite>7 months in · 6–8 a week</cite></blockquote>
+          </div>
+          </div>
+        </div>
+        <div class="insight" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for interview quotes">
+          <div class="insight-inner">
+          <div class="insight-front">
+          <div class="insight-figure">
+            <span class="flip-hint" aria-hidden="true">❝</span>
+            <svg viewBox="0 0 320 190" role="img" aria-label="The same form fields re-typed across three stacked applications">
+              <rect x="70" y="10" width="200" height="120" rx="10" fill="#fff" opacity=".45"/>
+              <rect x="55" y="24" width="200" height="130" rx="10" fill="#fff" opacity=".7"/>
+              <rect x="40" y="38" width="200" height="140" rx="10" fill="#fff"/>
+              <rect x="56" y="54" width="74" height="8" rx="4" fill="#334155"/>
+              <g fill="#E2E8F0">
+                <rect x="56" y="74" width="168" height="18" rx="5"/>
+                <rect x="56" y="100" width="168" height="18" rx="5"/>
+                <rect x="56" y="126" width="168" height="18" rx="5"/>
+              </g>
+              <g fill="#94A3B8">
+                <rect x="64" y="80" width="54" height="6" rx="3"/>
+                <rect x="64" y="106" width="72" height="6" rx="3"/>
+                <rect x="64" y="132" width="44" height="6" rx="3"/>
+              </g>
+              <rect x="56" y="154" width="60" height="16" rx="8" fill="#0CB385"/>
+              <g stroke="#F87171" stroke-width="2" stroke-linecap="round">
+                <path d="M244 83h22M244 109h22M244 135h22"/>
+              </g>
+              <text x="278" y="87" font-size="10" font-weight="700" fill="#F87171">×3</text>
+              <text x="278" y="113" font-size="10" font-weight="700" fill="#F87171">×3</text>
+              <text x="278" y="139" font-size="10" font-weight="700" fill="#F87171">×3</text>
+            </svg>
+            <p class="insight-cap">The same details are <b>re-typed every time</b>.</p>
+          </div>
+          </div>
+          <div class="insight-back">
+            <div class="tag">From the interviews</div>
+            <blockquote><p>“Sometimes the form resets unexpectedly, and you have to re-enter all your information again.”</p><cite>8 months in · 20+ a week</cite></blockquote>
+            <blockquote><p>“It asked me to provide my LinkedIn link… which feels redundant since I'm applying through LinkedIn.”</p><cite>4 months in · 15–20 a week</cite></blockquote>
+          </div>
+          </div>
+        </div>
+        <div class="insight" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for interview quotes">
+          <div class="insight-inner">
+          <div class="insight-front">
+          <div class="insight-figure">
+            <span class="flip-hint" aria-hidden="true">❝</span>
+            <svg viewBox="0 0 320 190" role="img" aria-label="Multiple research tabs open before writing can begin">
+              <rect x="34" y="16" width="252" height="152" rx="10" fill="#fff"/>
+              <path d="M34 26a10 10 0 0 1 10-10h232a10 10 0 0 1 10 10v14H34z" fill="#E2E8F0"/>
+              <rect x="44" y="22" width="52" height="12" rx="4" fill="#CBD5E1"/>
+              <rect x="102" y="22" width="52" height="12" rx="4" fill="#CBD5E1"/>
+              <rect x="160" y="22" width="52" height="12" rx="4" fill="#fff"/>
+              <rect x="218" y="22" width="52" height="12" rx="4" fill="#CBD5E1"/>
+              <rect x="46" y="52" width="228" height="20" rx="10" fill="#F1F5F9"/>
+              <circle cx="60" cy="62" r="5" fill="none" stroke="#94A3B8" stroke-width="2"/>
+              <path d="M64 66l4 4" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/>
+              <rect x="74" y="59" width="96" height="6" rx="3" fill="#94A3B8"/>
+              <g fill="#E2E8F0">
+                <rect x="46" y="84" width="228" height="12" rx="6"/>
+                <rect x="46" y="104" width="200" height="12" rx="6"/>
+                <rect x="46" y="124" width="216" height="12" rx="6"/>
+                <rect x="46" y="144" width="150" height="12" rx="6"/>
+              </g>
+              <rect x="196" y="140" width="78" height="20" rx="10" fill="#0CB385" opacity=".14"/>
+              <circle cx="211" cy="150" r="6" fill="none" stroke="#0CB385" stroke-width="2"/>
+              <path d="M211 147v3.5l2 1.5" stroke="#0CB385" stroke-width="1.6" stroke-linecap="round"/>
+              <text x="223" y="154" font-size="10" font-weight="700" fill="#0CB385">30+ min</text>
+            </svg>
+            <p class="insight-cap">Research is <b>paid upfront</b>, before a word is written.</p>
+          </div>
+          </div>
+          <div class="insight-back">
+            <div class="tag">From the interviews</div>
+            <blockquote><p>“Doing basic research on the company and writing a tailored cover letter feels the most repetitive.”</p><cite>7 months in · 6–8 a week</cite></blockquote>
+            <blockquote><p>“As an international student, it's even harder… it's not always clear what is important to highlight.”</p><cite>7 months in · 6–8 a week</cite></blockquote>
+          </div>
+          </div>
+        </div>
+        <div class="insight" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for interview quotes">
+          <div class="insight-inner">
+          <div class="insight-front">
+          <div class="insight-figure">
+            <span class="flip-hint" aria-hidden="true">❝</span>
+            <svg viewBox="0 0 320 190" role="img" aria-label="Applications sent, with replies fading into silence">
+              <g>
+                <rect x="34" y="18" width="252" height="30" rx="8" fill="#fff"/>
+                <circle cx="52" cy="33" r="7" fill="#0CB385" opacity=".18"/>
+                <path d="M49 33l2.5 2.5L56 30.5" stroke="#0CB385" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="68" y="30" width="90" height="7" rx="3.5" fill="#94A3B8"/>
+                <rect x="212" y="26" width="60" height="15" rx="7.5" fill="#E2E8F0"/>
+                <rect x="220" y="31" width="44" height="5" rx="2.5" fill="#94A3B8"/>
+              </g>
+              <g opacity=".8">
+                <rect x="34" y="56" width="252" height="30" rx="8" fill="#fff"/>
+                <circle cx="52" cy="71" r="7" fill="#E2E8F0"/>
+                <rect x="68" y="68" width="76" height="7" rx="3.5" fill="#CBD5E1"/>
+                <rect x="212" y="64" width="60" height="15" rx="7.5" fill="#F1F5F9"/>
+                <rect x="224" y="69" width="36" height="5" rx="2.5" fill="#CBD5E1"/>
+              </g>
+              <g opacity=".55">
+                <rect x="34" y="94" width="252" height="30" rx="8" fill="#fff"/>
+                <circle cx="52" cy="109" r="7" fill="#E2E8F0"/>
+                <rect x="68" y="106" width="64" height="7" rx="3.5" fill="#CBD5E1"/>
+                <rect x="212" y="102" width="60" height="15" rx="7.5" fill="#F1F5F9"/>
+              </g>
+              <g opacity=".3">
+                <rect x="34" y="132" width="252" height="30" rx="8" fill="#fff"/>
+                <circle cx="52" cy="147" r="7" fill="#E2E8F0"/>
+                <rect x="68" y="144" width="52" height="7" rx="3.5" fill="#CBD5E1"/>
+              </g>
+              <g fill="#CBD5E1">
+                <circle cx="240" cy="147" r="3"/><circle cx="252" cy="147" r="3"/><circle cx="264" cy="147" r="3"/>
+              </g>
+            </svg>
+            <p class="insight-cap">Most applications end in <b>silence</b>.</p>
+          </div>
+          </div>
+          <div class="insight-back">
+            <div class="tag">From the interviews</div>
+            <blockquote><p>“A lot of the jobs tend to ghost you.”</p><cite>4 months in · 15–20 a week</cite></blockquote>
+            <blockquote><p>“Ghosting is frustrating, especially when I hear back after a long delay, like a month later.”</p><cite>4 months in · ~4 a week</cite></blockquote>
+          </div>
+          </div>
+        </div>
+      </div>
+      <h3>The Insight: The Volume Trap</h3>
+      <p>Existing tools organise the grind; none question it. Indeed's own data shows the highest-volume applicants are <b>39% less likely</b> to get a positive response. The category optimises for the very behaviour that lowers people's odds.</p>
+      <div class="hmw-card">
+        <div class="tag">How might we</div>
+        <p>Reduce the emotional cost of the job hunt, without taking the hunt away from the hunter?</p>
+        <span>This question shaped every surface that follows.</span>
+        <img class="hmw-mascot" src="assets/case-jobi/jobi-detective.png" alt="">
+      </div>
+    </section>
+
+    <section id="j-principles" data-nav>
+      <div class="eyebrow">Principles</div>
+      <h2>Two Rules That Settled Every Argument</h2>
+      <p>The question above set the goal but could not choose between two reasonable designs. These two rules did, and both came straight out of the research. Every decision in this study was measured against them, and several features lost.</p>
+      <div class="case-cards">
+        <div class="case-card">
+          <h4>A companion, not an autopilot</h4>
+          <p>Jobi gives someone the tools to stay consistent through their own hunt. It does not run the hunt for them. The point is to leave the user more capable than it found them, not more dependent.</p>
+        </div>
+        <div class="case-card">
+          <h4>Calm, not capable-looking</h4>
+          <p>Our users were already overwhelmed before they opened anything. Surface area became a cost to pay down rather than a scoreboard to win, so every feature had to earn the attention it asked for.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="decision-num">Decision 01</div>
+        <h3>Fewer Features Than Either Competitor</h3>
+        <div class="case-cards">
+          <div class="case-card"><h4>The crossroads</h4><p>The audit showed Teal and Simplify competing on feature count. Matching them was the obvious way to look credible next to two funded products with hundreds of thousands of users.</p></div>
+          <div class="case-card"><h4>The decision</h4><p>A deliberately smaller surface: one conversation, one tracker, one practice room. Anything that did not answer a research finding was cut before it was built.</p></div>
+          <div class="case-card"><h4>The trade-off</h4><p>Jobi loses any feature-by-feature comparison, and power users who want dashboards and bulk tooling are better served elsewhere. Accepted, because the person we designed for is not shopping for features. They are tired.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="j-solution" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Solution</div>
+      <h2>One Companion, End to End</h2>
+      <p>Jobi rides along the whole hunt as a browser side-panel. It deliberately does not find jobs for you: you pick the roles, and Jobi takes on what surrounds them. Each surface below exists to answer one of the four insights, and one insight was answered by deciding not to build anything at all.</p>
+
+      <h3>The Chat: Judgement on Tap</h3>
+      <p class="answers">Answers insight three: research is paid upfront, before a word is written.</p>
+      <p>The home surface is a conversation. Paste a role and Jobi tells you whether it's worth your time, tailors your documents, and researches the company, without leaving the page you're on. The half hour of tab-juggling that used to come before writing happens in the panel instead.</p>
+      <div class="carousel">
+        <div class="car-viewport">
+          <div class="car-track">
+            <div class="car-slide">
+              <video src="assets/case-jobi/jobi-jd.mp4" autoplay muted loop playsinline></video>
+              <h4>Am I a Fit?</h4>
+              <p>Paste a role and Jobi scores the match out of 100, naming the strengths and the gaps, grounded in your actual CV rather than keyword soup.</p>
+            </div>
+            <div class="car-slide">
+              <video src="assets/case-jobi/jobi-tailor-cv.mp4" autoplay muted loop playsinline></video>
+              <h4>Tailor My CV</h4>
+              <p>It pulls the experiences that map best to the role and rewrites the bullets to lead with impact.</p>
+            </div>
+            <div class="car-slide">
+              <video src="assets/case-jobi/jobi-cover-letter.mp4" autoplay muted loop playsinline></video>
+              <h4>Write a Cover Letter</h4>
+              <p>A first draft in your voice, specific to the role, a starting point, not a generic template.</p>
+            </div>
+            <div class="car-slide">
+              <video src="assets/case-jobi/jobi-research.mp4" autoplay muted loop playsinline></video>
+              <h4>Research the Company</h4>
+              <p>It reads past the posting and onto the company's own site: mission, culture, values, the things you want before an interview. Grounded only in sources it actually found, and honest about what it doesn't know.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision decision-open">
+        <div class="decision-num">Decision 02</div>
+        <h3>Tailor My CV Hands Back Content, Not a Finished Document</h3>
+        <div class="case-cards">
+          <div class="case-card"><h4>The crossroads</h4><p>A cover letter is plain prose, so generating one outright is easy. A CV is a designed document. Generating one on the spot means pouring the user’s content into our templates, and in design-led fields a generic template reads worse than the CV they already have.</p></div>
+          <div class="case-card"><h4>The decision</h4><p>Jobi rewrites and reorders the content against the role and hands it back. The user keeps their own layout. This one is still open, and it is the call we are least settled on.</p></div>
+          <div class="case-card"><h4>The trade-off</h4><p>Less magical than the cover letter flow, and it leaves the last step with the user. The alternative risks actively hurting candidates in the fields where presentation is part of the judgement.</p></div>
+        </div>
+      </div>
+
+      <h3>The Form: Three Attempts, One of Them Cut</h3>
+      <p class="answers">Answers insight two: the same details are re-typed every time.</p>
+      <p>This was the most literal pain point in the research, and the one competitors solve first. We tried three routes at it. The most obvious one is the one we removed.</p>
+      <div class="decision">
+        <div class="decision-num">Decision 03</div>
+        <h3>Autofill Was Built, Then Cut</h3>
+        <div class="case-cards">
+          <div class="case-card"><h4>The crossroads</h4><p>Re-typing was the second insight, so autofill was in the first build. To be worth having it has to fill the fields that actually repeat: phone number, email, address, place of birth.</p></div>
+          <div class="case-card"><h4>The decision</h4><p>Cut entirely. Filling those fields means holding sensitive personal data, and a leak would land on us. Strip them out and what is left does not justify the install.</p></div>
+          <div class="case-card"><h4>The trade-off</h4><p>The most repetitive part of applying stays manual, and a research finding goes deliberately unanswered. We would rather ship a smaller tool than become custodians of data we cannot promise to protect.</p></div>
+        </div>
+      </div>
+      <p>What survives are the two routes that never touch sensitive data.</p>
+      <div class="case-cards">
+        <div class="case-card">
+          <h4>Saved links, one right-click away</h4>
+          <p>LinkedIn and portfolio URLs get asked for on almost every form. Right-click anywhere in the page and they are there, so the links people retype most often are typed once.</p>
+        </div>
+        <div class="case-card">
+          <h4>Voice dictation, in three registers</h4>
+          <p>The fixed fields were never where the time went. The open questions are, and talking through an answer is faster than drafting one. Speak it and pick how much help you want: verbatim, punctuation tidied, or rewritten into the corporate register the form expects. That last mode is the point. You get to think casually and still sound like the application.</p>
+        </div>
+      </div>
+
+      <h3>Interview Practice</h3>
+      <p class="answers">Answers the fourth insight from the other side: if replies are scarce, the few that come have to count.</p>
+      <p>A voice-driven mock interview that role-plays the real thing: questions, follow-ups, and feedback in the moment.</p>
+      <p>The first time you say the answer out loud isn't in the actual room.</p>
+      <video class="case-media" src="assets/case-jobi/jobi-interview.mp4" autoplay muted loop playsinline></video>
+      <div class="decision">
+        <div class="decision-num">Decision 04</div>
+        <h3>Every Voice Lesson Works Fully Typed</h3>
+      <div class="case-cards">
+        <div class="case-card"><h4>The crossroads</h4><p>Voice roleplay is the showcase of the interview, but speech recognition can be unsupported, the mic denied, or text-to-speech can fail, any of which would dead-end the lesson.</p></div>
+        <div class="case-card"><h4>The decision</h4><p>Voice and typed paths run in parallel throughout. A blocked mic falls back to a text field, and a speech failure just shows the line and continues.</p></div>
+        <div class="case-card"><h4>The trade-off</h4><p>Two near-identical speech subsystems to build and maintain, accepted so the experience never traps a user.</p></div>
+        </div>
+      </div>
+
+      <h3>The Tracker</h3>
+      <p class="answers">Answers insight one: statuses are logged by hand and go stale.</p>
+      <p>The research showed the tracker failing because logging is manual, so the fix was to stop asking people to log. Open a job description and Jobi offers to save it. One click captures the role, and every application lands in one pipeline from saved through to offer, with follow-up reminders so nothing goes quiet purely because you forgot to chase it.</p>
+      <div class="case-cards">
+        <div class="case-card">
+          <h4>Captured, not typed</h4>
+          <p>A prompt appears on any job posting. One click files the role, which is the difference between a tracker that keeps up with a heavy week and one that quietly falls behind it.</p>
+        </div>
+        <div class="case-card">
+          <h4>The posting outlives the listing</h4>
+          <p>Jobi summarises the description and stores it. When a posting is taken down and an interview lands weeks later, the role you actually applied for is still readable.</p>
+        </div>
+        <div class="case-card">
+          <h4>Your words, kept with it</h4>
+          <p>The cover letter generated for that role is saved against it, so you walk into the call knowing exactly what you claimed. A spreadsheet can hold this, but not without becoming unusable.</p>
+        </div>
+      </div>
+      <video class="case-media" src="assets/case-jobi/jobi-tracker.mp4" autoplay muted loop playsinline></video>
+      <h3>The Fourth Insight: Silence Is the One We Cannot Fix</h3>
+      <p class="answers">Answers insight four: most applications end in silence.</p>
+      <p>Ghosting is an employer behaviour. No feature makes a company reply, and any product claiming to solve this would be lying. That makes it the cleanest test of the question this study started from: when the problem itself cannot be removed, the only honest goal left is to make it cost less. Three things already in the product carry that weight, and naming them was the last piece of the design.</p>
+      <div class="case-cards">
+        <div class="case-card">
+          <h4>Silence gets normalised</h4>
+          <p>&ldquo;That's normal three days in&rdquo; is a factual statement that happens to move the blame off the user. Read as a verdict on yourself, silence is corrosive. Read as the base rate, it is just weather.</p>
+        </div>
+        <div class="case-card">
+          <h4>Silence gets an action</h4>
+          <p>Follow-up reminders hand back the one lever that is actually theirs. Chasing a role is in the user's control. Hearing back never was, and the difference matters when hope is the scarce resource.</p>
+        </div>
+        <div class="case-card">
+          <h4>Silence gets survivable</h4>
+          <p>When a reply does arrive five weeks later, the saved posting and the exact cover letter are still there. The interview starts from remembering rather than bluffing, which is what one of our interviewees said went wrong.</p>
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-num">Decision 05</div>
+        <h3>A Pipeline That Protects the User From Their Own Rejections</h3>
+      <div class="case-cards">
+        <div class="case-card"><h4>The crossroads</h4><p>A job hunt accumulates rejections. Standard trackers give every status equal weight in traffic-light colours, turning the board into a wall of anxiety.</p></div>
+        <div class="case-card"><h4>The decision</h4><p>Statuses split into Active and Closed, so rejection is real but tucked away. Colour survives only in a small status dot.</p></div>
+        <div class="case-card"><h4>The trade-off</h4><p>Closed applications are slightly harder to review, and there's less at-a-glance colour coding; the design leans on labels instead.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="j-process" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
+      <h2>Design, Build, and Lead in One Loop</h2>
+      <p>The three of us ran research, ideation and design together in Figma. The build was the one part I took on alone: every screen went into Claude Code and came out as working software.</p>
+      <p>What made it move was how I worked with Claude. I gave it the interviews, the affinity map, and the reasoning behind every decision.</p>
+      <p>That made it more than a co-developer. It became a strategist I could think out loud with.</p>
+      <p>Every design got weighed against build complexity, API cost and the business case before it shipped.</p>
+      <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="Figma ideation: mascot directions, mid-fi flows, lo-fi wireframes and moodboards">
+      <p>The Figma side of the loop: mascot directions, mid-fi flows, lo-fi wireframes and the moodboards behind the visual language.</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>One Shared Context</h4><p>Claude Code held every artefact and research piece, so the build never drifted from the why. The design and the code came from the same source of truth.</p></div>
+        <div class="case-card"><h4>Crossroads Went Back to the Evidence</h4><p>When two paths were both reasonable, we did not argue from taste. We fell back on a research finding, or on an earlier decision we had already reasoned through, and stayed consistent.</p></div>
+        <div class="case-card"><h4>Every Call Logged as a Trade-off</h4><p>Significant decisions were written down as crossroads, decision and cost, weighing the design against code, API spend and strategy. That record is the discipline this study is built from.</p></div>
+      </div>
+    </section>
+
+    <section id="j-emotion" data-nav>
+      <div class="eyebrow">Emotional Design</div>
+      <h2>Calm Is the Feature, Not the Decoration</h2>
+      <p>The second principle was calm rather than capable-looking, and most of it lives here. Emotional design usually chases engagement. Jobi uses the same toolkit pointed the other way: the mascot, the motion and the writing exist to lower the cost of a task people dread, not to raise time in app. It is aimed at the nervous system, not the dopamine loop.</p>
+
+      <div class="decision">
+        <div class="decision-num">Decision 06</div>
+        <h3>The Mascot Has No Mouth</h3>
+        <div class="case-cards">
+          <div class="case-card"><h4>The crossroads</h4><p>A mascot needs personality and a face is the fastest way to give it one. But Jobi already watches your hunt in order to help, and a talking face tips a companion into a supervisor.</p></div>
+          <div class="case-card"><h4>The decision</h4><p>No mouth in any pose. It works through the eyes and the set of its body: glasses to analyse a role, a gentle bob while you wait, confetti when you land one. Cursor-tracking eyes were built, tested, and cut.</p></div>
+          <div class="case-card"><h4>The trade-off</h4><p>Far less expressive range than a face, so the warmth has to come from motion, which is harder to get right and slower to build. Accepted because alive was becoming watchful.</p></div>
+        </div>
+      </div>
+
+      <p>The personality is a written system the team and the model both build from, not a coat of paint. Jobi is an accountability partner rather than a cheerleader: it expects you to show up, and it teaches you to stop needing it, which is the companion principle stated in tone of voice. The reference point was deliberately not Duolingo. That owl is loud and guilt-driven, and someone applying for their thirtieth job this month does not need another thing shouting at them. Five qualities hold in every line, steady, honest, loyal, invested and particular, and only the volume moves, dialling down as the moment gets heavier.</p>
+
+      <div class="case-cards">
+        <div class="case-card"><h4>The easy version</h4><p>&ldquo;Still nothing?! Don&rsquo;t give up, you&rsquo;ve got this!&rdquo;</p></div>
+        <div class="case-card"><h4>What Jobi says</h4><p>&ldquo;No reply yet. That&rsquo;s normal three days in. Want to line up the next two while we wait?&rdquo;</p></div>
+      </div>
+
+      <p>Rejection is where a companion is won or lost, and it is the moment the fourth insight predicted would come most often. No exclamation points, no clich&eacute;s, and the dry wit goes quiet. Move the blame off the user, then point forward.</p>
+    </section>
+
+    <section id="j-metrics" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Measuring Success</div>
+      <h2>How We'll Know It Works</h2>
+      <p>The question was whether we could lower the emotional cost of the hunt without taking the hunt away from the hunter, so that is what the beta has to measure. Time in app and applications sent would both go up if we were making people more dependent, which is the opposite of the goal.</p>
+      <p>Those are what the volume tools optimise for. Our closed beta tests three things instead.</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>Do Applications Get Finished?</h4><p>Jobi runs the tracker, so it knows what share of saved roles reach Applied instead of dying at Saved. We read that against the 92% who never finish an application elsewhere.</p></div>
+        <div class="case-card"><h4>Does the Search Feel Less Heavy?</h4><p>A one-tap check-in at the start and end of the beta, rating how in control and how burnt out someone feels. We track the shift per person, not the headline number.</p></div>
+        <div class="case-card"><h4>Do People Return After a Rejection?</h4><p>When a role is marked Rejected, Jobi watches whether they open the extension again. With no streaks pulling anyone back, a return is a real signal.</p></div>
+      </div>
+    </section>
+
+    <section id="j-next" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>What's Next</div>
+      <h2>Still Building</h2>
+      <p>Jobi is an ongoing project. The next milestone is a closed beta in July, aiming to release in August.</p>
+      <p>It puts the companion in front of real job-seekers to pressure-test every call in this study.</p>
+      <p>One feature still in design is the career plan: coaching sized to the time you actually have, not a volume quota.</p>
+      <p>The hard part is holding the line, capping eager users at a few quality applications a day. So it is being built slowly, on purpose.</p>
+    </section>
+  </div>
+</section>
+
+<!-- CASE STUDY: NOTHING -->
+<section id="nothing" class="page">
+  <div class="case">
+    <div id="n-tldr" data-nav>
+    <h1>Nothing</h1>
+    <p class="case-sub">The right tools, exactly when you need them. Essential Context is a situational environment generator for Nothing OS. I designed a shape-shifting home screen concept that instantly surfaces tailored tools to eliminate the cognitive load of hunting through isolated app grids.</p>
+
+    <dl class="case-meta">
+      <div><dt>Type</dt><dd>Conceptual Work</dd></div>
+      <div><dt>Role</dt><dd>Product Designer</dd></div>
+      <div><dt>Timeline</dt><dd>48 Hours</dd></div>
+      <div><dt>Platform</dt><dd>Mobile OS</dd></div>
+    </dl>
+
+    <video class="case-video" src="assets/case-nothing/hero-nothing.mp4" autoplay muted loop playsinline></video>
+
+    <h3>TLDR: Stop Searching, Start Living</h3>
+    <div class="case-cards">
+      <div class="case-card"><h4>The Challenge</h4><p>Current smartphone OS environments force users to dig through endless app grids to navigate a single moment. Hunting for isolated tools like jumping between Uber, Messages, and Wallet just for a date, creates unnecessary cognitive load and friction.</p></div>
+      <div class="case-card"><h4>The Solution</h4><p>Essential Context intelligently surfaces tools exactly when you need them. By holding a button and stating your situation, the OS instantly generates a personalized, temporary home screen tailored to that specific moment.</p></div>
+    </div>
+    </div>
+
+    <section id="n-scenario" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Scenario</div>
+      <h2>A Shape-Shifting Canvas for Real-World Moments</h2>
+      <p>Imagine heading out for the evening. Instead of hunting through cluttered app drawers for ride-shares and reservations, the OS does the heavy lifting. It instantly generates a distraction-free, temporary environment containing only the relevant tools, keeping you focused on the physical world.</p>
+      <img class="case-media" src="assets/case-nothing/scenario-canvas.jpg" alt="Shape-shifting canvas scenario">
+      <h3>Mapping the Journey</h3>
+      <p>Holding the essential button from the lock screen opens the configuration menu alongside a sweeping light animation. After selecting "Date Night," the system drops the user into their curated home screen and updates the hardware to display an "Auto-Expire" progress bar. A persistent yellow status pill remains at the top right, letting users effortlessly tweak settings or exit the context to restore the standard OS.</p>
+      <img class="case-media" src="assets/case-nothing/journey-map.jpg" alt="User journey map">
+    </section>
+
+    <section id="n-purpose" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Purpose</div>
+      <h2>Intentional Usage Through a Unified Ecosystem</h2>
+      <p>Nothing's philosophy centers on intentional smartphone usage: less time navigating apps, more time living in the moment. Essential Context realizes this vision by acting as the central intelligence hub for the entire Nothing ecosystem. By synchronizing with other Essential features, it reduces cognitive load and transforms raw data into a highly focused environment.</p>
+      <p>As illustrated in the Date Night example below, each Essential feature works together to silently curate your experience:</p>
+      <img class="case-media" src="assets/case-nothing/ecosystem.jpg" alt="Essential ecosystem diagram">
+      <p>By unifying these tools, the OS evolves from a passive grid of icons into a shape-shifting, predictive canvas. Ultimately, the more Essential features you use, the more deeply personalized your environment becomes, allowing you to remain fully present in the physical world.</p>
+    </section>
+
+    <section id="n-system" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>System</div>
+      <h2>Synchronizing the System</h2>
+      <p>To truly embed this feature into the Nothing ecosystem, the hardware and software must act as a single, synchronized mechanism:</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>1 &middot; The Trigger</h4><p>Holding the essential button pulls up the Essential Context setup.</p><img src="assets/case-nothing/system-trigger.jpg" alt="The essential button trigger"></div>
+        <div class="case-card"><h4>2 &middot; The Glyph Matrix</h4><p>When active, the back of the phone displays a minimalist, static icon (like a cocktail glass) to project your "focus state" to the physical room.</p><img src="assets/case-nothing/system-glyph-matrix.jpg" alt="Glyph matrix focus icon"></div>
+        <div class="case-card"><h4>3 &middot; The Glyph Lights</h4><p>Classic Glyphs act as a visual timer for the context's "Auto-Expire" progress, and strictly limit light notifications to your pinned priority contacts.</p><img src="assets/case-nothing/system-glyph-lights.jpg" alt="Glyph lights timer"></div>
+      </div>
+    </section>
+
+    <section id="n-decisions" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Decisions</div>
+      <h2>Minimising Clicks, Maximizing Presence</h2>
+      <p>To ensure the interface felt as frictionless as the concept itself, I focused on two core design choices:</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>1 &middot; Smart Chips Over Menus</h4><p>I utilized 1-tap actionable chips (like "Smart App Filter" and "Priority Contact") to eliminate friction by minimizing clicks.</p><img src="assets/case-nothing/decisions-chips.jpg" alt="Smart chips interface"></div>
+        <div class="case-card"><h4>2 &middot; The Status Pill</h4><p>I created a persistent, non-intrusive anchor in the top right of the screen. Tapping it drops down a quick-action menu to Edit or Exit, keeping control exactly one thumb-swipe away without burying it in Android Settings.</p><img src="assets/case-nothing/decisions-pill.jpg" alt="Status pill quick actions"></div>
+      </div>
+    </section>
+
+    <section id="n-future" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Future</div>
+      <h2>Where the OS Goes Next</h2>
+      <p>While the current concept relies on manual triggers, the long-term vision makes the OS entirely proactive:</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>1 &middot; Predictive Environments</h4><p>Moving beyond static home screens, the OS should automatically shape-shift based on your daily habits without requiring manual prompts.</p></div>
+        <div class="case-card"><h4>2 &middot; Intelligent Fallbacks &amp; Learning</h4><p>If a generated context misses a needed tool, Essential Search acts as a frictionless safety net. The system then learns from these manual searches to perfect the environment for your next visit.</p></div>
+        <div class="case-card"><h4>3 &middot; Tactile Hardware Integration</h4><p>Future device generations could allow users to cycle through pre-saved contexts physically, like swiping or tapping the back cover without ever waking the screen.</p></div>
+        <div class="case-card"><h4>4 &middot; Deeper Customization</h4><p>Future iterations should support context-specific widget themes and more complex integrations as Essential Apps develop.</p></div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- CASE STUDY: QUEST UP -->
+<section id="questup" class="page">
+  <div class="case">
+    <div id="q-tldr" data-nav>
+    <h1>Quest Up</h1>
+    <p class="case-sub">Turning a chore into a quest. Quest Up is a gamified health companion for sedentary gamers. I founded this startup to bridge the gap between high motivation and low consistency, adapting the "Quest Loop" mechanic to turn physical activity into a game.</p>
+
+    <dl class="case-meta">
+      <div><dt>Role</dt><dd>Founder &amp; Product Designer</dd></div>
+      <div><dt>Platform</dt><dd>Mobile App</dd></div>
+      <div><dt>Outcome</dt><dd>&pound;3,000 grant winner</dd></div>
+      <div><dt>Status</dt><dd>Developing the MVP</dd></div>
+    </dl>
+
+    <video class="case-video" src="assets/case-questup/hero-quest-up.mp4" autoplay muted loop playsinline></video>
+
+    <h3>TLDR: Motivation Exists; Consistency Breaks</h3>
+    <div class="case-cards">
+      <div class="case-card"><h4>The Challenge</h4><p>Gamers have high cognitive motivation to be healthy but low behavioral consistency. Traditional fitness apps feel like a chore compared to the dopamine-rich loops of gaming.</p></div>
+      <div class="case-card"><h4>The Solution</h4><p>Quest Up adapts the "Quest Loop" mechanic, short, structured missions with instant rewards, to physical activity, lowering the barrier to entry for sedentary users.</p></div>
+    </div>
+    </div>
+
+    <section id="q-context" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Context</div>
+      <h2>Gaming Is Rewarding by Design, Movement Is Not</h2>
+      <p>Games are built to hold attention through clear goals, instant feedback, and visible progress. Fitness, by contrast, feels effortful, unstructured, and slow to reward. Even gamers who want healthier habits default to long sedentary sessions because movement doesn't fit naturally into the way they already spend their time.</p>
+      <img class="case-media" src="assets/case-questup/context-gaming.jpg" alt="Long sedentary gaming sessions">
+      <h3>Why This Is a Problem</h3>
+      <p>Extended inactivity during long gaming sessions contributes to low energy, weight gain, back and eye strain, and declining long-term health. Because fitness feels intimidating and easy to postpone, consistency breaks quickly, making it harder for users to build sustainable habits even when motivation exists.</p>
+      <h3>Solution Overview</h3>
+      <p>I explored how to lower the barrier to fitness by borrowing the mechanics gamers already understand. By reframing movement as short, structured quests with clear progression and rewards, exercise can feel familiar, achievable, and easy to start within a gaming routine.</p>
+      <img class="case-media" src="assets/case-questup/solution-overview.jpg" alt="Solution overview">
+      <h3>Expected Impact</h3>
+      <p>Making movement feel game-like reduces friction at decision time and encourages small, repeatable actions. This approach supports safer, more consistent activity, helping users build healthier habits without giving up the experiences they enjoy.</p>
+    </section>
+
+    <section id="q-problem" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Problem</div>
+      <h2>Motivation Isn't the Problem. The "Format" Is.</h2>
+      <p>Research with 15+ gamers (Discord, Conventions) revealed a paradox: Gamers want to be healthy, but fitness lacks the immediate feedback loops of gaming.</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>Problem</h4><p>Gamers often spend long hours sitting while gaming. "On average, I spend around 3 to 4 hours a day gaming."</p></div>
+        <div class="case-card"><h4>Painpoint</h4><p>Exercise feels like a chore. "I want to be more active, but I don't feel motivated to exercise."</p></div>
+        <div class="case-card"><h4>Opportunity</h4><p>Gamers are interested in gamified fitness. "If I can see my daily progress visually, I might be able to stick with it."</p></div>
+      </div>
+      <div class="callout">
+        <div class="tag">The insight</div>
+        <p>Fitness feels "unstructured and slow," whereas Games are "structured and rewarding."</p>
+      </div>
+      <div class="callout">
+        <div class="tag">The opportunity</div>
+        <p>We don't need to change the gamer; we need to change the interface of fitness to match their mental model.</p>
+      </div>
+    </section>
+
+    <section id="q-user" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Target User</div>
+      <h2>Who I Designed For</h2>
+      <p><strong>Primary users:</strong> Gamers who want to be more active, but struggle to stay consistent. <strong>Secondary users:</strong> People who find fitness intimidating and need a guided, rewarding structure.</p>
+      <p>Meet Adam, a 21 year old computer science student who loves gaming, but is starting to feel the health impact of long sessions. He wants healthier habits, but struggles to stay consistent without giving up what he enjoys.</p>
+      <img class="case-media" src="assets/case-questup/persona-adam.jpg" alt="Persona: Adam">
+      <p>The Journey: I mapped out the typical gamer's lifecycle to identify the exact friction points.</p>
+      <img class="case-media" src="assets/case-questup/user-journey.jpg" alt="User journey map">
+      <p>User Goal: Wants to exercise without breaking their flow state or feeling like they are 'going to the gym'. The focus became lowering the barrier to fitness by making movement feel familiar, rewarding, and easy to start within a gaming routine.</p>
+      <div class="callout">
+        <div class="tag">How might we</div>
+        <p>Motivate gamers to engage in physical activities to improve their long-term health?</p>
+      </div>
+    </section>
+
+    <section id="q-solution" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Solution</div>
+      <h2>Designing the Core Loop: Move &rarr; Reward &rarr; Upgrade</h2>
+      <h3>The "Quest" Metaphor</h3>
+      <p>Design Decision: I reframed vague goals ("exercise more") into binary quests ("Do 10 squats"). This reduces cognitive load and decision fatigue.</p>
+      <img class="case-media" src="assets/case-questup/quest-metaphor.jpg" alt="Quest metaphor UI">
+      <h3>The Retention Layer</h3>
+      <p>Design Decision: To prevent drop-off, I implemented streaks and leaderboards. However, visual progression (leveling up an avatar) proved most effective for this demographic as it aligns with RPG (Role-Playing Game) tropes.</p>
+      <img class="case-media" src="assets/case-questup/retention-layer.png" alt="Retention layer UI">
+      <p>The retention layer reinforces the loop through progress visibility (stats and streaks), social motivation (leaderboards), and self expression (shop and customisation). It keeps users coming back without adding complexity to the core action.</p>
+    </section>
+
+    <section id="q-testing" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>User Testing</div>
+      <h2>The Safety Iteration: Solving for "Grind" Behavior</h2>
+      <p>During usability testing, I discovered a critical behavioral risk: highly motivated users were "grinding" exercises solely to earn currency, risking injury.</p>
+      <img class="case-media" src="assets/case-questup/grind-behavior.jpg" alt="Grind behavior discovered in testing">
+      <div class="callout">
+        <div class="tag">The fix: the energy system</div>
+        <p>Users have limited "energy" to perform quests each day. It enforces pacing, prevents burnout and injury, and paradoxically increases retention by leaving users wanting more for tomorrow.</p>
+      </div>
+      <img class="case-media" src="assets/case-questup/energy-system.jpg" alt="Energy system UI">
+    </section>
+
+    <section id="q-outcome" data-nav>
+      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Outcome &amp; Impact</div>
+      <h2>A Winning Idea</h2>
+      <p>Quest Up was validated not just by user sentiment, but by market viability.</p>
+      <video class="case-media" src="assets/case-questup/outcome.mp4" autoplay muted loop playsinline></video>
+      <div class="case-cards">
+        <div class="case-card"><h4>Winner</h4><p>City Ventures Grand Spark Startup Competition.</p></div>
+        <div class="case-card"><h4>Awarded</h4><p>&pound;3,000 equity-free grant &amp; Accelerator acceptance.</p></div>
+        <div class="case-card"><h4>Next Steps</h4><p>Developing the MVP to test retention metrics with a live cohort of 50 users.</p></div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page">
+  <div class="wrap">
+    <h1>Mahin</h1>
+    <div class="alias">Your Name Here</div>
+    <div class="role">Product Designer</div>
+    <div class="bio">
+      <p>[Placeholder] I build websites that feel alive — motion, interactivity, and small details that react to everything you do. This paragraph is where your own story goes: what you make, and why you love making it.</p>
+      <p>[Placeholder] Second paragraph: the skills and interests that feed into your work — design, animation, illustration, whatever makes your work yours.</p>
+      <p>[Placeholder] Third paragraph: your stack and tools. For example: HTML/CSS, JavaScript, React, GSAP, Three.js — swap in your real one.</p>
+      <p>[Placeholder] Bonus paragraph for personality: what you do off the keyboard.</p>
+    </div>
+    <div class="peace">✌️ Peace</div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@rive-app/canvas@2"></script>
+<script>
+/* ---------- placeholder projects ---------- */
+const projects = [
+  { title: 'Jobi',    year: '2024', h: 240, video: 'assets/videos/jobi-trailer-web.mp4', page: 'jobi' },
+  { title: 'Nothing', year: '2023', h: 340, video: 'assets/videos/nothing.mp4', page: 'nothing' },
+  { title: 'Pactto',  year: '2023', h: 200, video: 'assets/videos/pactto.mp4', page: 'pactto' },
+  { title: 'Quest Up', year: '2022', h: 300, video: 'assets/videos/quest-up.mp4', page: 'questup' },
+  { title: 'Project Five',  year: '2022', h: 260, bg: 'linear-gradient(135deg,#0b7a45,#3fd47f)', mark: 'P5' },
+  { title: 'Project Six',   year: '2021', h: 220, bg: 'linear-gradient(135deg,#111,#3a3a3a)', mark: 'P6' },
+  { title: 'Project Seven', year: '2021', h: 320, bg: 'linear-gradient(135deg,#ff8008,#ffc837)', mark: 'P7' },
+  { title: 'Project Eight', year: '2020', h: 240, bg: 'linear-gradient(135deg,#f43f5e,#fb7185)', mark: 'P8' },
+  { title: 'Project Nine',  year: '2020', h: 280, bg: 'linear-gradient(135deg,#06b6d4,#3b82f6)', mark: 'P9' },
+];
+/* ---------- loader ---------- */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 600);
+});
+
+/* ---------- SPA navigation ---------- */
+const PAGE_NAMES = {
+  jobi: 'Jobi', pactto: 'Pactto', nothing: 'Nothing',
+  questup: 'Quest Up', about: 'About'
+};
+const curtain = document.getElementById('curtain');
+let navigating = false;
+
+function setActive(page) {
+  document.body.classList.toggle('home-active', page === 'home');
+  document.querySelectorAll('.case-nav').forEach(n =>
+    n.classList.toggle('show', n.dataset.page === page));
+  /* every page except home gets a way back */
+  document.getElementById('case-back').classList.toggle('show', page !== 'home');
+
+  document.body.classList.toggle('case-active', page !== 'home');
+}
+
+function goTo(page) {
+  const target = document.getElementById(page);
+  if (!target || target.classList.contains('current') || navigating) return;
+  navigating = true;
+  curtain.classList.remove('sweep-out');
+  curtain.classList.add('sweep-in');
+
+  /* each phase completes on animationend OR a timeout — throttled tabs and
+     reduced-motion setups may never deliver the event */
+  let switched = false;
+  const switchPage = () => {
+    if (switched) return;
+    switched = true;
+    document.querySelectorAll('.page').forEach(s => s.classList.remove('current'));
+    target.classList.add('current');
+    window.scrollTo(0, 0);
+    setActive(page);
+    history.replaceState(null, '', '#' + page);
+    curtain.classList.remove('sweep-in');
+    curtain.classList.add('sweep-out');
+    let cleaned = false;
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      curtain.classList.remove('sweep-out');
+      navigating = false;
+    };
+    curtain.addEventListener('animationend', function onOut() {
+      curtain.removeEventListener('animationend', onOut);
+      cleanup();
+    });
+    setTimeout(cleanup, 700);
+  };
+  curtain.addEventListener('animationend', function onIn() {
+    curtain.removeEventListener('animationend', onIn);
+    switchPage();
+  });
+  setTimeout(switchPage, 700);
+}
+
+/* deep link */
+const initial = location.hash.replace('#', '');
+if (initial && document.getElementById(initial)) {
+  document.querySelectorAll('.page').forEach(s => s.classList.remove('current'));
+  document.getElementById(initial).classList.add('current');
+  setActive(initial);
+} else {
+  setActive('home');
+}
+
+/* ---------- mascot: jobi_sprout_wave.riv (embedded as base64 so the page
+   works from file:// too; source copy lives in assets/jobi_sprout_wave.riv) ---------- */
+const RIV_B64 = 'UklWRQcChZ6VAaABxAHsAe4DrQS2BMcE5QTmBOcE6ATpBOoE6wTsBPEE8gQAAAAAAAEAAAAAAAAAAAAAAAAAAAAXALMDrQQKVmlld01vZGVsMQC1A7YEAAQISW5zdGFuY2UAAcQBAAcAAPpDCAAA+kPuAwHsAQDHBAAECEFydGJvYXJkAKQDBQDlBAHmBAHnBAHoBAHpBAHqBAHrBAHsBAHxBAHyBAEAAgUADaLreUMOAIDQQwACBQIOAADmwgACBQMPUB5psQ0A0ZW/DgAAKMEAAwUEDQAAMUIOAAAAvwAEBQUNAACAvg4AAAA/FAAALkIVAACAQgASBXAlAAAA/wADBQQNAAAvwg4AAAC/AAQFCA0AAIC+DgAAAD8UAAAuQhUAAIBCABIFcSUAAAD/AAIFAw1AtxHADtA5psEAAwULDdjZ7kEOQOe4QIEBAQAQBQyAAQEABQUNGDyJg7YZ4JC0tQAjBQ0Y4Gv0QRnao+K+UrMfeT9TdXj0QQASBXIlAAAA/wADBQsN2KJxwg5A57hAgQEBABAFEYABAQAFBRIYPImDthngkLS1ACMFEhjga/RBGdqj4r5Ssx95P1N1ePRBABIFcyUAAAD/AAMFAw0A0bW/DgAAAD8ABwUWDgAAAL8UAABjQxUAAGZDHwAAMEIAEgV0Jf////8AAwUCDyy7Az8NRNflwg4AANvCAAQFGQ9QHmmxDST7lUAOWw6OQRQHpWpCFUhQ2UIAEgV1Jf////8AAwUCDze7A78NvCjgQg4AAM3CAAQFHA0NuY4/DhREVEEU16NqQhXsUdlCABIFdiX/////AAIFAg3go+3ADn6fncMAAgUfDTg2ykEOCU89wgACBSANAJ0VQg4MvLTBAAMFIQ1gN0VBDgxcPcGBAQEANAUigAEBFKIiW0EVzI9aQX0EfgAAoEAAEgV3JZ3TD/8AAwUhDQBFlr8OoB+VP4EBAQA0BSWAAQEUAAAQQhUAAAxCfQR+AACgQAASBXglndMP/wACBSAQuxK0PxG7ErQ/DbCHu8EOAACEQQADBSgQ0yJxPxGXzpA/DQChTcAOOGMoQYEBAQAQBSkQUBZuPxHDZnY/DRf4gL4OpdunPoABAyABAAUFKhj1VO++GcLdi8AAIwUqGPYQMUEZ9cYEQVKFGOe9U6SGdEEABQUqGOPZ7EEZrgFWwQAjBSoYX8OGQRlc7bPBUiQ9LkBTECCEQQASBXklhbMM/wADBSgP2w9JwBEAAIC/DYB1pUAOmIsCQYEBAQAQBTCAAQMgAQAFBTEYRxbSPxmhj5q/ACMFMRhzA0xBGUYaLUFSC1uqvlO3D3hBAAUFMRil0d1BGfzGX8EAIwUxGChZjEEZynGvwVIfmChAU3m8UUEAEgV6JWyUBf8AAwUoDQCsKz8OAACyvYEBAQAEBTeAAQEUAACoQRUAACBCABIFeyVgggr/AAIFHw2A6Oo/DiRWtcEAAwU6ENMicT8Rl86QPw0AoU3ADjhjKEGBAQEAEAU7EFAWbj8Rw2Z2Pw0X+IC+DqXbpz6AAQMgAQAFBTwY9VTvvhnC3YvAACMFPBj2EDFBGfXGBEFShRjnvVOkhnRBAAUFPBjj2exBGa4BVsEAIwU8GF/DhkEZXO2zwVIkPS5AUxAghEEAEgV8JYWzDP8AAwU6D9sPScARAACAvw2AdaVADpiLAkGBAQEAEAVCgAEDIAEABQVDGEcW0j8ZoY+avwAjBUMYcwNMQRlGGi1BUgtbqr5Ttw94QQAFBUMYpdHdQRn8xl/BACMFQxgoWYxBGcpxr8FSH5goQFN5vFFBABIFfSVslAX/AAMFOg0ArCs/DgAAsr2BAQEABAVJgAEBFAAAqEEVAAAgQgASBX4lYIIK/wACBR8NgF/APw7u+wpCAAMFTA/bD0lAEQAAgL8NgF/Avw4AAKxBgQEBABAFTRCaoIE/EWz3eD8NbEOjPw5RhoM8gAEBIAEABQVOGGIp0sAZqVQXvQAjBU4YaQS8whk3vVnCUoopBsBTVJCPQgAjBU4YoC/AQBlnzfDBUsX0rj9Tx2ULQgASBX8lhbMM/wADBUwNgF/Avw4AAKxBgQEBABAFUxCaoIE/EWz3eD8NbEOjPw5RhoM8gAEBIAEABQVUGGIp0sAZqVQXvQAjBVQYaQS8whk3vVnCUoopBsBTVJCPQgAjBVQYoC/AQBlnzfDBUsX0rj9Tx2ULQgASBYABJYWzDP8AAwVMDQBfgD8O8L3nQYEBAQAHBVmAAQEUAADAQRUAACxCABIFgQElhbMM/wACBR8PUB5psQ1AXyBADnJTHEIAAwVcD9oPScARAACAvw0AAIBADvhQiUEAEAVdAAUFXhiAc5Q0GZDmfDYAIwVeGNE7f8IZU2HYwVKVsALAUwjPC0IABQVeGN1ZQsIZqqaBwgAjBV4YQKhvQBlN0w/CUlVLaD9TMqI0QgAFBV4YQKhvQBmQ5nw2ABIFggElhbMM/wADBVwNAACAwA74UIlBABAFZQAFBWYYgHOUNBmQ5nw2ACMFZhjRO3/CGVNh2MFSlbACwFMIzwtCAAUFZhjdWULCGaqmgcIAIwVmGECob0AZTdMPwlJVS2g/UzKiNEIABQVmGECob0AZkOZ8NgASBYMBJYWzDP8AAwVcDvhQ1UEABwVtFAAAwEEVAAAsQgASBYQBJYWzDP8AFAUFKAIAFAUIKAIAGAUMLwAAQEEwATEBABgFES8AAEBBMAExAQAUBRYoAgAUBRkoAgAUBRwoAgAUBSIoAgAUBSUoAgAUBSkoAgAUBTAoAgAUBTcoAgAUBTsoAgAUBUIoAgAUBUkoAgAUBU0oAgAUBVMoAgAUBVkoAgAUBV0oAgAUBWUoAgAUBW0oAgAcP6RwvT5BrkchPwAcPwAAAD9BAACAPwAcPwAAAABBAAAAPwAcABw/AACAPkAAAIA/QQAAAD8AHD9mZuY+QM3MTD1BzcwMP0IzM3M/ABw/AACAPkDNzMw9QQAAgD4AHD/NzMw+Qc3MTD4AHzcNaWRsZV9mbG9hdGluZzl4OwEAGTMZABo1DwAeRAJFhQFGLLsDPwAeQ0FEAkWFAUZPEho/AB5DeEQBRiy7Az8AGTMcABo1DwAeRAJFhQFGN7sDvwAeQ0FEAkWFAUZPEhq/AB5DeEQBRje7A78AGTNcABo1DgAeRAFGgKg4wgAZMwQAGjURAB5EAUYAAIA/AB5DRkQCRYYBRgAAgD8AHkNLRAJFhwEAHkNQRAFGAACAPwAeQ3hEAUYAAIA/ABkzTAAaNQ4AHkQBRgAASsIAGTM6ABo1DgAeRAFGgdPXwgAZMyAAGjUOAB5EAUa+kgTDABkzHwAaNQ4AHkQBRgAAZsMAGjUPAB5EAkWFAQAeQ0REAkWFAUbCuLK9AB5DeEQBABkzAgAaNQ4AHkQCRYgBRgCA0EMAHkM8RAJFiAFGAADJQwAeQ3hEAUYAgNBDAB83C3dhdmluZ19oYW5kObQBOwEAGTMZABo1DwAeRAFGLLsDPwAeQ0tEAUY9yNo+AB5DtAFEAUYsuwM/ABkzHAAaNQ8AHkQCRYgBRje7A78AHkMPRAJFiAFG5MsWwAAeQzxEAkWIAUYLvvW/AB5DUEQCRYgBRnD3IcAAHkOCAUQCRYgBRgu+9b8AHkORAUQCRYgBRuTLFsAAHkO0AUQCRYgBRje7A78AGTMEABo1EQAeRAFGAACAPwAeQ0hEAUYAAIA/AB5DTUQBAB5DUkQBRgAAgD8AHkO0AUQBRgAAgD8AGTMfABo1DwAeRAJFiAEAHkNLRAJFiAFGwriyvQAeQ7QBRAEAGTMCABo1DgAeRAJFiAFGAIDQQwAeQ0tEAkWIAUYAAMlDAB5DtAFEAUYAgNBDAB83CndhdmVfc3RhcnQ5FAAZMxkAGjUPAB5EAUYsuwM/AB5DFEQBRvNm3z4AGTMcABo1DwAeRAJFiQFGN7sDvwAeQxREAUbkyxbAABkzBAAaNREAHkQBRgAAgD8AHkMURAFGAACAPwAZMx8AGjUPAB5EAQAeQxREAUY1+g49ABkzAgAaNQ4AHkQBRgCA0EMAHkMURAFGAADOQwAfNwl3YXZlX2xvb3A5eDsBABkzGQAaNQ8AHkQCRYoBRvNm3z4AHkNGRAJFigFGkgoGPwAeQ3hEAkWKAUbzZt8+ABkzHAAaNQ8AHkQCRYsBRuTLFsAAHkMURAJFiwFGC771vwAeQ0ZEAkWLAUbkyxbAAB5DVUQCRYsBRpIKBsAAHkN4RAJFiwFG5MsWwAAZMwQAGjURAB5EAkWKAUYAAIA/AB5DD0QBAB5DE0QBAB5DF0QBRgAAgD8AHkN4RAFGAACAPwAZMx8AGjUPAB5EAkWKAUY1+g49AB5DPEQCRYoBRjX6Dr0AHkN4RAJFigFGNfoOPQAZMwIAGjUOAB5DBUQCRYwBRgAAzkMAHkM8RAJFjAFGAADSQwAeQ3hEAkWMAUYAAM5DADU3D1N0YXRlIE1hY2hpbmUgMQA5igEHTGF5ZXIgMQA+AEAAPwBBlwEDAD2VAQIAQZcBBJgBDKABZAA9lQEDAA==';
+
+const mascotCanvas = document.getElementById('mascot');
+const rivBytes = Uint8Array.from(atob(RIV_B64), c => c.charCodeAt(0));
+const mascot = new rive.Rive({
+  buffer: rivBytes.buffer,
+  canvas: mascotCanvas,
+  autoplay: true,
+  stateMachines: 'State Machine 1',
+  onLoad: () => mascot.resizeDrawingSurfaceToCanvas(),
+});
+
+/* ---------- home gallery ---------- */
+const featured = [{ i: 0 }, { i: 1 }, { i: 2 }, { i: 3 }];   /* Jobi, Nothing, Pactto, Quest Up */
+
+document.getElementById('hp-grid').innerHTML = featured.map(f => {
+  const pr = projects[f.i];
+  return `<button class="hp-item" data-page="${pr.page}">
+    <span class="shot">
+      <video src="${pr.video}" autoplay muted loop playsinline></video>
+    </span>
+  </button>`;
+}).join('');
+
+document.querySelectorAll('.hp-item').forEach(el =>
+  el.addEventListener('click', () => goTo(el.dataset.page)));
+
+/* stagger the gallery in on first paint */
+[...document.querySelectorAll('.hp-item')].forEach((el, i) =>
+  setTimeout(() => el.classList.add('in'), 120 + i * 90));
+
+/* ---------- London clock ---------- */
+const clockEl = document.getElementById('clock');
+function tick() {
+  clockEl.textContent = new Date().toLocaleTimeString('en-GB', {
+    timeZone: 'Europe/London', hour12: false,
+  });
+}
+tick();
+setInterval(tick, 1000);
+
+/* ---------- case-study chrome ---------- */
+/* wrap every media element in a panel, captioned from its alt text */
+document.querySelectorAll('.case-media, .case-video').forEach(el => {
+  const fig = document.createElement('figure');
+  fig.className = 'case-figure';
+  el.parentNode.insertBefore(fig, el);
+  fig.appendChild(el);
+  /* alt stays for screen readers; data-nocaption hides the visible caption */
+  const cap = el.hasAttribute('data-nocaption') ? null : el.getAttribute('alt');
+  if (cap) {
+    const fc = document.createElement('figcaption');
+    fc.textContent = cap;
+    fig.appendChild(fc);
+  }
+});
+
+/* project mark above each case title — a real logo where one exists,
+   otherwise a letter mark */
+const PAGE_LOGOS = { jobi: 'assets/case-jobi/jobi-appicon.png' };
+/* projects with a real wordmark show it instead of the typeset title */
+const PAGE_WORDMARKS = { jobi: 'assets/case-jobi/jobi-wordmark.png' };
+document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
+  const page = t.closest('.page').id;
+  const name = PAGE_NAMES[page];
+  if (!name) return;
+  let logo;
+  if (PAGE_LOGOS[page]) {
+    logo = document.createElement('img');
+    logo.src = PAGE_LOGOS[page];
+    logo.alt = '';
+    logo.className = 'case-logo case-logo-img';
+  } else {
+    logo = document.createElement('div');
+    logo.className = 'case-logo';
+    logo.textContent = name[0];
+  }
+  const h1 = t.querySelector('h1');
+
+  /* swap the typeset title for the brand wordmark where we have one */
+  const mark = PAGE_WORDMARKS[page];
+  if (mark && h1) {
+    const img = document.createElement('img');
+    img.src = mark;
+    img.alt = name;
+    img.className = 'case-wordmark';
+    h1.textContent = '';
+    h1.appendChild(img);
+  }
+
+  /* icon and title sit side by side */
+  const head = document.createElement('div');
+  head.className = 'case-head';
+  t.insertBefore(head, t.firstElementChild);
+  head.appendChild(logo);
+  if (h1) head.appendChild(h1);
+});
+
+/* Collect the mark, title and description into one grid cell. Without this the
+   tall metadata column spans several rows and stretches them, which blows out
+   the spacing between the title and the paragraphs. */
+document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
+  const meta = t.querySelector('.case-meta');
+  if (!meta) return;
+  const main = document.createElement('div');
+  main.className = 'tldr-main';
+  /* start after the icon+title row so it stays a full-width band of its own —
+     the description and the metadata then share a row and align automatically */
+  const head = t.querySelector('.case-head');
+  let node = head ? head.nextSibling : t.firstChild;
+  while (node && node !== meta) {
+    const next = node.nextSibling;
+    main.appendChild(node);
+    node = next;
+  }
+  t.insertBefore(main, meta);
+});
+
+/* ---------- flip cards: insights show quotes, stats show their source ---------- */
+document.querySelectorAll('.insight[role="button"], .stat-ring[role="button"]').forEach(card => {
+  const flip = () => {
+    card.classList.toggle('flipped');
+    card.setAttribute('aria-pressed', card.classList.contains('flipped'));
+  };
+  card.addEventListener('click', e => {
+    if (e.target.closest('a')) return;   /* let source links through */
+    flip();
+  });
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+  });
+});
+
+/* ---------- case-study scroll reveal ---------- */
+document.querySelectorAll('.case [data-nav] > *').forEach(el => el.classList.add('reveal'));
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); revealObserver.unobserve(en.target); }
+  });
+}, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+document.getElementById('case-back').addEventListener('click', e => {
+  e.preventDefault();
+  goTo('home');
+});
+
+/* case-study side nav: smooth scroll (with snap fallback) + active highlight */
+const caseNavLinks = [...document.querySelectorAll('.case-nav a')];
+
+caseNavLinks.forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const target = document.querySelector(a.getAttribute('href'));
+  if (!target) return;
+  const from = window.scrollY;
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* if the smooth animation was throttled away, snap instead */
+  setTimeout(() => {
+    if (Math.abs(window.scrollY - from) < 10) target.scrollIntoView();
+    updateCaseActive();
+  }, 350);
+}));
+
+/* feature carousels (one per .carousel block) */
+document.querySelectorAll('.carousel').forEach(car => {
+  const vp = car.querySelector('.car-viewport');
+  const track = car.querySelector('.car-track');
+  const slides = [...track.children];
+  const count = slides.length;
+  let idx = 0;
+
+  /* tab bar, labelled from each slide's own heading */
+  const tabs = document.createElement('div');
+  tabs.className = 'car-tabs';
+  tabs.setAttribute('role', 'tablist');
+  const pill = document.createElement('span');
+  pill.className = 'car-pill';
+  tabs.appendChild(pill);
+
+  const btns = slides.map((slide, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'car-tab';
+    b.setAttribute('role', 'tab');
+    b.textContent = (slide.querySelector('h4') || {}).textContent || ('0' + (i + 1));
+    b.addEventListener('click', () => go(i));
+    tabs.appendChild(b);
+    slide.setAttribute('role', 'tabpanel');
+    return b;
+  });
+  car.insertBefore(tabs, car.firstChild);
+
+  const movePill = () => {
+    const b = btns[idx];
+    pill.style.width = b.offsetWidth + 'px';
+    pill.style.transform = 'translateX(' + b.offsetLeft + 'px)';
+  };
+
+  const go = i => {
+    idx = (i + count) % count;
+    track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+    btns.forEach((b, j) => {
+      b.classList.toggle('on', j === idx);
+      b.setAttribute('aria-selected', j === idx);
+      b.tabIndex = j === idx ? 0 : -1;
+    });
+    slides.forEach((sl, j) => sl.classList.toggle('on', j === idx));
+    movePill();
+    /* keep the active tab in view when the bar has to scroll */
+    btns[idx].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  };
+
+  /* arrow keys walk the tabs */
+  tabs.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault();
+    go(idx + (e.key === 'ArrowRight' ? 1 : -1));
+    btns[idx].focus();
+  });
+
+  /* drag / swipe: follow the finger, then settle on the nearest slide */
+  let startX = 0, dx = 0, dragging = false;
+  vp.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    dragging = true; startX = e.clientX; dx = 0;
+    track.style.transition = 'none';
+    vp.classList.add('dragging');
+    vp.setPointerCapture(e.pointerId);
+  });
+  vp.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    dx = e.clientX - startX;
+    /* resist at the two ends so the track never floats free */
+    if ((idx === 0 && dx > 0) || (idx === count - 1 && dx < 0)) dx *= 0.32;
+    track.style.transform = 'translateX(calc(' + (-idx * 100) + '% + ' + dx + 'px))';
+  });
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    vp.classList.remove('dragging');
+    track.style.transition = '';
+    const threshold = Math.min(90, vp.offsetWidth * 0.15);
+    if (dx <= -threshold) go(idx + 1);
+    else if (dx >= threshold) go(idx - 1);
+    else go(idx);
+    dx = 0;
+  };
+  vp.addEventListener('pointerup', endDrag);
+  vp.addEventListener('pointercancel', endDrag);
+
+  go(0);
+  /* the pill is measured, so it has to be re-placed when the box changes */
+  window.addEventListener('resize', movePill);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
+});
+
+function updateCaseActive() {
+  const cur = document.querySelector('.page.current');
+  const nav = cur && document.querySelector(`.case-nav[data-page="${cur.id}"]`);
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('a')];
+  const sections = [...cur.querySelectorAll('[data-nav]')];
+  if (!sections.length) return;
+  const line = window.scrollY + window.innerHeight * .3;
+  let current = sections[0];
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top + window.scrollY <= line) current = s;
+  });
+  links.forEach(a =>
+    a.classList.toggle('on', a.getAttribute('href') === '#' + current.id));
+}
+window.addEventListener('scroll', updateCaseActive, { passive: true });
+
+mascotCanvas.addEventListener('click', () => {
+  mascotCanvas.animate(
+    [{ transform: 'none' }, { transform: 'translateY(-22px)' }, { transform: 'none' }],
+    { duration: 420, easing: 'cubic-bezier(.3,1.6,.5,1)' }
+  );
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# local machine state, not part of the project
+.claude/settings.local.json
+
+# OS noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# source videos that are superseded by the compressed web versions.
+# Uncomment to carry the originals between machines as well.
+# assets/videos/jobi-trailer.mp4
