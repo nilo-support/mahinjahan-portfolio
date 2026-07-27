@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "portfolio",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8360", "--directory", "portfolio"],
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "portfolio", "-l", "8360"],
       "port": 8360
     }
   ]
