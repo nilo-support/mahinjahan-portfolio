@@ -464,10 +464,13 @@
     font-size: 15.5px; line-height: 1.65; font-weight: 400; color: var(--case-body);
   }
   /* Role / Timeline / Team / Skills in two columns beneath the intro */
+  /* one row, however many fields there are: auto-flow column means four
+     fields make four tracks and two make two, instead of leaving dead cells */
   .case-meta {
     margin-top: 44px;
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 24px; row-gap: 28px;
+    display: grid;
+    grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    column-gap: 18px; row-gap: 28px;
   }
   .case-meta > div { margin-bottom: 0; }
   .case-meta dt { font-size: 14px; font-weight: 500; color: var(--case-cap); line-height: 1.5; }
@@ -482,6 +485,18 @@
     margin: 0 auto;
     
   }
+  /* the two competitor audits sit side by side so they read as a comparison */
+  .comp-pair {
+    margin-top: 32px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+    align-items: start;
+  }
+  .comp-pair img { width: 100%; height: auto; display: block; }
+  /* at this column width two boards stop being legible — stack them */
+  @media (max-width: 700px) {
+    .comp-pair { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  }
+
   .case-figure figcaption {
     margin-top: 16px; text-align: center;
     font-size: 14px; color: var(--case-cap);
@@ -641,12 +656,12 @@
     position: relative;
     margin-top: 48px;
     background: var(--panel);
-    padding: 44px clamp(22px, 4vw, 40px) 96px;
+    padding: 40px clamp(22px, 4vw, 40px) 64px;
     text-align: center;
   }
   .hmw-mascot {
-    position: absolute; right: 20px; bottom: 0;
-    width: 88px; height: auto;
+    position: absolute; right: 18px; bottom: 6px;
+    width: 74px; height: auto;
   }
   @media (max-width: 700px) {
     .hmw-mascot { width: 74px; right: 14px; }
@@ -790,6 +805,8 @@
     }
     /* two 169px cards is not a grid, it is a squeeze */
     .pg-grid { grid-template-columns: minmax(0, 1fr); }
+    /* four tracks will not survive a phone — back to a 2x2 */
+    .case-meta { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .hmw-card { padding: 32px 20px 88px; }
     .case section .hmw-card p { font-size: 19px; line-height: 27px; }
   }
@@ -797,7 +814,7 @@
     /* the date column was taking a third of the width from the content */
     .timeline li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
     .tl-when { font-size: 13px; }
-    .case-meta { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+    .case-meta { grid-auto-flow: row; grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
     .case h1 { font-size: 27px; }
     .case h2 { font-size: 20px; }
     .case-wordmark { height: 30px; }
@@ -1254,6 +1271,8 @@
     <dl class="case-meta">
       <div><dt>Role</dt><dd>Designer &amp; developer</dd></div>
       <div><dt>Team</dt><dd>3 designers</dd></div>
+      <div><dt>Timeline</dt><dd>April &ndash; August 2026</dd></div>
+      <div><dt>Status</dt><dd>Shipped</dd></div>
     </dl>
 
     <video class="case-video" src="assets/videos/jobi-trailer-web.mp4" autoplay muted loop playsinline></video>
@@ -1353,14 +1372,17 @@
       <div class="eyebrow">Interviews</div>
       <h2>Five Job Seekers, All Mid-Hunt</h2>
       <p>We interviewed five job seekers mid-hunt, from four applications a week to thirty. We deliberately included the high-volume end: that is where the tools claim to help most, and where the strain shows first.</p>
-      <img class="case-media" src="assets/case-jobi/jobi-research-board.png?v=2" alt="Research board: persona, interview findings and frustrations from five job seekers" data-nocaption>
+      <img class="case-media" src="assets/case-jobi/jobi-research-board.png?v=3" alt="Research board from five interviews: a persona (Mark, 27, eight months in, applying to 10&ndash;30 roles a week across Excel, Notion and Google Docs); the headline finding that job seekers are drowning in repetition with no view of the whole search; 92% never finish an application; most applications get no reply; 15 minutes to 3 days per application; his goals and frustrations; and the resulting how-might-we." data-nocaption loading="lazy">
     </section>
 
     <section id="j-comp" data-nav>
       <div class="eyebrow">Competitive Analysis</div>
       <h2>The Tools Organise the Grind. None of Them Question It.</h2>
       <p>We audited the two tools people kept naming, Teal and Simplify Copilot. Both are competent at what they set out to do: autofill forms, track statuses, push volume higher. Neither treats the volume itself as the problem — which is exactly what our interviewees were describing.</p>
-      <img class="case-media" src="assets/case-jobi/jobi-comp-analysis.png" alt="Competitive analysis board comparing Teal and Simplify Copilot against Jobi" data-nocaption>
+      <div class="comp-pair">
+        <img src="assets/case-jobi/comp-teal.png" alt="Teal audit board: 4.9 stars from 3.1k ratings, 200,000 users. Screens showing its tracker, job description view, email templates and contacts." loading="lazy">
+        <img src="assets/case-jobi/comp-simplify.png" alt="Simplify audit board: 4.9 stars from 3.6k ratings, 500,000 users. Screens showing resume scoring, autofill, the job tracker and AI answer generation." loading="lazy">
+      </div>
     </section>
 
     <section id="j-analysis" data-nav>
@@ -1637,9 +1659,13 @@
 
       <h3>Interview Practice</h3>
       <p class="answers">Answers the fourth insight from the other side: if replies are scarce, the few that come have to count.</p>
-      <p>A voice-driven mock interview that role-plays the real thing: questions, follow-ups, and feedback in the moment.</p>
-      <p>The first time you say the answer out loud isn't in the actual room.</p>
-      <video class="case-media" src="assets/case-jobi/jobi-interview.mp4" autoplay muted loop playsinline></video>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-interview.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>The first time you say it out loud isn't in the real room</h4>
+          <p>A voice-driven mock interview that role-plays the real thing: questions, follow-ups, and feedback in the moment.</p>
+        </div>
+      </div>
       <div class="decision">
         <div class="decision-num">Decision 04</div>
         <h3>Every Voice Lesson Works Fully Typed</h3>
@@ -1652,7 +1678,13 @@
 
       <h3>The Tracker</h3>
       <p class="answers">Answers insight one: statuses are logged by hand and go stale.</p>
-      <p>Trackers fail because logging is manual, so the fix was to stop asking people to log. One click on any posting captures the role into a single pipeline, with follow-up reminders so nothing goes quiet because you forgot to chase it.</p>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-tracker.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>One pipeline, from saved through to offer</h4>
+          <p>Trackers fail because logging is manual, so the fix was to stop asking people to log. One click on any posting captures the role, with follow-up reminders so nothing goes quiet because you forgot to chase it.</p>
+        </div>
+      </div>
       <div class="case-cards">
         <div class="case-card">
           <h4>Captured, not typed</h4>
@@ -1667,7 +1699,6 @@
           <p>The cover letter generated for that role is saved against it, so you walk into the call knowing exactly what you claimed. A spreadsheet can hold this, but not without becoming unusable.</p>
         </div>
       </div>
-      <video class="case-media" src="assets/case-jobi/jobi-tracker.mp4" autoplay muted loop playsinline></video>
       <h3>The Fourth Insight: Silence Is the One We Cannot Fix</h3>
       <p class="answers">Answers insight four: most applications end in silence.</p>
       <p>Ghosting is an employer behaviour: no feature makes a company reply, and a product claiming otherwise would be lying. When the problem cannot be removed, the only honest goal is to make it cost less. Three things already in the product carry that weight.</p>
@@ -1701,7 +1732,7 @@
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
       <h2>Design, Build, and Lead in One Loop</h2>
       <p>The three of us ran research, ideation and design together in Figma. The build I took on alone: every screen went into Claude Code — loaded with the interviews, the affinity map and the reasoning behind every decision — and came out as working software.</p>
-      <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="Figma ideation: mascot directions, mid-fi flows, lo-fi wireframes and moodboards">
+      <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="The Figma board, in five labelled sections: mascot ideation sketches, mascot designs and app-icon variants, mid-fi screen designs, lo-fi and reference layouts, and moodboards." loading="lazy">
       <div class="case-cards">
         <div class="case-card"><h4>One Shared Context</h4><p>Claude Code held every artefact and research piece, so the build never drifted from the why. The design and the code came from the same source of truth.</p></div>
         <div class="case-card"><h4>Crossroads Went Back to the Evidence</h4><p>When two paths were both reasonable, we did not argue from taste. We fell back on a research finding, or on an earlier decision we had already reasoned through, and stayed consistent.</p></div>
@@ -2153,9 +2184,22 @@ mascotCanvas.addEventListener('click', () => {
     d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'
   }" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
+  /* Only *consecutive* frames group together. A section can hold several
+     separate frames (the chat set, then the interview, then the tracker);
+     sweeping them all into one track would splice unrelated features. */
+  const runs = [];
   document.querySelectorAll('.case section').forEach(section => {
-    const frames = [...section.children].filter(el => el.classList.contains('feature-frame'));
-    if (frames.length < 2) return;
+    let run = [];
+    const flush = () => { if (run.length >= 2) runs.push(run); run = []; };
+    [...section.children].forEach(el => {
+      if (el.classList.contains('feature-frame')) run.push(el);
+      else flush();
+    });
+    flush();
+  });
+
+  runs.forEach(frames => {
+    const section = frames[0].parentElement;
 
     const carousel = document.createElement('div');
     carousel.className = 'carousel';
