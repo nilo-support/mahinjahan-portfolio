@@ -20,20 +20,22 @@
   }
 
   :root {
-    /* site-wide dark theme; the loader/curtain green stays as the brand moment */
-    --bg: #0f1211;          /* page ground */
-    --bg-deep: #3ea86a;     /* loader / transition green */
-    --hero-ink: #8ed3a2;    /* giant type green */
-    --ink: #f2f5f3;         /* headings / strong text */
-    --ink-soft: #b4bcb6;
-    --accent: #6fd493;      /* links / highlights — lifted to sit on dark */
-    --card-radius: 14px;
+    /* Palette after azumbrunnen.me: a true black ground, near-black tiles that
+       step up from it, white type, and one vivid accent doing all the work. */
+    --bg: #000000;          /* page ground */
+    --bg-deep: #0b0b12;     /* loader / transition sweep */
+    --hero-ink: #FF8A65;    /* giant type */
+    --ink: #ffffff;         /* headings / strong text */
+    --ink-soft: #b8b8c4;
+    /* warm coral: picks up the salmon in the Jobi app icon, and reads human
+       next to the mascot in a way the cold blue did not */
+    --accent: #FF8A65;
     /* case pages: panels step up from the ground, cards step up from panels */
-    --panel: #1a1e1c;       /* was var(--panel) */
-    --card: #242a27;        /* was #fff */
-    --track: #2b312d;       /* ring track / hairlines, was var(--track) */
-    --case-body: #9aa39d;   /* body copy, was var(--case-body) */
-    --case-cap: #737d77;    /* captions / eyebrows, was var(--case-cap) */
+    --panel: #121217;       /* their tile colour */
+    --card: #1c1c23;
+    --track: #2c2c36;       /* ring track / hairlines */
+    --case-body: #9b9ba8;   /* body copy */
+    --case-cap: #8a8a99;    /* captions / eyebrows */
     /* home gallery: near-white paper, quiet grey type */
     --hp-bg: #fbfcfb;
     --hp-ink: #575757;
@@ -72,7 +74,7 @@
     width: 64px; height: 64px;
     border: 6px solid transparent;
     border-top-color: #fff0f4;
-    border-radius: 50%;
+    border-radius: 50%;   /* a spinner is a circle — exempt from the square-corner rule */
     animation: spin 0.9s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -114,11 +116,11 @@
   /* Dark homepage tokens — the whole site is dark now, so these just tune the
      home rail's greys; --accent comes from :root. */
   body.home-active {
-    --hp-bg: #0f1211;
-    --hp-ink: #9aa39d;
-    --hp-ink-strong: #f2f5f3;
-    --hp-shot: #1a1e1c;
-    --hp-rule: #2b312d;
+    --hp-bg: #000000;
+    --hp-ink: #9b9ba8;
+    --hp-ink-strong: #ffffff;
+    --hp-shot: #121217;
+    --hp-rule: #2c2c36;
   }
 
   .hp {
@@ -155,10 +157,45 @@
     text-decoration: none; cursor: pointer;
     transition: color .18s var(--ease-out);
   }
-  .hp-list i { font-style: normal; opacity: .55; transition: transform .22s var(--ease-out), opacity .18s; }
+  /* Interactive elements answer the hover themselves — the same small nudge
+     and colour shift the back chevron uses. The cursor stays quiet. */
+  .hp-list a, .hp-list button, .case-nav a {
+    transition: transform .18s var(--ease-out), color .18s ease, opacity .18s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hp-list a:hover, .hp-list button:hover { transform: translateX(4px); }
+    .case-nav a:hover { transform: translateX(3px); }
+  }
+
+  /* the sprout grows from its stem when you land on a link */
+  .hp-list .sprout {
+    width: 20px; height: auto; fill: var(--accent);
+    opacity: .45;
+    transform: scale(.6);
+    transform-origin: 50% 100%;
+    transition: transform .3s var(--ease-out), opacity .18s;
+  }
+  @keyframes sprout-grow {
+    from { transform: scale(.55) rotate(-10deg); }
+    to   { transform: scale(1)   rotate(-5deg); }
+  }
+  @keyframes sprout-sway {
+    from { transform: scale(1) rotate(-5deg); }
+    to   { transform: scale(1) rotate(5deg); }
+  }
   @media (hover: hover) {
     .hp-list a:hover, .hp-list button:hover { color: var(--accent); }
-    .hp-list a:hover i, .hp-list button:hover i { opacity: 1; transform: translateX(3px); }
+    .hp-list a:hover .sprout, .hp-list button:hover .sprout {
+      opacity: 1;
+      /* pop up with a spring, then keep gently swaying in the breeze */
+      animation: sprout-grow .38s cubic-bezier(.34, 1.56, .64, 1) forwards,
+                 sprout-sway 1.6s ease-in-out .38s infinite alternate;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-list a:hover .sprout, .hp-list button:hover .sprout {
+      animation: none; transform: scale(1); opacity: 1;
+    }
   }
   /* keyed to the input device, not the width — tablets are touch at 768px too */
   @media (hover: none) {
@@ -208,9 +245,30 @@
     aspect-ratio: 16 / 9; flex: 0 0 auto;   /* never let the row squash the ratio */
     background: var(--hp-shot);
   }
-  .hp-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .hp-item .shot { transition: opacity .3s var(--ease-out); }
-  @media (hover: hover) { .hp-item:hover .shot { opacity: .86; } }
+  .hp-item .shot { position: relative; }
+  .hp-item video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: filter .4s var(--ease-out), transform .5s var(--ease-out);
+  }
+  /* the tile names itself on hover: the footage falls back behind frosted
+     glass so the label carries the frame */
+  .hp-item .hp-label {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 12px;
+    font-size: 15px; font-weight: 500; letter-spacing: .04em;
+    color: #fff;
+    opacity: 0;
+    transition: opacity .35s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .hp-item:hover video { filter: blur(9px) brightness(.42) saturate(.9); transform: scale(1.04); }
+    .hp-item:hover .hp-label { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-item video { transition: none; }
+    .hp-item:hover video { transform: none; }
+  }
 
 
 
@@ -268,17 +326,65 @@
   .wrap { max-width: 640px; margin: 0 auto; padding: 140px 24px 100px; }
 
   /* ---------- About ---------- */
-  #about h1 { font-size: 34px; font-weight: 800; }
-  #about .alias { color: var(--accent); font-size: 19px; font-weight: 700; margin-top: 2px; }
-  #about .role { margin-top: 26px; font-size: 17px; font-weight: 600; }
-  #about .bio { margin-top: 60px; display: grid; gap: 26px; }
-  #about .bio p { font-size: 16.5px; line-height: 1.75; color: var(--ink-soft); }
+  /* About and Playground borrow the case column so the whole site reads as one
+     document; these are the pieces only they use. */
+  .a-link { color: var(--accent); text-decoration: none; }
+  @media (hover: hover) and (pointer: fine) { .a-link:hover { color: var(--ink); } }
   #about .peace { margin-top: 40px; font-size: 22px; }
+
+  /* a plain two-column ledger: when on the left, what on the right */
+  .timeline { list-style: none; margin-top: 24px; display: grid; gap: 1px; }
+  .timeline li {
+    display: grid; grid-template-columns: 116px minmax(0, 1fr);
+    gap: 18px; align-items: baseline;
+    padding: 16px 0;
+    border-top: 1px solid var(--track);
+  }
+  .timeline li:last-child { border-bottom: 1px solid var(--track); }
+  .tl-when { font-size: 14px; font-weight: 500; color: var(--case-cap); }
+  .tl-what { font-size: 15.5px; line-height: 1.6; color: var(--case-body); }
+  .tl-what b { color: var(--ink); font-weight: 600; }
+
+  .chips { list-style: none; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li {
+    padding: 7px 12px;
+    border: 1px solid var(--track);
+    font-size: 14px; color: var(--ink-soft);
+  }
+
+  /* playground: a two-up grid of experiment cards, media over caption */
+  .pg-grid {
+    margin-top: 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+  }
+  .pg-item { background: var(--panel); }
+  .pg-media {
+    position: relative; aspect-ratio: 4 / 3;
+    background: var(--card);
+  }
+  /* the slot number stands in until real media lands here */
+  .pg-media::after {
+    content: attr(data-mark);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 600; letter-spacing: .04em;
+    color: var(--track);
+  }
+  .pg-body { padding: 16px 18px 20px; }
+  .pg-tag {
+    display: inline-block; margin-bottom: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .pg-body h4 { font-size: 16px; font-weight: 600; color: var(--ink); }
+  .case section .pg-body p {
+    margin-top: 6px; font-size: 14.5px; line-height: 1.55; color: var(--case-body);
+  }
 
   .card {
     position: relative; display: block; text-decoration: none;
     break-inside: avoid; margin-bottom: 18px;
-    border-radius: var(--card-radius); overflow: hidden;
+    overflow: hidden;
     box-shadow: 0 4px 16px rgba(40, 120, 70, .10);
     transition: transform .22s ease, box-shadow .22s ease;
     cursor: pointer;
@@ -300,16 +406,19 @@
     z-index: 40;
     display: none; align-items: center; justify-content: center;
     width: 40px; height: 40px;
-    font-size: 17px; color: var(--ink-soft);
-    text-decoration: none;
-    background: var(--card); border-radius: 999px;
+    /* the chevron carries it — no chip, no frame */
+    color: var(--case-cap); text-decoration: none;
+    background: none; border: 0;
     transition: transform .2s, color .2s;
   }
   .case-back.show { display: inline-flex; }
+  .case-back svg { width: 22px; height: 22px; display: block; }
   .case-back { transition: transform .16s var(--ease-out), color .18s ease; }
   .case-back:active { transform: scale(0.94); }
+  /* no nudge here — the cursor wraps this one, and a moving target would
+     desync from the wrap it was measured against */
   @media (hover: hover) and (pointer: fine) {
-    .case-back:hover { transform: translateX(-4px); color: var(--accent); }
+    .case-back:hover { color: var(--ink); }
   }
   .cb-text { display: none; }
   @media (max-width: 700px) { .case-back { top: 14px; left: 12px; } }
@@ -329,7 +438,7 @@
   }
   .case-head h1 { margin: 0; }
   .case-logo {
-    width: 54px; height: 54px; border-radius: 14px;
+    width: 54px; height: 54px; 
     background: var(--accent); color: var(--bg);
     display: flex; align-items: center; justify-content: center;
     font-size: 24px; font-weight: 700; letter-spacing: -.02em;
@@ -337,46 +446,32 @@
   }
   /* a real app icon supplies its own artwork and background */
   .case-logo-img { background: none; object-fit: contain; display: block; }
-  /* 992 wide with 24px gutters => a 944px content area, centred on the page */
+  /* A single narrow reading column, centred: 690px of content inside 20px
+     gutters. Everything — text and media alike — runs to that same width, so
+     the page reads as one uninterrupted measure. */
   .case {
     margin: 0 auto;
-    max-width: 992px;
-    padding: 116px 24px 180px;
+    max-width: 730px;
+    padding: 150px 20px 250px;
   }
-  /* intro: description on the left, metadata in a column beside it */
-  /* the intro spans the same width as the media below it */
-  [id$="-tldr"] {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(150px, 250px);
-    column-gap: 56px; align-items: start;
-  }
-  [id$="-tldr"] > * { grid-column: 1; }
-  /* the icon+title is its own full-width band; description and metadata then
-     share the next row, so they align without any magic offset */
-  [id$="-tldr"] > .case-head { grid-column: 1 / -1; }
-  .tldr-main { grid-column: 1; }
-  /* the head already supplies the gap, so the first paragraph starts flush
-     with the metadata column beside it */
+  /* the intro is a plain stack now; the metadata sits under it as a 2x2 grid */
   .tldr-main > :first-child { margin-top: 0; }
-  [id$="-tldr"] > .case-meta { grid-column: 2; margin-top: 0; }
-  /* media and stat rows run the full content width, not just the text column */
-  [id$="-tldr"] > .case-figure,
-  [id$="-tldr"] > .case-stats,
-  [id$="-tldr"] > .case-cards { grid-column: 1 / -1; }
 
-  .case h1 { font-size: 20.8px; font-weight: 600; color: var(--ink); }
-  .case-wordmark { display: block; height: 42px; width: auto; }
+  .case h1 { font-size: 32px; font-weight: 400; line-height: 1.2; color: var(--ink); }
+  .case-wordmark { display: block; height: 38px; width: auto; }
   .case-sub {
     margin-top: 16px;
-    font-size: 18px; line-height: 27px; font-weight: 400; color: var(--case-body);
+    font-size: 15.5px; line-height: 1.65; font-weight: 400; color: var(--case-body);
   }
-  .case-meta { display: block; }
-  .case-meta > div { margin-bottom: 16px; }
-  /* line-height chosen so the label's half-leading (25-16)/2 matches the
-     description's (27-18)/2 — otherwise the text sits ~3px high despite the
-     boxes starting on the same line */
-  .case-meta dt { font-size: 16px; font-weight: 500; color: var(--ink); line-height: 25px; }
-  .case-meta dd { margin-top: 2px; font-size: 16px; font-weight: 400; color: var(--ink-soft); opacity: .8; }
+  /* Role / Timeline / Team / Skills in two columns beneath the intro */
+  .case-meta {
+    margin-top: 44px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px; row-gap: 28px;
+  }
+  .case-meta > div { margin-bottom: 0; }
+  .case-meta dt { font-size: 14px; font-weight: 500; color: var(--case-cap); line-height: 1.5; }
+  .case-meta dd { margin-top: 6px; font-size: 15.5px; font-weight: 500; color: var(--ink); }
 
   /* Media sits on a large soft panel with the asset centred inside it —
      the panel runs wider than the text column, as in the reference. */
@@ -385,7 +480,7 @@
   .case-figure > .case-video {
     display: block; width: 100%; height: auto;
     margin: 0 auto;
-    border-radius: 8px;
+    
   }
   .case-figure figcaption {
     margin-top: 16px; text-align: center;
@@ -395,38 +490,40 @@
   /* same card treatment as the other card rows */
   .case-stats {
     margin-top: 32px; display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    grid-template-columns: minmax(0, 1fr); gap: 12px;
   }
-  .stat { background: var(--panel); border-radius: 12px; padding: 20px; }
+  .stat { background: var(--panel); padding: 20px; }
   .stat b { display: block; font-size: 28px; font-weight: 600; color: var(--accent); }
   .stat span { display: block; margin-top: 8px; font-size: 15px; line-height: 22px; font-weight: 400; color: var(--case-body); }
 
   /* ---------- research artefacts ---------- */
   /* Secondary-research figures: rings inside a recessed panel, so the numbers
      read as a cited exhibit rather than as the author's own claims. */
+  /* the two cards are the exhibit; they don't need a frame around them too */
   .stat-panel {
-    margin-top: 32px; background: var(--panel); border-radius: 12px;
-    padding: clamp(24px, 4vw, 48px);
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(12px, 2vw, 20px);
+    margin-top: 32px; background: none; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
   /* each figure flips to the study it came from */
   .stat-ring { perspective: 1200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .stat-ring:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 10px; }
+  .stat-ring:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .stat-inner {
-    position: relative; height: 100%; min-height: 282px;
+    position: relative; height: 100%; min-height: 236px;
     transform-style: preserve-3d;
     transition: transform .6s var(--ease-in-out);
   }
   .stat-ring.flipped .stat-inner { transform: rotateY(180deg); }
   .stat-face, .stat-source {
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    background: var(--card); border-radius: 10px;
+    background: var(--card); 
   }
   .stat-face {
     position: relative; height: 100%; box-sizing: border-box;
-    padding: 28px 20px 24px;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 24px 22px 22px;
+    /* left-aligned now that the figure carries its own left-set number */
+    display: flex; flex-direction: column; align-items: stretch; text-align: left;
+    justify-content: center;
   }
   .stat-source {
     position: absolute; inset: 0;
@@ -453,33 +550,56 @@
   }
   .stat-ring .flip-hint { font-size: 12px; background: var(--panel); }
   @media (prefers-reduced-motion: reduce) { .stat-inner { transition: none; } }
-  .stat-ring figure { position: relative; width: 116px; height: 116px; }
-  .stat-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-  .ring-track { fill: none; stroke: var(--track); stroke-width: 9; }
-  .ring-fill {
-    fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round;
-    stroke-dasharray: 327;
-    stroke-dashoffset: 327;                 /* undrawn until the card reveals */
-    transition: stroke-dashoffset 1.1s var(--ease-out) .15s;
+  /* Bespoke figures rather than two identical donuts. Both carry their own
+     number and draw themselves in as the card reveals, but they read as
+     different measurements: one you can count, one you can weigh. */
+  .stat-viz { width: 100%; height: auto; display: block; }
+  .sv-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 38px; font-weight: 600; letter-spacing: -.02em; fill: var(--ink);
   }
-  .reveal.in .ring-fill { stroke-dashoffset: var(--off); }
-  .stat-ring figcaption {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 23px; font-weight: 600; color: var(--ink);
+
+  /* A — 25 ticks, 18 lit: a unit chart you can literally count */
+  .sv-tick { fill: var(--track); }
+  .sv-tick.on {
+    fill: var(--accent);
+    opacity: 0; transform: scaleY(.35); transform-origin: center bottom;
+    transition: opacity .3s var(--ease-out), transform .45s var(--ease-out);
+    transition-delay: calc(var(--i) * 34ms);
   }
+  .reveal.in .sv-tick.on { opacity: 1; transform: none; }
+
+  /* B — one continuous measure, wiped to 55% with a tick at the split */
+  .sv-track { fill: var(--track); }
+  .sv-clip { clip-path: inset(0 45% 0 0); }   /* the 55% share */
+  .sv-fill {
+    fill: var(--accent);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform 1s var(--ease-out) .15s;
+  }
+  .reveal.in .sv-fill { transform: none; }
+  .sv-mark {
+    stroke: var(--ink); stroke-width: 2;
+    opacity: 0; transition: opacity .4s var(--ease-out) .9s;
+  }
+  .reveal.in .sv-mark { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sv-tick.on, .sv-fill, .sv-mark { transition: none; opacity: 1; transform: none; }
+  }
+
   .case section .stat-ring p {
-    margin-top: 16px; max-width: 22ch;
+    margin-top: 18px; max-width: 26ch;
     font-size: 14px; line-height: 21px; color: var(--case-body);
   }
 
   /* the questions the interviews were built to answer */
   .focus-grid {
     margin-top: 32px; display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    grid-template-columns: minmax(0, 1fr); gap: 12px;
   }
   .focus {
-    background: var(--panel); border-radius: 12px; padding: 24px 22px 26px;
+    background: var(--panel); padding: 24px 22px 26px;
   }
   .focus .num {
     font-size: 13px; font-weight: 600; letter-spacing: .08em;
@@ -494,49 +614,50 @@
     .stat-panel, .focus-grid { grid-template-columns: minmax(0, 1fr); }
   }
 
-  /* 82px between sections, 24px between blocks inside one */
-  .case section { margin-top: 82px; }
-  .case section > * + * { margin-top: 24px; }
-  .eyebrow + h2 { margin-top: 8px !important; }
+  /* 100px between sections, 20px between blocks inside one */
+  .case section { margin-top: 100px; }
+  .case section > * + * { margin-top: 20px; }
+  .eyebrow + h2 { margin-top: 10px !important; }
   .eyebrow {
     display: flex; align-items: center; gap: 7px;
-    font-size: 16px; font-weight: 400; color: var(--case-cap);
+    font-size: 14px; font-weight: 500; color: var(--case-cap);
+    letter-spacing: .008em;
   }
   .eyebrow svg { display: none; }   /* the reference label is plain text */
-  /* text runs the full content width, matching the media panels */
-  /* Hierarchy comes from weight AND colour: headings sit near-black at a heavier
+  /* Hierarchy comes from weight AND colour: headings sit near-white at a heavier
      weight, body text drops to a mid grey so the headings read first. */
   .case h2 {
-    font-size: 20.8px; font-weight: 600; line-height: 1.35; color: var(--ink);
+    font-size: 22.4px; font-weight: 500; line-height: 1.4; color: var(--ink);
   }
-  .case h3 { margin-top: 48px; font-size: 18px; font-weight: 600; color: var(--ink); }
+  .case h3 { margin-top: 56px; font-size: 18px; font-weight: 500; color: var(--ink); }
   .case section p {
-    font-size: 18px; line-height: 27px; font-weight: 400; color: var(--case-body);
+    font-size: 15.5px; line-height: 1.65; font-weight: 400; color: var(--case-body);
   }
 
-  /* the section's climax: the reframe, centred on a card */
+  /* the section's climax: the reframe, centred on a card. The mascot sits in
+     its own band below the copy — in this column width there isn't room for it
+     to share a line with the text without colliding. */
   .hmw-card {
     position: relative;
     margin-top: 48px;
-    background: var(--panel); border-radius: 12px;
-    padding: 48px clamp(24px, 6vw, 64px);
+    background: var(--panel);
+    padding: 44px clamp(22px, 4vw, 40px) 96px;
     text-align: center;
   }
   .hmw-mascot {
-    position: absolute; right: 28px; bottom: 0;
-    width: 118px; height: auto;
+    position: absolute; right: 20px; bottom: 0;
+    width: 88px; height: auto;
   }
   @media (max-width: 700px) {
-    .hmw-card { padding-bottom: 104px; }
-    .hmw-mascot { width: 84px; right: 16px; }
+    .hmw-mascot { width: 74px; right: 14px; }
   }
   .hmw-card .tag {
     font-size: 13px; font-weight: 700;
     letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
   }
   .case section .hmw-card p {
-    margin: 12px auto 0; max-width: 620px;
-    font-size: 26px; line-height: 36px; font-weight: 600;
+    margin: 12px auto 0; max-width: 520px;
+    font-size: 22px; line-height: 30px; font-weight: 600;
     letter-spacing: -.01em; color: var(--ink);
   }
   .hmw-card span { display: block; margin-top: 16px; font-size: 15px; color: var(--case-cap); }
@@ -566,14 +687,14 @@
   .insights {
     margin-top: 24px;
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    gap: 12px;
   }
   .insight-num { font-size: 15px; font-weight: 400; color: var(--case-cap); }
   .insight h4 { margin-top: 8px; font-size: 19px; font-weight: 600; line-height: 1.35; color: var(--ink); }
   .case section .insight p { margin-top: 8px; font-size: 16px; line-height: 24px; color: var(--case-body); }
   /* each card flips to the interview quotes behind its finding */
   .insight { perspective: 1200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .insight:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
+  .insight:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .insight-inner {
     position: relative; height: 100%;
     transform-style: preserve-3d;
@@ -585,7 +706,7 @@
   .insight-back {
     position: absolute; inset: 0;
     transform: rotateY(180deg);
-    background: var(--panel); border-radius: 12px;
+    background: var(--panel); 
     padding: 28px;
     display: flex; flex-direction: column; justify-content: center; gap: 16px;
     overflow: hidden;
@@ -596,7 +717,7 @@
   .insight-back cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; color: var(--case-cap); }
   .flip-hint {
     position: absolute; top: 12px; right: 12px;
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 28px; height: 28px; 
     background: var(--card); color: var(--accent);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px;
@@ -606,7 +727,7 @@
   .insight-figure {
     position: relative;
     margin-top: 0; height: 100%; box-sizing: border-box;
-    background: var(--panel); border-radius: 12px;
+    background: var(--panel); 
     padding: 24px 24px 28px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: space-between;
@@ -620,22 +741,22 @@
   .insight-cap b { color: var(--ink); font-weight: 600; }
   @media (max-width: 760px) { .insights { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
 
-  .case-cards { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .case-card { background: var(--panel); border-radius: 12px; padding: 20px; }
+  .case-cards { margin-top: 32px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .case-card { background: var(--panel); padding: 20px; }
   .case-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); }
   .case section .case-card p { margin-top: 8px; font-size: 15px; line-height: 22px; color: var(--case-body); }
 
-  .takeaway { margin-top: 24px; background: var(--panel); border-radius: 12px; padding: 22px 24px; }
+  .takeaway { margin-top: 24px; background: var(--panel); padding: 22px 24px; }
   .takeaway .tag { font-size: 14px; font-weight: 400; color: var(--case-cap); }
   .takeaway h4 { margin-top: 8px; font-size: 17px; font-weight: 600; }
   .case section .takeaway p { margin-top: 8px; font-size: 16px; line-height: 24px; color: var(--ink-soft); }
 
   @media (max-width: 640px) { .case-stats { grid-template-columns: 1fr; } }
   .case-card video {
-    width: 100%; margin-top: 12px; border-radius: 8px; display: block;
+    width: 100%; margin-top: 12px; display: block;
     aspect-ratio: 16 / 9; object-fit: cover; background: var(--panel);
   }
-  .case-card img { width: 100%; margin-top: 12px; border-radius: 8px; display: block; }
+  .case-card img { width: 100%; margin-top: 12px; display: block; }
   .case section, #c-tldr { scroll-margin-top: 90px; }
 
   /* Appear animation: opacity 0 -> 1 with a 16px rise. Entrances use ease-out
@@ -653,14 +774,34 @@
     .reveal.in { transition: opacity .3s ease; transition-delay: 0ms; }
   }
 
-  /* stack the intro on narrower screens */
-  @media (max-width: 1180px) {
-    .case { margin-left: auto; margin-right: auto; }
-    [id$="-tldr"] { grid-template-columns: minmax(0, 1fr); }
-    .tldr-main { grid-row: auto; }
-    [id$="-tldr"] > .case-meta { grid-column: 1; grid-row: auto; margin-top: 32px;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
-    .case-meta > div { margin-bottom: 0; }
+  /* ---------- narrow screens ----------
+     The reading column is already narrow, so most of the work here is turning
+     the remaining side-by-side pairs into stacks before they get squeezed. */
+  @media (max-width: 700px) {
+    .case { padding-top: 96px; padding-bottom: 140px; }
+    /* the back chevron is fixed and the page scrolls under it — without this
+       fade it sits on top of whatever text happens to pass beneath. It stays
+       below the chevron (z 40) and above the content. */
+    body.case-active::before {
+      content: ''; position: fixed; inset: 0 0 auto 0; height: 88px; z-index: 39;
+      /* opaque for the chevron's own band, then a fade so the cut is invisible */
+      background: linear-gradient(var(--bg) 0 58px, transparent 88px);
+      pointer-events: none;
+    }
+    /* two 169px cards is not a grid, it is a squeeze */
+    .pg-grid { grid-template-columns: minmax(0, 1fr); }
+    .hmw-card { padding: 32px 20px 88px; }
+    .case section .hmw-card p { font-size: 19px; line-height: 27px; }
+  }
+  @media (max-width: 560px) {
+    /* the date column was taking a third of the width from the content */
+    .timeline li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .tl-when { font-size: 13px; }
+    .case-meta { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+    .case h1 { font-size: 27px; }
+    .case h2 { font-size: 20px; }
+    .case-wordmark { height: 30px; }
+    .case-logo { width: 44px; height: 44px; }
   }
 
   /* Design decisions, numbered so they read as one running series */
@@ -671,11 +812,13 @@
     text-transform: uppercase; color: var(--accent);
   }
   .case .decision h3 { margin-top: 6px; }
-  .decision .case-cards { margin-top: 20px; }
+  /* .case + class + class outguns the zeroing reset above — plain
+     .decision .case-cards loses to it and the cards land flush on the h3 */
+  .case .decision .case-cards { margin-top: 20px; }
   /* one call is still open, so it is marked rather than dressed as settled */
   .decision-open .decision-num::after {
     content: 'Still open'; margin-left: 10px;
-    padding: 2px 8px; border-radius: 999px;
+    padding: 2px 8px; 
     background: var(--panel); color: var(--case-cap);
     font-size: 11px; letter-spacing: .04em;
   }
@@ -687,59 +830,83 @@
   }
   .case section h3 + p.answers { margin-top: 8px; }
 
-  /* feature carousel: named tabs instead of blind arrows, and it drags */
-  .carousel { margin-top: 32px; }
+  /* Feature frames: the media sits open on a quiet stage, and the caption
+     hangs off its bottom edge as a frosted panel — joined to the video
+     rather than boxed around it. */
+  .feature-frame { margin-top: 24px; }
 
-  .car-tabs {
-    position: relative;
-    display: flex; gap: 2px; margin-bottom: 14px; padding: 4px;
-    background: var(--panel); border-radius: 999px;
-    width: fit-content; max-width: 100%;
-    overflow-x: auto; scrollbar-width: none;
+  /* ---------- feature carousel ----------
+     Built at runtime from consecutive .feature-frame blocks, so the markup
+     stays a plain readable stack if the script never runs. Minimal chrome:
+     bare chevrons, dots, and the drag itself. */
+  .carousel { margin-top: 24px; }
+  .car-viewport { overflow: hidden; touch-action: pan-y; }
+  .car-viewport.dragging { user-select: none; }
+  .car-track {
+    display: flex; will-change: transform;
+    transition: transform .55s var(--ease-out);
   }
-  .car-tabs::-webkit-scrollbar { display: none; }
-  .car-tab {
-    position: relative; z-index: 1;
-    border: 0; background: none; cursor: pointer;
-    padding: 8px 16px; border-radius: 999px;
-    font: inherit; font-size: 14px; font-weight: 500;
-    color: var(--case-cap); white-space: nowrap;
-    transition: color .22s var(--ease-out);
+  .car-track.no-anim { transition: none; }   /* while a finger is down */
+  .car-track > .feature-frame { flex: 0 0 100%; margin-top: 0; }
+  /* inactive slides sit back so the current one reads as the subject */
+  .car-track > .feature-frame { opacity: .32; transition: opacity .45s var(--ease-out); }
+  .car-track > .feature-frame.on { opacity: 1; }
+
+  .car-ui {
+    margin-top: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
   }
-  .car-tab.on { color: var(--ink); }
-  .car-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .car-arrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; padding: 0;
+    border: 0; background: none; color: var(--case-cap);
+    transition: color .2s ease, opacity .2s ease;
+  }
+  .car-arrow svg { width: 17px; height: 17px; display: block; }
+  .car-arrow:disabled { opacity: .25; }
+  .car-arrow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (hover: hover) and (pointer: fine) {
-    .car-tab:not(.on):hover { color: var(--ink); }
-  }
-  /* the white lozenge slides between tabs rather than snapping */
-  .car-pill {
-    position: absolute; left: 0; top: 4px; bottom: 4px; z-index: 0;
-    border-radius: 999px; background: var(--card);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 3px 10px rgba(0, 0, 0, .2);
-    transition: transform .4s var(--ease-out), width .4s var(--ease-out);
+    .car-arrow:not(:disabled):hover { color: var(--ink); }
   }
 
-  .car-viewport {
-    overflow: hidden; border-radius: 16px; background: var(--panel);
-    cursor: grab; touch-action: pan-y;
+  .car-dots { display: flex; align-items: center; gap: 9px; }
+  .car-dot {
+    width: 6px; height: 6px; padding: 0; border: 0;
+    border-radius: 50%;            /* a dot is a dot — not a rounded corner */
+    background: var(--track);
+    transition: background .25s ease, transform .25s var(--ease-out);
   }
-  .car-viewport.dragging { cursor: grabbing; user-select: none; }
-  .car-track { display: flex; transition: transform .5s var(--ease-out); }
-  .car-slide {
-    flex: 0 0 100%; padding: clamp(14px, 2.4vw, 30px); box-sizing: border-box;
-    opacity: .35; transition: opacity .45s var(--ease-out);
+  .car-dot.on { background: var(--accent); transform: scale(1.3); }
+  .car-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) {
+    .car-dot:not(.on):hover { background: var(--ink-soft); }
   }
-  .car-slide.on { opacity: 1; }
-  .car-slide video {
-    width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
-    border-radius: 8px; display: block; background: var(--panel);
-  }
-  /* the tab already names the slide */
-  .car-slide h4 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .case section .car-slide p { margin-top: 16px; font-size: 15px; line-height: 1.6; max-width: 620px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .car-track, .car-pill, .car-slide { transition: none; }
+    .car-track, .car-track > .feature-frame { transition: none; }
+  }
+  /* the media runs bare and full-bleed — nothing framing it */
+  .feature-frame video {
+    width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block;
+  }
+
+  /* the glass shelf: a frosted pane fused to the bottom edge of the video.
+     Tinted from --ink rather than --card so it reads as translucent white
+     over whatever sits behind it. */
+  .feature-frame .ff-caption {
+    padding: 22px clamp(18px, 2.6vw, 26px) 24px;
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+    border-top: 0;
+  }
+  .feature-frame h4 {
+    font-size: 17px; font-weight: 600; color: var(--ink);
+  }
+  .case section .feature-frame .ff-caption p {
+    margin-top: 8px; font-size: 15px; line-height: 1.6;
+    color: var(--case-body);
   }
 
   /* ---------- side section nav ---------- */
@@ -796,65 +963,77 @@
   #contact .socials a { color: var(--ink-soft); font-weight: 700; text-decoration: none; font-size: 15px; }
   #contact .socials a:hover { color: var(--accent); }
 
-  /* --- custom cursor: precise dot + trailing ring ---
-     Mouse-and-trackpad only; touch devices and reduced-motion users keep the
-     native cursor. Colour rides --accent, which already flips between the dark
-     home and the light case pages. Sits above the curtain (z 100). */
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    body.has-cursor, body.has-cursor a, body.has-cursor button,
-    body.has-cursor canvas, body.has-cursor .hp-item { cursor: none; }
 
-    /* carriers: JS owns their transform (translate only) — every visual state
-       lives on the cores inside, so the two never fight over one property */
-    #cursor-dot, #cursor-ring {
-      position: fixed; top: 0; left: 0; z-index: 200;
+
+  /* --- custom cursor, after azumbrunnen.me ---
+     A frosted disc that morphs: it becomes a caret over text and locks onto
+     interactive elements, wrapping them rather than floating over them.
+     Mouse-and-trackpad only; touch and reduced-motion keep the native cursor. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    /* blanket rather than a list: anything setting its own cursor (the flip
+       cards use pointer, the carousel used grab) would otherwise punch a
+       native cursor back through the custom one */
+    body.has-cursor, body.has-cursor * { cursor: none; }
+    /* #mascot sets cursor:pointer from an ID selector, which outranks the
+       blanket rule above — it needs an ID-weighted override of its own */
+    body.has-cursor #mascot { cursor: none; }
+
+    /* carrier: JS owns its transform (translate only) — every visual state
+       lives on the core inside, so the two never fight over one property */
+    #cursor-orb {
+      position: fixed; top: 0; left: 0; z-index: 99999;
       pointer-events: none;
       opacity: 0;                       /* hidden until the pointer first moves */
       will-change: transform;
-      transition: opacity .2s;
+      /* the position itself is transitioned — the compositor interpolates it,
+         which is what gives the glide. Linear so continuous movement tracks
+         the pointer evenly instead of easing in and out on every event. */
+      transition: transform .14s linear, opacity .2s;
     }
-    body.cursor-in #cursor-dot, body.cursor-in #cursor-ring { opacity: 1; }
+    /* settling onto a locked element is a single move, so it gets a real curve */
+    body.cursor-lock #cursor-orb {
+      transition: transform .34s cubic-bezier(.22, 1, .36, 1), opacity .2s;
+    }
+    body.cursor-in #cursor-orb { opacity: 1; }
 
-    #cursor-dot .cur-core {
-      display: block;
-      width: 6px; height: 6px; margin: -3px 0 0 -3px;
-      border-radius: 50%; background: var(--accent);
-      transition: transform .18s var(--ease-out), opacity .18s;
-    }
-    #cursor-ring .cur-core {
+    #cursor-orb .cur-core {
       display: flex; align-items: center; justify-content: center;
-      width: 34px; height: 34px; margin: -17px 0 0 -17px;
-      border: 1.5px solid var(--accent); border-radius: 50%;
-      transition: width .28s var(--ease-out), height .28s var(--ease-out),
-                  margin .28s var(--ease-out), background-color .28s var(--ease-out),
-                  transform .18s var(--ease-out);
-    }
-    #cursor-ring .cur-label {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 13px; font-weight: 600; letter-spacing: .02em;
-      color: var(--hp-bg, #fff);
-      opacity: 0; transform: scale(.6);
-      transition: opacity .18s var(--ease-out), transform .18s var(--ease-out);
+      width: 36px; height: 36px; margin: -18px 0 0 -18px;
+      border-radius: 50%;   /* a disc — exempt from the square-corner rule */
+      background: rgba(200, 200, 255, .2);
+      /* their timing: quick and mechanical, 100ms, so the morph feels like a
+         state change rather than an animation */
+      transition: width .1s ease-out, height .1s ease-out, margin .1s ease-out,
+                  border-radius .1s ease-out, background-color .1s ease-out,
+                  transform .12s ease-out;
     }
 
-    /* over links and buttons the ring swells, the dot tightens */
-    body.cursor-link #cursor-ring .cur-core {
-      width: 52px; height: 52px; margin: -26px 0 0 -26px;
+    /* over running text the disc collapses into a caret — their one morph */
+    body.cursor-text #cursor-orb .cur-core {
+      width: 3px; height: 28px; margin: -14px 0 0 -1.5px;
+      border-radius: 2px; background: var(--accent);
     }
-    body.cursor-link #cursor-dot .cur-core { transform: scale(.66); }
 
-    /* over a project tile the ring blooms into a filled "View" pill */
-    body.cursor-view #cursor-ring .cur-core {
-      width: 74px; height: 74px; margin: -37px 0 0 -37px;
-      background: var(--accent);
+    /* over a plain link the disc just tightens and brightens */
+    body.cursor-link #cursor-orb .cur-core {
+      width: 20px; height: 20px; margin: -10px 0 0 -10px;
+      background: rgba(200, 200, 255, .38);
     }
-    body.cursor-view #cursor-ring .cur-label { opacity: 1; transform: none; }
-    body.cursor-view #cursor-dot .cur-core { opacity: 0; }
 
-    /* pressing squashes both — the site's playful give */
-    body.cursor-down #cursor-ring .cur-core { transform: scale(.85); }
-    body.cursor-down #cursor-dot .cur-core  { transform: scale(.7); }
-    body.cursor-down.cursor-link #cursor-dot .cur-core { transform: scale(.5); }
+    /* The grow: on the back chevron and the clickable cards the disc expands
+       to wrap the element and snaps to its centre, so the whole target reads
+       as one hit area. JS measures the element and sets the two sizes. */
+    body.cursor-lock #cursor-orb .cur-core {
+      width: var(--lock-w, 36px); height: var(--lock-h, 36px);
+      margin: calc(var(--lock-h, 36px) / -2) 0 0 calc(var(--lock-w, 36px) / -2);
+      border-radius: 0; background: rgba(200, 200, 255, .1);
+      border: 1px solid rgba(200, 200, 255, .28);
+    }
+
+    /* the wrap alone says "clickable" — no label, nothing over the card art */
+
+    /* pressing squashes it */
+    body.cursor-down #cursor-orb .cur-core { transform: scale(.85); }
   }
 </style>
 </head>
@@ -862,8 +1041,7 @@
 
 <div id="loader"><div class="spinner"></div></div>
 <div id="curtain"></div>
-<div id="cursor-ring" aria-hidden="true"><span class="cur-core"><span class="cur-label">View</span></span></div>
-<div id="cursor-dot" aria-hidden="true"><span class="cur-core"></span></div>
+<div id="cursor-orb" aria-hidden="true"><span class="cur-core"></span></div>
 
 <!-- HOME -->
 <section id="home" class="page current">
@@ -877,10 +1055,10 @@
         <em>Pactto</em> and <em>Quest Up</em>.</p>
 
       <nav class="hp-list">
-        <button data-page="about"><span>01. About Me</span><i>&#8594;</i></button>
-        <button data-page="playground"><span>02. Playground</span><i>&#8594;</i></button>
-        <a href="mailto:mahinsattarjahan@gmail.com"><span>03. Email</span><i>&#8599;</i></a>
-        <a href="#" target="_blank" rel="noopener"><span>04. LinkedIn</span><i>&#8599;</i></a>
+        <button data-page="about"><span>About Me</span><svg class="sprout" viewBox="0 0 660 422" aria-hidden="true"><rect x="281.333" y="248.871" width="86.5638" height="173.128"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z"/></svg></button>
+        <button data-page="playground"><span>Playground</span><svg class="sprout" viewBox="0 0 660 422" aria-hidden="true"><rect x="281.333" y="248.871" width="86.5638" height="173.128"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z"/></svg></button>
+        <a href="mailto:mahinsattarjahan@gmail.com"><span>Email</span><svg class="sprout" viewBox="0 0 660 422" aria-hidden="true"><rect x="281.333" y="248.871" width="86.5638" height="173.128"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z"/></svg></a>
+        <a href="#" target="_blank" rel="noopener"><span>LinkedIn</span><svg class="sprout" viewBox="0 0 660 422" aria-hidden="true"><rect x="281.333" y="248.871" width="86.5638" height="173.128"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z"/></svg></a>
       </nav>
 
       <div class="hp-foot">
@@ -916,9 +1094,8 @@
   <a href="#j-process">Process</a>
   <a href="#j-emotion">Emotion</a>
   <a href="#j-metrics">Metrics</a>
-  <a href="#j-next">What's next</a>
 </nav>
-<a class="case-back" href="#home" id="case-back"><span aria-hidden="true">&larr;</span><span class="cb-text">Back</span></a>
+<a class="case-back" href="#home" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Back</span></a>
 
 <section id="pactto" class="page">
   <div class="case">
@@ -993,25 +1170,25 @@
       <img class="case-media" src="assets/case-pactto/features-collage.png" alt="Feature collage">
       <h3>Foundations: Contextual Commenting</h3>
       <p>We designed three distinct commenting primitives to handle every type of creative feedback:</p>
-      <div class="carousel" id="comment-carousel">
-        <div class="car-viewport">
-          <div class="car-track">
-            <div class="car-slide">
-              <video src="assets/case-pactto/comment-pin.mp4" autoplay muted loop playsinline></video>
-              <h4>Pin Comments (Spatial)</h4>
-              <p>Allows users to anchor feedback to a precise coordinate on the video frame. By clicking exactly where the issue is, reviewers eliminate ambiguity for specific visual edits, ensuring the editor knows exactly which pixel needs attention.</p>
-            </div>
-            <div class="car-slide">
-              <video src="assets/case-pactto/comment-drag.mp4" autoplay muted loop playsinline></video>
-              <h4>Drag Comments (Area)</h4>
-              <p>Enables users to highlight specific regions or group elements within the frame. By drawing a bounding box around the focus area, reviewers can clearly define the scope of visual changes without needing to describe the location verbally.</p>
-            </div>
-            <div class="car-slide">
-              <video src="assets/case-pactto/comment-timeline.mp4" autoplay muted loop playsinline></video>
-              <h4>Timeline Comments (Temporal)</h4>
-              <p>Permits feedback to span a specific duration rather than a single static frame. This allows reviewers to critique temporal elements like pacing, audio syncing, or action sequences by marking a start and end point directly on the scrubber.</p>
-            </div>
-          </div>
+      <div class="feature-frame">
+        <video src="assets/case-pactto/comment-pin.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Pin Comments (Spatial)</h4>
+          <p>Anchor feedback to a precise coordinate on the frame. Clicking exactly where the issue is removes the ambiguity, so the editor knows which pixel needs attention.</p>
+        </div>
+      </div>
+      <div class="feature-frame">
+        <video src="assets/case-pactto/comment-drag.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Drag Comments (Area)</h4>
+          <p>Draw a bounding box to highlight a region or group of elements, defining the scope of a change without describing the location in words.</p>
+        </div>
+      </div>
+      <div class="feature-frame">
+        <video src="assets/case-pactto/comment-timeline.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Timeline Comments (Temporal)</h4>
+          <p>Feedback that spans a duration rather than a single frame: mark a start and end on the scrubber to critique pacing, audio sync or action sequences.</p>
         </div>
       </div>
       <div class="callout">
@@ -1072,7 +1249,7 @@
     <div id="j-tldr" data-nav>
     <h1>Jobi</h1>
     <p class="case-sub">Job hunt tools optimise for volume. The evidence says volume is both emotionally corrosive and strategically worse.</p>
-    <p class="case-sub">I designed and built a companion around the user's emotional state instead of engagement metrics, leading two designers and shipping every decision in code.</p>
+    <p class="case-sub">I designed and built a browser-extension companion around the user's emotional state instead of engagement metrics, leading two designers and shipping every decision in code.</p>
 
     <dl class="case-meta">
       <div><dt>Role</dt><dd>Designer &amp; developer</dd></div>
@@ -1085,19 +1262,40 @@
     <section id="j-problem" data-nav>
       <div class="eyebrow">Secondary Research</div>
       <h2>The Hunt Is Breaking the Hunters</h2>
-      <p>I was living the job hunt myself while building Jobi, which made it tempting to design straight from my own frustration, so we started with desk research instead. The published surveys are unambiguous, and the damage is the majority experience rather than the exception. What none of them explained was <b>why</b> a process with more tooling than ever still costs people this much, and that gap is what our own interviews had to fill.</p>
+      <p>I was living the hunt myself, so we started with desk research rather than my own frustration. The surveys are unambiguous: the damage is the majority experience. What none of them explain is <b>why</b> — that gap is what our interviews had to fill.</p>
       <div class="stat-panel">
         <div class="stat-ring" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for the source of this figure">
           <div class="stat-inner">
             <div class="stat-face">
               <span class="flip-hint" aria-hidden="true">i</span>
-              <figure>
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-track" cx="60" cy="60" r="52"/>
-                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 91.6px"/>
+              <svg class="stat-viz" viewBox="0 0 320 150" aria-hidden="true">
+                  <text class="sv-num" x="8" y="44">72%</text>
+                  <rect class="sv-tick on" x="8.0" y="66" width="6" height="66" style="--i:0"/>
+                  <rect class="sv-tick on" x="20.5" y="66" width="6" height="66" style="--i:1"/>
+                  <rect class="sv-tick on" x="33.0" y="66" width="6" height="66" style="--i:2"/>
+                  <rect class="sv-tick on" x="45.5" y="66" width="6" height="66" style="--i:3"/>
+                  <rect class="sv-tick on" x="58.0" y="66" width="6" height="66" style="--i:4"/>
+                  <rect class="sv-tick on" x="70.5" y="66" width="6" height="66" style="--i:5"/>
+                  <rect class="sv-tick on" x="83.0" y="66" width="6" height="66" style="--i:6"/>
+                  <rect class="sv-tick on" x="95.5" y="66" width="6" height="66" style="--i:7"/>
+                  <rect class="sv-tick on" x="108.0" y="66" width="6" height="66" style="--i:8"/>
+                  <rect class="sv-tick on" x="120.5" y="66" width="6" height="66" style="--i:9"/>
+                  <rect class="sv-tick on" x="133.0" y="66" width="6" height="66" style="--i:10"/>
+                  <rect class="sv-tick on" x="145.5" y="66" width="6" height="66" style="--i:11"/>
+                  <rect class="sv-tick on" x="158.0" y="66" width="6" height="66" style="--i:12"/>
+                  <rect class="sv-tick on" x="170.5" y="66" width="6" height="66" style="--i:13"/>
+                  <rect class="sv-tick on" x="183.0" y="66" width="6" height="66" style="--i:14"/>
+                  <rect class="sv-tick on" x="195.5" y="66" width="6" height="66" style="--i:15"/>
+                  <rect class="sv-tick on" x="208.0" y="66" width="6" height="66" style="--i:16"/>
+                  <rect class="sv-tick on" x="220.5" y="66" width="6" height="66" style="--i:17"/>
+                  <rect class="sv-tick" x="233.0" y="66" width="6" height="66" style="--i:18"/>
+                  <rect class="sv-tick" x="245.5" y="66" width="6" height="66" style="--i:19"/>
+                  <rect class="sv-tick" x="258.0" y="66" width="6" height="66" style="--i:20"/>
+                  <rect class="sv-tick" x="270.5" y="66" width="6" height="66" style="--i:21"/>
+                  <rect class="sv-tick" x="283.0" y="66" width="6" height="66" style="--i:22"/>
+                  <rect class="sv-tick" x="295.5" y="66" width="6" height="66" style="--i:23"/>
+                  <rect class="sv-tick" x="308.0" y="66" width="6" height="66" style="--i:24"/>
                 </svg>
-                <figcaption>72%</figcaption>
-              </figure>
               <p>say the job search has hurt their mental health</p>
             </div>
             <div class="stat-source">
@@ -1112,34 +1310,12 @@
           <div class="stat-inner">
             <div class="stat-face">
               <span class="flip-hint" aria-hidden="true">i</span>
-              <figure>
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-track" cx="60" cy="60" r="52"/>
-                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 98.1px"/>
+              <svg class="stat-viz" viewBox="0 0 320 150" aria-hidden="true">
+                  <text class="sv-num" x="8" y="44">55%</text>
+                  <rect class="sv-track" x="8" y="76" width="304" height="44"/>
+                  <g class="sv-clip"><rect class="sv-fill" x="8" y="76" width="304" height="44"/></g>
+                  <line class="sv-mark" x1="175.2" y1="68" x2="175.2" y2="128"/>
                 </svg>
-                <figcaption>70%</figcaption>
-              </figure>
-              <p>felt more stressed than usual while out of work</p>
-            </div>
-            <div class="stat-source">
-              <div class="tag">Source</div>
-              <p>Pew Research Center</p>
-              <p class="cite">715 unemployed US adults actively seeking work &middot; January 2021</p>
-              <a href="https://www.pewresearch.org/short-reads/2021/02/10/unemployed-americans-are-feeling-the-emotional-strain-of-job-loss-most-have-considered-changing-occupations/" target="_blank" rel="noopener">pewresearch.org &#8599;</a>
-            </div>
-          </div>
-        </div>
-        <div class="stat-ring" role="button" tabindex="0" aria-pressed="false" aria-label="Flip for the source of this figure">
-          <div class="stat-inner">
-            <div class="stat-face">
-              <span class="flip-hint" aria-hidden="true">i</span>
-              <figure>
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-track" cx="60" cy="60" r="52"/>
-                  <circle class="ring-fill" cx="60" cy="60" r="52" style="--off: 147.2px"/>
-                </svg>
-                <figcaption>55%</figcaption>
-              </figure>
               <p>are completely burned out by the hunt</p>
             </div>
             <div class="stat-source">
@@ -1156,7 +1332,7 @@
     <section id="j-focus" data-nav>
       <div class="eyebrow">Primary Research</div>
       <h2>Three Focus Points for Investigation</h2>
-      <p>The desk research told us the cost was real but not where it came from, so we wrote a discussion guide around three things a survey could not answer. The interviews stayed semi-structured. These were the areas we always returned to, not a script.</p>
+      <p>The desk research told us the cost was real but not where it came from, so we built the discussion guide around three things a survey could not answer.</p>
       <div class="focus-grid">
         <div class="focus">
           <div class="num">01 Methods</div>
@@ -1176,14 +1352,14 @@
     <section id="j-interviews" data-nav>
       <div class="eyebrow">Interviews</div>
       <h2>Five Job Seekers, All Mid-Hunt</h2>
-      <p>We ran semi-structured interviews with five people at different stages, from four months in at four applications a week to two years in at thirty. We deliberately included the high-volume end, because that is where the tools claim to help most and where we expected the strain to show first.</p>
+      <p>We interviewed five job seekers mid-hunt, from four applications a week to thirty. We deliberately included the high-volume end: that is where the tools claim to help most, and where the strain shows first.</p>
       <img class="case-media" src="assets/case-jobi/jobi-research-board.png?v=2" alt="Research board: persona, interview findings and frustrations from five job seekers" data-nocaption>
     </section>
 
     <section id="j-comp" data-nav>
       <div class="eyebrow">Competitive Analysis</div>
       <h2>The Tools Organise the Grind. None of Them Question It.</h2>
-      <p>Alongside the interviews we audited the two tools people kept naming, Teal and Simplify Copilot. Both are competent at what they set out to do: autofill forms, track statuses, push volume higher. Neither treats the volume itself as the problem, which is exactly what our interviewees were describing. Both also answer it the same way, with dense feature sets and heavy interfaces, which is a lot to hand someone who is already overwhelmed.</p>
+      <p>We audited the two tools people kept naming, Teal and Simplify Copilot. Both are competent at what they set out to do: autofill forms, track statuses, push volume higher. Neither treats the volume itself as the problem — which is exactly what our interviewees were describing.</p>
       <img class="case-media" src="assets/case-jobi/jobi-comp-analysis.png" alt="Competitive analysis board comparing Teal and Simplify Copilot against Jobi" data-nocaption>
     </section>
 
@@ -1366,7 +1542,7 @@
     <section id="j-principles" data-nav>
       <div class="eyebrow">Principles</div>
       <h2>Two Rules That Settled Every Argument</h2>
-      <p>The question above set the goal but could not choose between two reasonable designs. These two rules did, and both came straight out of the research. Every decision in this study was measured against them, and several features lost.</p>
+      <p>The question set the goal but could not choose between two reasonable designs. These two rules did, both straight out of the research — and several features lost.</p>
       <div class="case-cards">
         <div class="case-card">
           <h4>A companion, not an autopilot</h4>
@@ -1391,35 +1567,37 @@
     <section id="j-solution" data-nav>
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Solution</div>
       <h2>One Companion, End to End</h2>
-      <p>Jobi rides along the whole hunt as a browser side-panel. It deliberately does not find jobs for you: you pick the roles, and Jobi takes on what surrounds them. Each surface below exists to answer one of the four insights, and one insight was answered by deciding not to build anything at all.</p>
+      <p>Jobi rides along the whole hunt as a browser side-panel. You pick the roles; Jobi takes on what surrounds them. Each surface answers one of the four insights — and one was answered by building nothing at all.</p>
 
       <h3>The Chat: Judgement on Tap</h3>
       <p class="answers">Answers insight three: research is paid upfront, before a word is written.</p>
-      <p>The home surface is a conversation. Paste a role and Jobi tells you whether it's worth your time, tailors your documents, and researches the company, without leaving the page you're on. The half hour of tab-juggling that used to come before writing happens in the panel instead.</p>
-      <div class="carousel">
-        <div class="car-viewport">
-          <div class="car-track">
-            <div class="car-slide">
-              <video src="assets/case-jobi/jobi-jd.mp4" autoplay muted loop playsinline></video>
-              <h4>Am I a Fit?</h4>
-              <p>Paste a role and Jobi scores the match out of 100, naming the strengths and the gaps, grounded in your actual CV rather than keyword soup.</p>
-            </div>
-            <div class="car-slide">
-              <video src="assets/case-jobi/jobi-tailor-cv.mp4" autoplay muted loop playsinline></video>
-              <h4>Tailor My CV</h4>
-              <p>It pulls the experiences that map best to the role and rewrites the bullets to lead with impact.</p>
-            </div>
-            <div class="car-slide">
-              <video src="assets/case-jobi/jobi-cover-letter.mp4" autoplay muted loop playsinline></video>
-              <h4>Write a Cover Letter</h4>
-              <p>A first draft in your voice, specific to the role, a starting point, not a generic template.</p>
-            </div>
-            <div class="car-slide">
-              <video src="assets/case-jobi/jobi-research.mp4" autoplay muted loop playsinline></video>
-              <h4>Research the Company</h4>
-              <p>It reads past the posting and onto the company's own site: mission, culture, values, the things you want before an interview. Grounded only in sources it actually found, and honest about what it doesn't know.</p>
-            </div>
-          </div>
+      <p>The home surface is a conversation. Paste a role and Jobi tells you whether it's worth your time, tailors your documents, and researches the company — the half hour of tab-juggling happens in the panel instead.</p>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-jd.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Am I a Fit?</h4>
+          <p>Paste a role and Jobi scores the match out of 100, naming the strengths and the gaps, grounded in your actual CV rather than keyword soup.</p>
+        </div>
+      </div>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-tailor-cv.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Tailor My CV</h4>
+          <p>It pulls the experiences that map best to the role and rewrites the bullets to lead with impact.</p>
+        </div>
+      </div>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-cover-letter.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Write a Cover Letter</h4>
+          <p>A first draft in your voice, specific to the role, a starting point, not a generic template.</p>
+        </div>
+      </div>
+      <div class="feature-frame">
+        <video src="assets/case-jobi/jobi-research.mp4" autoplay muted loop playsinline></video>
+        <div class="ff-caption">
+          <h4>Research the Company</h4>
+          <p>It reads past the posting and onto the company's own site: mission, culture, values, the things you want before an interview. Grounded only in sources it actually found, and honest about what it doesn't know.</p>
         </div>
       </div>
 
@@ -1474,7 +1652,7 @@
 
       <h3>The Tracker</h3>
       <p class="answers">Answers insight one: statuses are logged by hand and go stale.</p>
-      <p>The research showed the tracker failing because logging is manual, so the fix was to stop asking people to log. Open a job description and Jobi offers to save it. One click captures the role, and every application lands in one pipeline from saved through to offer, with follow-up reminders so nothing goes quiet purely because you forgot to chase it.</p>
+      <p>Trackers fail because logging is manual, so the fix was to stop asking people to log. One click on any posting captures the role into a single pipeline, with follow-up reminders so nothing goes quiet because you forgot to chase it.</p>
       <div class="case-cards">
         <div class="case-card">
           <h4>Captured, not typed</h4>
@@ -1492,7 +1670,7 @@
       <video class="case-media" src="assets/case-jobi/jobi-tracker.mp4" autoplay muted loop playsinline></video>
       <h3>The Fourth Insight: Silence Is the One We Cannot Fix</h3>
       <p class="answers">Answers insight four: most applications end in silence.</p>
-      <p>Ghosting is an employer behaviour. No feature makes a company reply, and any product claiming to solve this would be lying. That makes it the cleanest test of the question this study started from: when the problem itself cannot be removed, the only honest goal left is to make it cost less. Three things already in the product carry that weight, and naming them was the last piece of the design.</p>
+      <p>Ghosting is an employer behaviour: no feature makes a company reply, and a product claiming otherwise would be lying. When the problem cannot be removed, the only honest goal is to make it cost less. Three things already in the product carry that weight.</p>
       <div class="case-cards">
         <div class="case-card">
           <h4>Silence gets normalised</h4>
@@ -1522,12 +1700,8 @@
     <section id="j-process" data-nav>
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
       <h2>Design, Build, and Lead in One Loop</h2>
-      <p>The three of us ran research, ideation and design together in Figma. The build was the one part I took on alone: every screen went into Claude Code and came out as working software.</p>
-      <p>What made it move was how I worked with Claude. I gave it the interviews, the affinity map, and the reasoning behind every decision.</p>
-      <p>That made it more than a co-developer. It became a strategist I could think out loud with.</p>
-      <p>Every design got weighed against build complexity, API cost and the business case before it shipped.</p>
+      <p>The three of us ran research, ideation and design together in Figma. The build I took on alone: every screen went into Claude Code — loaded with the interviews, the affinity map and the reasoning behind every decision — and came out as working software.</p>
       <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="Figma ideation: mascot directions, mid-fi flows, lo-fi wireframes and moodboards">
-      <p>The Figma side of the loop: mascot directions, mid-fi flows, lo-fi wireframes and the moodboards behind the visual language.</p>
       <div class="case-cards">
         <div class="case-card"><h4>One Shared Context</h4><p>Claude Code held every artefact and research piece, so the build never drifted from the why. The design and the code came from the same source of truth.</p></div>
         <div class="case-card"><h4>Crossroads Went Back to the Evidence</h4><p>When two paths were both reasonable, we did not argue from taste. We fell back on a research finding, or on an earlier decision we had already reasoned through, and stayed consistent.</p></div>
@@ -1538,7 +1712,7 @@
     <section id="j-emotion" data-nav>
       <div class="eyebrow">Emotional Design</div>
       <h2>Calm Is the Feature, Not the Decoration</h2>
-      <p>The second principle was calm rather than capable-looking, and most of it lives here. Emotional design usually chases engagement. Jobi uses the same toolkit pointed the other way: the mascot, the motion and the writing exist to lower the cost of a task people dread, not to raise time in app. It is aimed at the nervous system, not the dopamine loop.</p>
+      <p>Emotional design usually chases engagement. Jobi points the same toolkit the other way: the mascot, the motion and the writing lower the cost of a task people dread. Aimed at the nervous system, not the dopamine loop.</p>
 
       <div class="decision">
         <div class="decision-num">Decision 06</div>
@@ -1550,64 +1724,141 @@
         </div>
       </div>
 
-      <p>The personality is a written system the team and the model both build from, not a coat of paint. Jobi is an accountability partner rather than a cheerleader: it expects you to show up, and it teaches you to stop needing it, which is the companion principle stated in tone of voice. The reference point was deliberately not Duolingo. That owl is loud and guilt-driven, and someone applying for their thirtieth job this month does not need another thing shouting at them. Five qualities hold in every line, steady, honest, loyal, invested and particular, and only the volume moves, dialling down as the moment gets heavier.</p>
+      <p>The personality is a written system, not a coat of paint: an accountability partner rather than a cheerleader — it expects you to show up, and teaches you to stop needing it. The anti-reference was Duolingo; someone applying for their thirtieth job this month does not need another thing shouting at them.</p>
 
       <div class="case-cards">
         <div class="case-card"><h4>The easy version</h4><p>&ldquo;Still nothing?! Don&rsquo;t give up, you&rsquo;ve got this!&rdquo;</p></div>
         <div class="case-card"><h4>What Jobi says</h4><p>&ldquo;No reply yet. That&rsquo;s normal three days in. Want to line up the next two while we wait?&rdquo;</p></div>
       </div>
 
-      <p>Rejection is where a companion is won or lost, and it is the moment the fourth insight predicted would come most often. No exclamation points, no clich&eacute;s, and the dry wit goes quiet. Move the blame off the user, then point forward.</p>
+      <p>Rejection is where a companion is won or lost. No exclamation points, no clich&eacute;s, the dry wit goes quiet: move the blame off the user, then point forward.</p>
     </section>
 
     <section id="j-metrics" data-nav>
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Measuring Success</div>
       <h2>How We'll Know It Works</h2>
-      <p>The question was whether we could lower the emotional cost of the hunt without taking the hunt away from the hunter, so that is what the beta has to measure. Time in app and applications sent would both go up if we were making people more dependent, which is the opposite of the goal.</p>
-      <p>Those are what the volume tools optimise for. Our closed beta tests three things instead.</p>
+      <p>Time in app and applications sent would both rise if we were making people more dependent — those are the volume tools' metrics, and the opposite of the goal. The closed beta tests three things instead.</p>
       <div class="case-cards">
-        <div class="case-card"><h4>Do Applications Get Finished?</h4><p>Jobi runs the tracker, so it knows what share of saved roles reach Applied instead of dying at Saved. We read that against the 92% who never finish an application elsewhere.</p></div>
+        <div class="case-card"><h4>Do Applications Get Finished?</h4><p>Jobi runs the tracker, so it knows what share of saved roles reach Applied instead of dying at Saved — measured against the industry's ~92% application abandonment rate.</p></div>
         <div class="case-card"><h4>Does the Search Feel Less Heavy?</h4><p>A one-tap check-in at the start and end of the beta, rating how in control and how burnt out someone feels. We track the shift per person, not the headline number.</p></div>
         <div class="case-card"><h4>Do People Return After a Rejection?</h4><p>When a role is marked Rejected, Jobi watches whether they open the extension again. With no streaks pulling anyone back, a return is a real signal.</p></div>
       </div>
     </section>
 
-    <section id="j-next" data-nav>
-      <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>What's Next</div>
-      <h2>Still Building</h2>
-      <p>Jobi is an ongoing project. The next milestone is a closed beta in July, aiming to release in August.</p>
-      <p>It puts the companion in front of real job-seekers to pressure-test every call in this study.</p>
-      <p>One feature still in design is the career plan: coaching sized to the time you actually have, not a volume quota.</p>
-      <p>The hard part is holding the line, capping eager users at a few quality applications a day. So it is being built slowly, on purpose.</p>
-    </section>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about" class="page">
-  <div class="wrap">
-    <h1>Mahin</h1>
-    <div class="alias">Your Name Here</div>
-    <div class="role">Product Designer</div>
-    <div class="bio">
-      <p>[Placeholder] I build websites that feel alive — motion, interactivity, and small details that react to everything you do. This paragraph is where your own story goes: what you make, and why you love making it.</p>
-      <p>[Placeholder] Second paragraph: the skills and interests that feed into your work — design, animation, illustration, whatever makes your work yours.</p>
-      <p>[Placeholder] Third paragraph: your stack and tools. For example: HTML/CSS, JavaScript, React, GSAP, Three.js — swap in your real one.</p>
-      <p>[Placeholder] Bonus paragraph for personality: what you do off the keyboard.</p>
+  <div class="case">
+    <div id="a-tldr">
+      <div class="case-head">
+        <h1>Mahin</h1>
+      </div>
+      <div class="tldr-main">
+        <p class="case-sub">[Placeholder] One line on what you do and who for. Keep it to a sentence &mdash; the sections below carry the detail.</p>
+        <p class="case-sub">[Placeholder] A second line for the angle that makes your work yours: the craft, the obsession, the reason.</p>
+      </div>
+      <dl class="case-meta">
+        <div><dt>Based in</dt><dd>London, UK</dd></div>
+        <div><dt>Focus</dt><dd>Product design &amp; front-end</dd></div>
+        <div><dt>Currently</dt><dd>Building Jobi</dd></div>
+        <div><dt>Say hello</dt><dd><a class="a-link" href="mailto:mahinsattarjahan@gmail.com">Email &#8599;</a></dd></div>
+      </dl>
     </div>
-    <div class="peace">✌️ Peace</div>
+
+    <section>
+      <div class="eyebrow">Background</div>
+      <h2>How I got here</h2>
+      <ol class="timeline">
+        <li><span class="tl-when">2024 &mdash; now</span><span class="tl-what"><b>Jobi</b> &mdash; Founder, designer &amp; developer. [Placeholder] one line on the work.</span></li>
+        <li><span class="tl-when">2023</span><span class="tl-what"><b>Pactto</b> &mdash; Product design intern. [Placeholder] one line on the work.</span></li>
+        <li><span class="tl-when">2022</span><span class="tl-what"><b>Quest Up</b> &mdash; Founder. [Placeholder] one line on the work.</span></li>
+        <li><span class="tl-when">2021</span><span class="tl-what"><b>[Placeholder]</b> &mdash; Where it started.</span></li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="eyebrow">Principles</div>
+      <h2>How I work</h2>
+      <div class="case-cards">
+        <div class="case-card"><h4>[Placeholder] Principle one</h4><p>Two lines on a rule you actually design by, and the trade-off it costs you.</p></div>
+        <div class="case-card"><h4>[Placeholder] Principle two</h4><p>Two lines on a rule you actually design by, and the trade-off it costs you.</p></div>
+        <div class="case-card"><h4>[Placeholder] Principle three</h4><p>Two lines on a rule you actually design by, and the trade-off it costs you.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Toolkit</div>
+      <h2>What I reach for</h2>
+      <p>[Placeholder] A line on how you pick tools &mdash; and what you refuse to let them decide for you.</p>
+      <ul class="chips">
+        <li>Figma</li><li>Rive</li><li>HTML &amp; CSS</li><li>JavaScript</li>
+        <li>Claude Code</li><li>After Effects</li><li>Blender</li><li>Notion</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="eyebrow">Off the keyboard</div>
+      <h2>The rest of it</h2>
+      <p>[Placeholder] What you do when you are not designing, in a sentence or two. This is the part people remember in an interview.</p>
+      <div class="peace">&#9996;&#65039; Peace</div>
+    </section>
   </div>
 </section>
 
 <!-- PLAYGROUND -->
 <section id="playground" class="page">
-  <div class="wrap">
-    <h1>Playground</h1>
-    <div class="role">Experiments &amp; offcuts</div>
-    <div class="bio">
-      <p>[Placeholder] The half-finished things: motion studies, interaction tests, illustrations and ideas that never grew into a case study.</p>
-      <p>[Placeholder] Drop the pieces in here as you make them.</p>
+  <div class="case">
+    <div id="p-tldr">
+      <div class="case-head">
+        <h1>Playground</h1>
+      </div>
+      <div class="tldr-main">
+        <p class="case-sub">[Placeholder] The half-finished things: motion studies, interaction tests, illustrations and ideas that never grew into a case study.</p>
+      </div>
+      <dl class="case-meta">
+        <div><dt>What this is</dt><dd>Experiments &amp; offcuts</dd></div>
+        <div><dt>Updated</dt><dd>[Placeholder] Month 2026</dd></div>
+      </dl>
     </div>
+
+    <section>
+      <div class="eyebrow">Experiments</div>
+      <h2>Things I made to find out</h2>
+      <div class="pg-grid">
+        <article class="pg-item">
+          <div class="pg-media" data-mark="01"></div>
+          <div class="pg-body"><span class="pg-tag">Motion</span><h4>[Placeholder] Experiment one</h4><p>One line on what you were testing.</p></div>
+        </article>
+        <article class="pg-item">
+          <div class="pg-media" data-mark="02"></div>
+          <div class="pg-body"><span class="pg-tag">Interaction</span><h4>[Placeholder] Experiment two</h4><p>One line on what you were testing.</p></div>
+        </article>
+        <article class="pg-item">
+          <div class="pg-media" data-mark="03"></div>
+          <div class="pg-body"><span class="pg-tag">Illustration</span><h4>[Placeholder] Experiment three</h4><p>One line on what you were testing.</p></div>
+        </article>
+        <article class="pg-item">
+          <div class="pg-media" data-mark="04"></div>
+          <div class="pg-body"><span class="pg-tag">Type</span><h4>[Placeholder] Experiment four</h4><p>One line on what you were testing.</p></div>
+        </article>
+        <article class="pg-item">
+          <div class="pg-media" data-mark="05"></div>
+          <div class="pg-body"><span class="pg-tag">3D</span><h4>[Placeholder] Experiment five</h4><p>One line on what you were testing.</p></div>
+        </article>
+        <article class="pg-item">
+          <div class="pg-media" data-mark="06"></div>
+          <div class="pg-body"><span class="pg-tag">Code</span><h4>[Placeholder] Experiment six</h4><p>One line on what you were testing.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Next</div>
+      <h2>Still cooking</h2>
+      <p>[Placeholder] A line on what you are poking at right now, so the page reads as alive rather than archived.</p>
+    </section>
   </div>
 </section>
 
@@ -1615,8 +1866,8 @@
 <script>
 /* ---------- placeholder projects ---------- */
 const projects = [
-  { title: 'Jobi',    year: '2024', h: 240, video: 'assets/videos/jobi-trailer-web.mp4', page: 'jobi' },
-  { title: 'Pactto',  year: '2023', h: 200, video: 'assets/videos/pactto.mp4', page: 'pactto' },
+  { title: 'Jobi',    role: 'Founder',    year: '2024', h: 240, video: 'assets/videos/jobi-trailer-web.mp4', page: 'jobi' },
+  { title: 'Pactto',  role: 'Internship', year: '2023', h: 200, video: 'assets/videos/pactto.mp4', page: 'pactto' },
   { title: 'Project Five',  year: '2022', h: 260, bg: 'linear-gradient(135deg,#0b7a45,#3fd47f)', mark: 'P5' },
   { title: 'Project Six',   year: '2021', h: 220, bg: 'linear-gradient(135deg,#111,#3a3a3a)', mark: 'P6' },
   { title: 'Project Seven', year: '2021', h: 320, bg: 'linear-gradient(135deg,#ff8008,#ffc837)', mark: 'P7' },
@@ -1717,6 +1968,7 @@ document.getElementById('hp-grid').innerHTML = featured.map(f => {
   return `<button class="hp-item" data-page="${pr.page}">
     <span class="shot">
       <video src="${pr.video}" autoplay muted loop playsinline></video>
+      <span class="hp-label">${pr.title} &mdash; ${pr.role}</span>
     </span>
   </button>`;
 }).join('');
@@ -1757,9 +2009,16 @@ document.querySelectorAll('.case-media, .case-video').forEach(el => {
 
 /* project mark above each case title — a real logo where one exists,
    otherwise a letter mark */
-const PAGE_LOGOS = { jobi: 'assets/case-jobi/jobi-appicon.png' };
-/* projects with a real wordmark show it instead of the typeset title */
-const PAGE_WORDMARKS = { jobi: 'assets/case-jobi/jobi-wordmark.png' };
+const PAGE_LOGOS = {
+  jobi: 'assets/case-jobi/jobi-appicon.png',
+  pactto: 'assets/case-pactto/pactto-appicon.png',
+};
+/* projects with a real wordmark show it instead of the typeset title —
+   the light variant, since the site ground is dark */
+const PAGE_WORDMARKS = {
+  jobi: 'assets/case-jobi/jobi-wordmark-light.png',
+  pactto: 'assets/case-pactto/pactto-wordmark-light.png',
+};
 document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   const page = t.closest('.page').id;
   const name = PAGE_NAMES[page];
@@ -1861,99 +2120,6 @@ caseNavLinks.forEach(a => a.addEventListener('click', e => {
   }, 350);
 }));
 
-/* feature carousels (one per .carousel block) */
-document.querySelectorAll('.carousel').forEach(car => {
-  const vp = car.querySelector('.car-viewport');
-  const track = car.querySelector('.car-track');
-  const slides = [...track.children];
-  const count = slides.length;
-  let idx = 0;
-
-  /* tab bar, labelled from each slide's own heading */
-  const tabs = document.createElement('div');
-  tabs.className = 'car-tabs';
-  tabs.setAttribute('role', 'tablist');
-  const pill = document.createElement('span');
-  pill.className = 'car-pill';
-  tabs.appendChild(pill);
-
-  const btns = slides.map((slide, i) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'car-tab';
-    b.setAttribute('role', 'tab');
-    b.textContent = (slide.querySelector('h4') || {}).textContent || ('0' + (i + 1));
-    b.addEventListener('click', () => go(i));
-    tabs.appendChild(b);
-    slide.setAttribute('role', 'tabpanel');
-    return b;
-  });
-  car.insertBefore(tabs, car.firstChild);
-
-  const movePill = () => {
-    const b = btns[idx];
-    pill.style.width = b.offsetWidth + 'px';
-    pill.style.transform = 'translateX(' + b.offsetLeft + 'px)';
-  };
-
-  const go = i => {
-    idx = (i + count) % count;
-    track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-    btns.forEach((b, j) => {
-      b.classList.toggle('on', j === idx);
-      b.setAttribute('aria-selected', j === idx);
-      b.tabIndex = j === idx ? 0 : -1;
-    });
-    slides.forEach((sl, j) => sl.classList.toggle('on', j === idx));
-    movePill();
-    /* keep the active tab in view when the bar has to scroll */
-    btns[idx].scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  };
-
-  /* arrow keys walk the tabs */
-  tabs.addEventListener('keydown', e => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    e.preventDefault();
-    go(idx + (e.key === 'ArrowRight' ? 1 : -1));
-    btns[idx].focus();
-  });
-
-  /* drag / swipe: follow the finger, then settle on the nearest slide */
-  let startX = 0, dx = 0, dragging = false;
-  vp.addEventListener('pointerdown', e => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    dragging = true; startX = e.clientX; dx = 0;
-    track.style.transition = 'none';
-    vp.classList.add('dragging');
-    vp.setPointerCapture(e.pointerId);
-  });
-  vp.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    dx = e.clientX - startX;
-    /* resist at the two ends so the track never floats free */
-    if ((idx === 0 && dx > 0) || (idx === count - 1 && dx < 0)) dx *= 0.32;
-    track.style.transform = 'translateX(calc(' + (-idx * 100) + '% + ' + dx + 'px))';
-  });
-  const endDrag = () => {
-    if (!dragging) return;
-    dragging = false;
-    vp.classList.remove('dragging');
-    track.style.transition = '';
-    const threshold = Math.min(90, vp.offsetWidth * 0.15);
-    if (dx <= -threshold) go(idx + 1);
-    else if (dx >= threshold) go(idx - 1);
-    else go(idx);
-    dx = 0;
-  };
-  vp.addEventListener('pointerup', endDrag);
-  vp.addEventListener('pointercancel', endDrag);
-
-  go(0);
-  /* the pill is measured, so it has to be re-placed when the box changes */
-  window.addEventListener('resize', movePill);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
-});
-
 function updateCaseActive() {
   const cur = document.querySelector('.page.current');
   const nav = cur && document.querySelector(`.case-nav[data-page="${cur.id}"]`);
@@ -1978,51 +2144,219 @@ mascotCanvas.addEventListener('click', () => {
   );
 });
 
+/* ---------- feature carousels ----------
+   Progressive enhancement: any run of two or more sibling .feature-frame
+   blocks becomes one carousel. Without this script the page is still a
+   perfectly readable vertical stack. */
+(() => {
+  const CHEV = d => `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="${
+    d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'
+  }" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  document.querySelectorAll('.case section').forEach(section => {
+    const frames = [...section.children].filter(el => el.classList.contains('feature-frame'));
+    if (frames.length < 2) return;
+
+    const carousel = document.createElement('div');
+    carousel.className = 'carousel';
+    const viewport = document.createElement('div');
+    viewport.className = 'car-viewport';
+    const track = document.createElement('div');
+    track.className = 'car-track';
+    viewport.appendChild(track);
+    carousel.appendChild(viewport);
+    section.insertBefore(carousel, frames[0]);
+    frames.forEach(f => track.appendChild(f));
+
+    /* controls */
+    const ui = document.createElement('div');
+    ui.className = 'car-ui';
+    const prev = document.createElement('button');
+    prev.type = 'button'; prev.className = 'car-arrow';
+    prev.setAttribute('aria-label', 'Previous'); prev.innerHTML = CHEV(-1);
+    const next = document.createElement('button');
+    next.type = 'button'; next.className = 'car-arrow';
+    next.setAttribute('aria-label', 'Next'); next.innerHTML = CHEV(1);
+    const dots = document.createElement('div');
+    dots.className = 'car-dots';
+    const dotEls = frames.map((f, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'car-dot';
+      const name = (f.querySelector('h4') || {}).textContent || ('Slide ' + (i + 1));
+      b.setAttribute('aria-label', name);
+      b.addEventListener('click', () => go(i));
+      dots.appendChild(b);
+      return b;
+    });
+    ui.append(prev, dots, next);
+    carousel.appendChild(ui);
+
+    let idx = 0;
+    const count = frames.length;
+
+    const go = i => {
+      idx = Math.max(0, Math.min(count - 1, i));
+      track.style.transform = `translate3d(${-idx * 100}%, 0, 0)`;
+      frames.forEach((f, j) => f.classList.toggle('on', j === idx));
+      dotEls.forEach((d, j) => {
+        d.classList.toggle('on', j === idx);
+        d.setAttribute('aria-current', j === idx ? 'true' : 'false');
+      });
+      prev.disabled = idx === 0;
+      next.disabled = idx === count - 1;
+    };
+    prev.addEventListener('click', () => go(idx - 1));
+    next.addEventListener('click', () => go(idx + 1));
+
+    /* keyboard: arrows walk the carousel once it has focus */
+    carousel.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      go(idx + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+
+    /* drag / swipe: follow the pointer, then settle on the nearest slide */
+    let startX = 0, dx = 0, dragging = false;
+    viewport.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true; startX = e.clientX; dx = 0;
+      track.classList.add('no-anim');
+      viewport.classList.add('dragging');
+      viewport.setPointerCapture(e.pointerId);
+    });
+    viewport.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      dx = e.clientX - startX;
+      /* resist at the ends so the track never floats free of its bounds */
+      if ((idx === 0 && dx > 0) || (idx === count - 1 && dx < 0)) dx *= 0.32;
+      track.style.transform = `translate3d(calc(${-idx * 100}% + ${dx}px), 0, 0)`;
+    });
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove('dragging');
+      track.classList.remove('no-anim');
+      const threshold = Math.min(90, viewport.offsetWidth * 0.15);
+      go(dx <= -threshold ? idx + 1 : dx >= threshold ? idx - 1 : idx);
+      dx = 0;
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    /* if capture is lost mid-drag the track would stay stranded off-grid */
+    viewport.addEventListener('lostpointercapture', endDrag);
+
+    go(0);
+  });
+})();
+
 /* ---------- custom cursor ---------- */
-/* dot tracks 1:1, ring lerps behind; states are body classes so CSS owns the
-   look. Enabled only where the matching media query applies, so touch and
-   reduced-motion setups never lose the native cursor. */
+/* One element that morphs by state: a frosted disc by default, a caret over
+   running text, and a lock that wraps small interactive elements. States are
+   body classes so CSS owns the look; JS only decides which state applies and
+   where the carrier sits. Enabled only where the matching media query applies,
+   so touch and reduced-motion setups never lose the native cursor. */
 (() => {
   const fine = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
   if (!fine.matches) return;
-  document.body.classList.add('has-cursor');
+  const body = document.body;
+  body.classList.add('has-cursor');
 
-  const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  let mx = -100, my = -100;         /* pointer (dot) */
-  let rx = -100, ry = -100;         /* ring, easing toward the pointer */
-  let raf = null;
+  const orb = document.getElementById('cursor-orb');
+  let mx = -100, my = -100;         /* pointer */
 
-  const frame = () => {
-    rx += (mx - rx) * 0.16;
-    ry += (my - ry) * 0.16;
-    dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-    /* park the loop once the ring has caught up — no idle rAF churn */
-    if (Math.abs(mx - rx) > .1 || Math.abs(my - ry) > .1) raf = requestAnimationFrame(frame);
-    else raf = null;
-  };
-  const wake = () => { if (raf === null) raf = requestAnimationFrame(frame); };
+  /* No rAF loop: the transform is a transitioned property, so the compositor
+     interpolates every move on its own thread. That is what makes it glide —
+     a JS lerp has to restart its loop on each event and drops a frame doing it. */
+  const place = (x, y) => { orb.style.transform = `translate3d(${x}px, ${y}px, 0)`; };
+  const wake = () => { if (!lockEl) place(mx, my); };
 
   window.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    document.body.classList.add('cursor-in');
-    wake();
+    /* while locked the disc stays on the element, not the pointer */
+    if (!lockEl) place(mx, my);
+    body.classList.add('cursor-in');
   }, { passive: true });
   document.documentElement.addEventListener('mouseleave', () =>
-    document.body.classList.remove('cursor-in'));
-  window.addEventListener('mousedown', () => document.body.classList.add('cursor-down'));
-  window.addEventListener('mouseup', () => document.body.classList.remove('cursor-down'));
+    body.classList.remove('cursor-in'));
+  window.addEventListener('mousedown', () => body.classList.add('cursor-down'));
+  window.addEventListener('mouseup', () => body.classList.remove('cursor-down'));
 
-  /* reactive states — delegated, so tiles injected later still count.
-     Tiles win over the generic link state. */
-  const HOT = 'a, button, [data-page], #mascot';
+  /* What the cursor reacts to. LOCK targets get the grow: the disc expands to
+     wrap them and snaps to their centre. Project tiles are excluded — they
+     label themselves on hover, and wrapping a 700px video reads as a bug. */
+  const LOCK = '.case-back, .stat-ring, .insight';
+  const LINK = 'a, button, [data-page]';
+  const TEXT = 'p, h1, h2, h3, h4, li, blockquote, cite, dd, dt, figcaption, .case-sub';
+  const SETTLE_MS = 360;
+  let lockEl = null, trackRaf = null, settleTimer = null;
+
+  const release = () => {
+    if (!lockEl) return;
+    lockEl = null;
+    if (trackRaf !== null) { cancelAnimationFrame(trackRaf); trackRaf = null; }
+    clearTimeout(settleTimer);
+    orb.style.removeProperty('transition');
+    body.classList.remove('cursor-lock');
+    orb.style.removeProperty('--lock-w');
+    orb.style.removeProperty('--lock-h');
+    place(mx, my);
+  };
+
+  /* While locked, follow the element every frame. Scrolling, the reveal
+     animation and resizes all move it after we measured, and a stale rect is
+     what strands the highlight away from its card. */
+  const syncLock = () => {
+    if (!lockEl) return;
+    if (!lockEl.isConnected) { release(); return; }
+    const r = lockEl.getBoundingClientRect();
+    orb.style.setProperty('--lock-w', Math.round(r.width) + 'px');
+    orb.style.setProperty('--lock-h', Math.round(r.height) + 'px');
+    place(r.left + r.width / 2, r.top + r.height / 2);
+  };
+
+  const track = () => {
+    if (!lockEl) { trackRaf = null; return; }
+    syncLock();
+    trackRaf = lockEl ? requestAnimationFrame(track) : null;
+  };
+
+  const grabTo = el => {
+    lockEl = el;
+    body.classList.add('cursor-lock');
+    body.classList.remove('cursor-text', 'cursor-link');
+    /* the entry glides in on the CSS curve; once it has arrived we drop the
+       transition so tracking follows scroll exactly instead of lagging it */
+    clearTimeout(settleTimer);
+    orb.style.removeProperty('transition');
+    settleTimer = setTimeout(() => {
+      if (lockEl) orb.style.transition = 'opacity .2s';
+    }, SETTLE_MS);
+    if (trackRaf === null) trackRaf = requestAnimationFrame(track);
+  };
+
   window.addEventListener('mouseover', e => {
     const tile = e.target.closest('.hp-item');
-    const hot = e.target.closest(HOT);
-    document.body.classList.toggle('cursor-view', !!tile);
-    document.body.classList.toggle('cursor-link', !tile && !!hot);
+    const lock = !tile && e.target.closest(LOCK);
+    const link = e.target.closest(LINK);
+    const text = e.target.closest(TEXT);
+
+    if (lock) { if (lock !== lockEl) { release(); grabTo(lock); } return; }
+    release();
+
+    body.classList.toggle('cursor-link', !tile && !!link);
+    /* the caret only makes sense over prose, never over a control or a tile */
+    body.classList.toggle('cursor-text', !tile && !link && !!text);
   }, { passive: true });
+
+  /* leaving the locked element releases it, even if nothing else is hovered */
+  window.addEventListener('mouseout', e => {
+    if (lockEl && e.target === lockEl && !lockEl.contains(e.relatedTarget)) release();
+  }, { passive: true });
+
+  /* scroll and resize move the element between frames; syncing on the events
+     themselves keeps the highlight glued to it even if rAF is being throttled */
+  window.addEventListener('scroll', syncLock, { passive: true });
+  window.addEventListener('resize', syncLock, { passive: true });
 })();
 </script>
 </body>
