@@ -485,6 +485,35 @@
     margin: 0 auto;
     
   }
+  /* ---------- diagrams ----------
+     Drawn rather than screenshotted, so they inherit the palette and stay
+     crisp at any zoom. Everything reads from the site tokens. */
+  .diagram {
+    margin-top: 32px; background: var(--panel);
+    padding: clamp(16px, 2.4vw, 26px);
+  }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .dg-box { fill: var(--card); stroke: var(--track); stroke-width: 1; }
+  .dg-box.is-home { stroke: var(--accent); }
+  .dg-label { fill: var(--ink); font-size: 12.5px; font-weight: 600; }
+  .dg-sub   { fill: var(--case-cap); font-size: 10.5px; font-weight: 500; }
+  .dg-note  { fill: var(--case-body); font-size: 11px; }
+  .dg-line  { stroke: var(--track); stroke-width: 1; fill: none; }
+  .dg-flow  { stroke: var(--accent); stroke-width: 1.4; fill: none; }
+  .dg-lane  { stroke: var(--track); stroke-width: 1; stroke-dasharray: 3 4; }
+  .dg-actor { fill: var(--case-cap); font-size: 11px; font-weight: 600;
+              letter-spacing: .08em; text-transform: uppercase; }
+  .diagram figcaption {
+    margin-top: 14px; font-size: 13px; line-height: 1.5; color: var(--case-cap);
+  }
+  /* scaled to a phone these labels fall under 7px, so the diagram keeps a
+     legible minimum and scrolls sideways inside its own panel instead */
+  @media (max-width: 700px) {
+    .diagram { overflow-x: auto; }
+    .diagram svg { min-width: 560px; }
+    .diagram figcaption { min-width: 560px; }
+  }
+
   /* the two competitor audits sit side by side so they read as a comparison */
   .comp-pair {
     margin-top: 32px;
@@ -1591,6 +1620,43 @@
       <h2>One Companion, End to End</h2>
       <p>Jobi rides along the whole hunt as a browser side-panel. You pick the roles; Jobi takes on what surrounds them. Each surface answers one of the four insights — and one was answered by building nothing at all.</p>
 
+      <figure class="diagram">
+      <svg viewBox="0 0 690 300" role="img" aria-label="Information architecture: the panel opens into Chat, the home screen, with six destinations each one tap away.">
+        <rect class="dg-box" x="8" y="118" width="104" height="68"/>
+        <text class="dg-label" x="22" y="146">Panel opens</text>
+        <text class="dg-sub" x="22" y="163">onboarding on</text>
+        <text class="dg-sub" x="22" y="176">first run only</text>
+        <path class="dg-flow" d="M112 152 H160"/>
+        <rect class="dg-box is-home" x="160" y="118" width="140" height="68"/>
+        <text class="dg-label" x="176" y="148">Chat</text>
+        <text class="dg-sub" x="176" y="165">the home screen</text>
+        <path class="dg-line" d="M300 152 H330 V32 H360"/>
+        <path class="dg-line" d="M300 152 H330 V78 H360"/>
+        <path class="dg-line" d="M300 152 H330 V124 H360"/>
+        <path class="dg-line" d="M300 152 H330 V170 H360"/>
+        <path class="dg-line" d="M300 152 H330 V216 H360"/>
+        <path class="dg-line" d="M300 152 H330 V262 H360"/>
+        <rect class="dg-box" x="360" y="14" width="322" height="36"/>
+        <text class="dg-label" x="374" y="30">Jobs tracker</text>
+        <text class="dg-sub" x="374" y="43">every application, one pipeline</text>
+        <rect class="dg-box" x="360" y="60" width="322" height="36"/>
+        <text class="dg-label" x="374" y="76">Mock interview</text>
+        <text class="dg-sub" x="374" y="89">voice or fully typed</text>
+        <rect class="dg-box" x="360" y="106" width="322" height="36"/>
+        <text class="dg-label" x="374" y="122">Momentum</text>
+        <text class="dg-sub" x="374" y="135">forgiving streak and goals</text>
+        <rect class="dg-box" x="360" y="152" width="322" height="36"/>
+        <text class="dg-label" x="374" y="168">Cover-letter editor</text>
+        <text class="dg-sub" x="374" y="181">opens in its own tab</text>
+        <rect class="dg-box" x="360" y="198" width="322" height="36"/>
+        <text class="dg-label" x="374" y="214">CV editor</text>
+        <text class="dg-sub" x="374" y="227">content back, your layout</text>
+        <rect class="dg-box" x="360" y="244" width="322" height="36"/>
+        <text class="dg-label" x="374" y="260">Settings & storage</text>
+        <text class="dg-sub" x="374" y="273">CVs, letters, saved links</text>
+      </svg>
+      <figcaption>Every surface is one tap from the home screen. The tree is deliberately one level deep &mdash; the second principle, drawn.</figcaption>
+      </figure>
       <h3>The Chat: Judgement on Tap</h3>
       <p class="answers">Answers insight three: research is paid upfront, before a word is written.</p>
       <p>The home surface is a conversation. Paste a role and Jobi tells you whether it's worth your time, tailors your documents, and researches the company — the half hour of tab-juggling happens in the panel instead.</p>
@@ -1644,6 +1710,7 @@
           <div class="case-card"><h4>The decision</h4><p>Cut entirely. Filling those fields means holding sensitive personal data, and a leak would land on us. Strip them out and what is left does not justify the install.</p></div>
           <div class="case-card"><h4>The trade-off</h4><p>The most repetitive part of applying stays manual, and a research finding goes deliberately unanswered. We would rather ship a smaller tool than become custodians of data we cannot promise to protect.</p></div>
         </div>
+        <p>The call is enforced by the architecture, not by good intentions: the extension holds no secrets and does no AI work of its own. Everything sensitive stays behind the API, so there is nothing in the browser worth leaking.</p>
       </div>
       <p>What survives are the two routes that never touch sensitive data.</p>
       <div class="case-cards">
@@ -1676,6 +1743,37 @@
         </div>
       </div>
 
+      <figure class="diagram">
+      <svg viewBox="0 0 690 384" role="img" aria-label="One application end to end: you open a listing, Jobi reads the page and offers to save it, you ask for a cover letter, the backend returns it streamed into chat, you refine and download it, and the application lands in your tracker.">
+        <text class="dg-actor" x="70" y="42" text-anchor="middle">You</text>
+        <text class="dg-actor" x="345" y="42" text-anchor="middle">Side panel</text>
+        <text class="dg-actor" x="620" y="42" text-anchor="middle">Backend</text>
+        <line class="dg-lane" x1="70" y1="56" x2="70" y2="368"/>
+        <line class="dg-lane" x1="345" y1="56" x2="345" y2="368"/>
+        <line class="dg-lane" x1="620" y1="56" x2="620" y2="368"/>
+        <path class="dg-flow" d="M70 92 H339"/>
+        <path class="dg-flow" d="M339 92 l-6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="204.5" y="84" text-anchor="middle">Open a listing, open Jobi</text>
+        <path class="dg-flow" d="M345 130 h44 v16 h-44"/>
+        <text class="dg-note" x="397" y="142">Reads the page, offers to save the role</text>
+        <path class="dg-flow" d="M70 168 H339"/>
+        <path class="dg-flow" d="M339 168 l-6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="204.5" y="160" text-anchor="middle">Ask for a cover letter</text>
+        <path class="dg-flow" d="M345 206 H614"/>
+        <path class="dg-flow" d="M614 206 l-6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="479.5" y="198" text-anchor="middle">Job + your profile + your CV</text>
+        <path class="dg-flow" d="M620 244 H351"/>
+        <path class="dg-flow" d="M351 244 l6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="485.5" y="236" text-anchor="middle">The letter, streamed into chat</text>
+        <path class="dg-flow" d="M70 282 H339"/>
+        <path class="dg-flow" d="M339 282 l-6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="204.5" y="274" text-anchor="middle">Refine it, download the PDF</text>
+        <path class="dg-flow" d="M345 320 H614"/>
+        <path class="dg-flow" d="M614 320 l-6 -4 v8 z" fill="var(--accent)"/>
+        <text class="dg-note" x="479.5" y="312" text-anchor="middle">The application lands in your tracker</text>
+      </svg>
+      <figcaption>One application, start to finish. The panel never holds anything sensitive &mdash; it asks the backend and renders what comes back.</figcaption>
+      </figure>
       <h3>The Tracker</h3>
       <p class="answers">Answers insight one: statuses are logged by hand and go stale.</p>
       <div class="feature-frame">
@@ -1735,6 +1833,7 @@
       <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="The Figma board, in five labelled sections: mascot ideation sketches, mascot designs and app-icon variants, mid-fi screen designs, lo-fi and reference layouts, and moodboards." loading="lazy">
       <div class="case-cards">
         <div class="case-card"><h4>One Shared Context</h4><p>Claude Code held every artefact and research piece, so the build never drifted from the why. The design and the code came from the same source of truth.</p></div>
+        <div class="case-card"><h4>Refactored to Stay Changeable</h4><p>The panel grew into one 13,700-line file, at which point design changes started costing more than they were worth. Splitting it into fourteen modules, each with one job, was a design decision as much as an engineering one.</p></div>
         <div class="case-card"><h4>Crossroads Went Back to the Evidence</h4><p>When two paths were both reasonable, we did not argue from taste. We fell back on a research finding, or on an earlier decision we had already reasoned through, and stayed consistent.</p></div>
         <div class="case-card"><h4>Every Call Logged as a Trade-off</h4><p>Significant decisions were written down as crossroads, decision and cost, weighing the design against code, API spend and strategy. That record is the discipline this study is built from.</p></div>
       </div>
@@ -1755,7 +1854,17 @@
         </div>
       </div>
 
-      <p>The personality is a written system, not a coat of paint: an accountability partner rather than a cheerleader — it expects you to show up, and teaches you to stop needing it. The anti-reference was Duolingo; someone applying for their thirtieth job this month does not need another thing shouting at them.</p>
+      <div class="decision">
+        <div class="decision-num">Decision 07</div>
+        <h3>Streaks, But They Cannot Punish You</h3>
+        <div class="case-cards">
+          <div class="case-card"><h4>The crossroads</h4><p>Momentum is the thing our interviewees actually lost, and streaks are the proven tool for it. They are also the mechanic most likely to turn a bad week into guilt, which is the exact failure the research warned about.</p></div>
+          <div class="case-card"><h4>The decision</h4><p>Keep the streak, strip its teeth. It counts the days you showed up rather than punishing the ones you didn't, it never sends a don't-lose-it warning, and the number goes quiet on a rejection instead of loud.</p></div>
+          <div class="case-card"><h4>The trade-off</h4><p>A forgiving streak is a weaker retention lever than a fragile one, and we gave up the pressure that makes the mechanic work commercially. Accepted, because a counter that punishes a burnt-out user is the Duolingo owl with a different hat.</p></div>
+        </div>
+      </div>
+
+      <p>The personality is a written system, not a coat of paint: an accountability partner rather than a cheerleader — it expects you to show up, and teaches you to stop needing it. The anti-reference was Duolingo, and not for the streak itself but for the guilt around it; someone applying for their thirtieth job this month does not need another thing shouting at them.</p>
 
       <div class="case-cards">
         <div class="case-card"><h4>The easy version</h4><p>&ldquo;Still nothing?! Don&rsquo;t give up, you&rsquo;ve got this!&rdquo;</p></div>
@@ -1772,7 +1881,7 @@
       <div class="case-cards">
         <div class="case-card"><h4>Do Applications Get Finished?</h4><p>Jobi runs the tracker, so it knows what share of saved roles reach Applied instead of dying at Saved — measured against the industry's ~92% application abandonment rate.</p></div>
         <div class="case-card"><h4>Does the Search Feel Less Heavy?</h4><p>A one-tap check-in at the start and end of the beta, rating how in control and how burnt out someone feels. We track the shift per person, not the headline number.</p></div>
-        <div class="case-card"><h4>Do People Return After a Rejection?</h4><p>When a role is marked Rejected, Jobi watches whether they open the extension again. With no streaks pulling anyone back, a return is a real signal.</p></div>
+        <div class="case-card"><h4>Do People Return After a Rejection?</h4><p>When a role is marked Rejected, Jobi watches whether they open the extension again. The streak is deliberately forgiving, so a return is closer to a real signal than a reflex.</p></div>
       </div>
     </section>
 
