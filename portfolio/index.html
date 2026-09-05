@@ -273,11 +273,13 @@ body.wx-wind    { --wx-wash: linear-gradient(rgba(207, 224, 230, .30), rgba(207,
   .sunbeam i { animation: none; }
 }
 
-/* The night palette. Redefining the tokens carries most of the site over on
-   its own: panels, cards, notes, hairlines, the section nav and all three
-   tiers of type read from these. Surfaces are translucent so the sky shows
-   through them rather than sitting on top of it. */
-body.mascot-moon:has(.nightfall.on) {
+/* The night palette, on the home page only. Redefining the tokens carries
+   the page over on its own: panels, cards, notes, hairlines and all three
+   tiers of type read from these, and surfaces are translucent so the sky
+   shows through them. Everywhere else the moon is a tint over the ordinary
+   light page, the way the weathers are, so every case study is built from
+   the same components. */
+body.home-active.mascot-moon:has(.nightfall.on) {
   --panel: rgba(226, 236, 255, .075);
   --card:  rgba(226, 236, 255, .14);
   --track: rgba(226, 236, 255, .24);
@@ -310,21 +312,11 @@ body.mascot-sun {
 
 /* the note marks keep their own blues and yellows; only the cloud takes the
    page's fill, and on a dark ground it needs its own */
-body.mascot-moon:has(.nightfall.on) .note-icon { fill: #9FB4DC; color: #16233F; }
 
 /* The wordmarks are artwork with black letterforms, so on the night sky they
    vanish. Inverting and turning the hue wheel a half turn flips lightness
    while leaving colour where it was, which keeps Pactto's yellow dot yellow
    and Jobi's sprout green rather than bleaching both to white. */
-/* Compound selectors so these hold wherever .case-wordmark's own display and
-   filter are set further down the sheet. A mark drawn for the dark ground
-   needs no inversion; only Nothing's, which has no night copy, still takes it. */
-.case-wordmark.wm-night { display: none; }
-body.mascot-moon:has(.nightfall.on) .case-wordmark.wm-day { display: none; }
-body.mascot-moon:has(.nightfall.on) .case-wordmark.wm-night { display: block; }
-body.mascot-moon:has(.nightfall.on) .case-wordmark:not(.wm-night) {
-  filter: invert(1) hue-rotate(180deg);
-}
 
 /* The moon's weather: dusk rather than darkness. A blue veil, not a black one,
    because the page still has to be read through it — at this strength the
@@ -446,9 +438,14 @@ body:has(.hp-card:hover) .moon-mascot .star-hand,
   .nightfall-stars i, .moon-star { animation: none; opacity: 1; }
 }
 /* The mascot only lives on the home rail, but its rain layer is fixed to the
-   viewport — without this it carries on raining over the case studies. The sun
-   and the night are not weather but the mode itself, so both travel. */
+   viewport: without this it carries on raining over the case studies. The
+   night's sky and stars stay home too; off it the moon is a tint, the way the
+   weathers are. The sun's light is that tint already, so it travels as it is. */
 body:not(.home-active) .rain { display: none !important; }
+body:not(.home-active) .nightfall,
+body:not(.home-active) .nightfall-stars { display: none !important; }
+body.mascot-moon:not(.home-active) .wxwash { display: block; }
+body.mascot-moon { --wx-wash: linear-gradient(rgba(16, 27, 51, .14), rgba(16, 27, 51, .06)); }
 .rain i {
   position: absolute; top: 0; width: 2px; border-radius: 2px;
   background: linear-gradient(to bottom, rgba(108,138,190,0), rgba(108,138,190,0.55));
@@ -1893,7 +1890,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   @media (prefers-reduced-motion: reduce) { .fs-thumb { transition: none; } }
   /* under the night sky --ink is the pale one, so the fill inverts with it and
      the label has to come back the other way */
-  body.mascot-moon:has(.nightfall.on) .fs-tabs button.on { color: #16233F; }
 
   /* The tinted bars the source page uses to flag a deeper explanation or a
      road not taken. They open. Built on <details> rather than a click handler,
@@ -2368,15 +2364,15 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 
     /* Under nightfall the ground goes to a deep navy and a dark translucent
        disc vanishes into it, so the cursor turns over with the page. */
-    body.mascot-moon:has(.nightfall.on) #cursor-orb .cur-core {
+    body.home-active.mascot-moon:has(.nightfall.on) #cursor-orb .cur-core {
       background: var(--cursor-soft-night);
       box-shadow: var(--cursor-ring-night);
     }
-    body.mascot-moon:has(.nightfall.on).cursor-link #cursor-orb .cur-core {
+    body.home-active.mascot-moon:has(.nightfall.on).cursor-link #cursor-orb .cur-core {
       background: var(--cursor-mid-night);
       box-shadow: var(--cursor-ring-night);
     }
-    body.mascot-moon:has(.nightfall.on).cursor-text #cursor-orb .cur-core {
+    body.home-active.mascot-moon:has(.nightfall.on).cursor-text #cursor-orb .cur-core {
       background: #E8EEFF;
     }
 
@@ -2397,7 +2393,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     }
     body.cursor-view #cursor-orb .cur-label { opacity: 1; }
     /* on the deep sky the pill is navy on near-navy, so it keeps an edge */
-    body.mascot-moon:has(.nightfall.on).cursor-view #cursor-orb .cur-core {
+    body.home-active.mascot-moon:has(.nightfall.on).cursor-view #cursor-orb .cur-core {
       background: var(--mascot-bg);
       box-shadow: 0 0 0 1.5px rgba(232, 240, 255, .35), 0 4px 14px rgba(3, 7, 20, .4);
     }
@@ -2473,8 +2469,11 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   b.classList.add('arriving');
   var chrome = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
                  thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
+  /* the moon's sky is home only; a deep link into a case study opens on the tint */
+  var h = location.hash.replace('#', '');
+  var atHome = !h || h === 'home';
   var m = document.querySelector('meta[name="theme-color"]');
-  if (m) m.setAttribute('content', chrome[which] || chrome.cloud);
+  if (m) m.setAttribute('content', (which === 'moon' && !atHome) ? '#E4E7EE' : (chrome[which] || chrome.cloud));
 })();
 </script>
 
@@ -3704,6 +3703,8 @@ function setActive(page) {
   document.body.classList.toggle('case-active', page !== 'home');
   /* the nav is shared by every page now, so it needs to know which one */
   document.body.dataset.page = page;
+  /* the moon's browser chrome is the sky on home and the tint elsewhere */
+  if (window.mascotRechrome) window.mascotRechrome();
 
   /* he waves hello on arrival. Guarded because the first setActive runs before
      the mascot's own script is parsed; that first visit is greeted by the
@@ -3859,13 +3860,6 @@ const PAGE_WORDMARKS = {
   jobi: 'assets/case-jobi/jobi-wordmark.svg',
   pactto: 'assets/case-pactto/pactto-wordmark.svg',
 };
-/* Marks redrawn for the night sky. Both are placed and CSS picks between them,
-   so the right one is there on first paint with no swap to watch and nothing
-   to re-run when the mascot changes. */
-const PAGE_WORDMARKS_NIGHT = {
-  jobi: 'assets/case-jobi/jobi-wordmark-night.svg',
-  pactto: 'assets/case-pactto/pactto-wordmark-night.svg',
-};
 document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   const page = t.closest('.page').id;
   const name = PAGE_NAMES[page];
@@ -3879,17 +3873,11 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   const mark = PAGE_WORDMARKS[page];
   if (mark && h1) {
     h1.textContent = '';
-    const night = PAGE_WORDMARKS_NIGHT[page];
-    const put = (src, cls, alt) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = alt;
-      img.className = cls;
-      h1.appendChild(img);
-    };
-    put(mark, 'case-wordmark' + (night ? ' wm-day' : ''), name);
-    /* the second copy is decorative: the first already names the page */
-    if (night) put(night, 'case-wordmark wm-night', '');
+    const img = document.createElement('img');
+    img.src = mark;
+    img.alt = name;
+    img.className = 'case-wordmark';
+    h1.appendChild(img);
   }
 
   /* the mark opens the page on a line of its own, above the two columns, so
@@ -4246,7 +4234,7 @@ updateRail();
      none: its rain is an event you have to sit still for, so it stays out of
      this and keeps whatever state it was already in. */
   var SKY = {
-    sun: '.sunbeam', moon: '.nightfall, .nightfall-stars',
+    sun: '.sunbeam', moon: '.nightfall, .nightfall-stars, .wxwash',
     drizzle: '.rain, .wxwash', rain: '.rain, .wxwash', thunder: '.rain, .lightning, .wxwash',
     fog: '.fog, .wxwash', snow: '.snow, .wxwash', wind: '.wxwash',
   };
@@ -4256,6 +4244,15 @@ updateRail();
   var CHROME = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
                  thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
   var chromeMeta = document.querySelector('meta[name="theme-color"]');
+  /* the moon's chrome is the sky on home and the tint everywhere else, so the
+     page has a say; setActive calls this again on every navigation */
+  function rechrome(which) {
+    if (!chromeMeta) return;
+    var home = body.classList.contains('home-active');
+    var c = (which === 'moon' && !home) ? '#E4E7EE' : (CHROME[which] || CHROME.cloud);
+    chromeMeta.setAttribute('content', c);
+  }
+  window.mascotRechrome = function () { rechrome(on); };
 
   function apply(which, instant) {
     /* The incoming layer would otherwise appear at full strength, because
@@ -4278,7 +4275,7 @@ updateRail();
     body.classList.toggle('mascot-moon', which === 'moon');
     window.mascotStates.forEach(function (s) { if (WX[s]) body.classList.toggle('wx-' + s, which === s); });
 
-    if (chromeMeta) chromeMeta.setAttribute('content', CHROME[which] || CHROME.cloud);
+    rechrome(which);
 
     var sky = SKY[which];
     var light = function () {
