@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahin — home (mascot test)</title>
+<style>
+  /* Bricolage Grotesque (SIL OFL 1.1) — same self-hosted face as the live site. */
+  @font-face {
+    font-family: 'Bricolage Grotesque';
+    src: url('assets/fonts/BricolageGrotesque-Variable.woff2') format('woff2');
+    font-weight: 200 800;
+    font-display: swap;
+  }
+
+  :root {
+    /* page palette, lifted from bloub.vercel.app */
+    --paper:  #f9f9f9;
+    --ink:    #17203a;
+    --line:   #e3e5ea;
+    --muted:  #6e7382;
+
+    /* mascot, taken from the Jobi character: near-white body, sprout green,
+       dark eyes */
+    --body:  #ffffff;
+    --sprout: #0cb385;
+    --eye:    #212121;
+
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', system-ui, Arial, sans-serif;
+    font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ---------- stage ----------
+     Work on the left, the mascot column on the right. The two tiles split the
+     window height between them. */
+  .stage {
+    --pad: 28px;
+    --gap: 14px;
+    --tile-h: calc((100dvh - var(--pad) * 2 - var(--gap)) / 2);
+    /* 16:9 off that height — capped so the mascot always keeps a column */
+    --colw: min(calc(var(--tile-h) * 16 / 9), 58vw);
+    position: relative; height: 100dvh;
+    padding: var(--pad);
+    display: grid;
+    grid-template-columns: var(--colw) minmax(0, 1fr);
+    align-items: center;
+    gap: 3vw;
+  }
+
+  /* ---------- left rail ---------- */
+  /* min-width:0 or the videos' intrinsic width sets the column's minimum and
+     blows the track out past the viewport */
+  .rail {
+    position: relative; z-index: 2; min-width: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+
+  .work { display: flex; flex-direction: column; gap: var(--gap); }
+
+  /* one 16:9 tile per project, stacked — same format as the live home */
+  .tile {
+    display: block; width: 100%; padding: 0; border: 0;
+    background: none; font: inherit; color: inherit; text-align: left;
+    cursor: pointer; text-decoration: none;
+    opacity: 0; transform: translateY(10px);
+  }
+  .tile.in {
+    opacity: 1; transform: none;
+    transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
+  }
+  .tile .shot {
+    position: relative; display: block; width: 100%;
+    aspect-ratio: 16 / 9; overflow: hidden;
+    border-radius: 14px;
+    background: #eceef2;
+    border: 1px solid var(--line);
+  }
+  .tile video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: filter .4s var(--ease-out), transform .5s var(--ease-out);
+  }
+  /* the tile names itself on hover — footage falls back behind frosted glass */
+  .tile .label {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 12px;
+    font-size: 18px; font-weight: 500; letter-spacing: .04em;
+    color: #fff; opacity: 0;
+    transition: opacity .35s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .tile:hover video { filter: blur(9px) brightness(.42) saturate(.9); transform: scale(1.04); }
+    .tile:hover .label { opacity: 1; }
+  }
+
+  .rail-foot {
+    position: absolute; right: var(--pad); bottom: var(--pad); z-index: 3;
+    display: flex; align-items: baseline; gap: 18px;
+    font-size: 13px; color: var(--muted);
+  }
+  .rail-foot a { color: var(--muted); text-decoration: none; transition: color .18s ease; }
+  .rail-foot a:hover { color: var(--ink); }
+  #clock { font-variant-numeric: tabular-nums; }
+
+  /* ---------- mascot column ----------
+     The mascot is the hero and the line about you reads as its caption, so the
+     two are centred in the column as one block: mascot, then words. */
+  .mascot-wrap {
+    position: relative; align-self: stretch;
+    display: flex; flex-direction: column; justify-content: center; gap: 22px;
+    margin-right: calc(var(--pad) * -1);   /* flush to the window edge */
+  }
+
+  /* The SVG is square but the mascot fills barely a third of it, so in flow it
+     would drag a thick band of dead space along and push the caption miles away.
+     The slot is exactly the mascot's own height — the script measures it and
+     writes --art-h — and the square SVG overflows it, seen but not counted. */
+  .mascot-slot {
+    position: relative; align-self: flex-end; flex: 0 0 auto;
+    width: min(92vh, 165%);
+    aspect-ratio: 316 / var(--art-h, 160);
+    /* --dead is the transparent margin the viewBox carries on each side, as a
+       share of its own width; shifting by it lands the mascot's rim on the
+       window edge and the extra vw past that is the crop. Measured in the
+       script, since neither the body's width nor its height is a given. */
+    transform: translateX(calc(var(--dead, 18%) + 1.2vw));
+  }
+  #mascot {
+    position: absolute; left: 0; top: 50%;
+    width: 100%; height: auto; display: block;
+    transform: translateY(-50%);
+    /* the body is white on near-white paper, so the shadow is what separates
+       them — kept wide and faint so it reads as air, not as a raised card */
+    filter: drop-shadow(0 22px 44px rgba(23, 32, 58, .13))
+            drop-shadow(0 3px 10px rgba(23, 32, 58, .05));
+    cursor: pointer; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .intro {
+    /* right-aligned to the page margin, same as the mascot above it — anchored
+       left it stranded itself under the empty half of the mascot's box */
+    align-self: flex-end;
+    margin: 0; padding-right: var(--pad);  /* the wrap overhangs; put it back */
+    max-width: 21em;
+    font-size: 19px; line-height: 29px;
+    color: var(--muted);
+  }
+  .intro em { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  /* ---------- narrow: stack, and let the page scroll ---------- */
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .stage {
+      --pad: 20px;
+      height: auto; min-height: 100dvh;
+      grid-template-columns: minmax(0, 1fr); gap: 28px;
+      padding-bottom: 72px;
+    }
+    .mascot-wrap {
+      order: -1; margin-right: 0; align-self: auto;
+      align-items: center; gap: 24px;
+    }
+    .mascot-slot { align-self: center; width: min(96vw, 420px); transform: none; }
+    .intro {
+      align-self: center; padding-right: 0; text-align: center;
+      max-width: 26em; font-size: 18px; line-height: 27px;
+    }
+  }
+
+  /* short windows: the column holds mascot + caption + a pinned footer, so
+     give the caption less to take up before they start crowding */
+  @media (max-height: 680px) and (min-width: 901px) {
+    .mascot-wrap { gap: 20px; }
+    .mascot-slot { width: min(72vh, 150%); }
+    .intro { font-size: 16px; line-height: 24px; max-width: 26em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile video, .tile:hover video { transition: none; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ---------- work rail ---------- -->
+  <div class="rail">
+    <div class="work" id="work"></div>
+  </div>
+
+  <div class="rail-foot">
+    <span>London, <span id="clock">--:--:--</span></span>
+    <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+
+  <!-- ---------- mascot, then the line about you ---------- -->
+  <div class="mascot-wrap">
+
+    <div class="mascot-slot">
+      <svg id="mascot" viewBox="-158 -158 316 316" role="img"
+           aria-label="Jobi's mascot: a rounded body with a sprout growing from its head">
+        <g id="mascot-g">
+          <!-- The sprout is drawn first so the body paints over the foot of its
+               stem: it reads as growing out of the head rather than sitting on
+               top of it. Artwork is the Jobi sprout, same paths as the live site. -->
+          <g id="sprout" fill="var(--sprout)">
+            <g id="sprout-art">
+              <rect x="281.333" y="248.871" width="86.5638" height="173.128"/>
+              <path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z"/>
+              <path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z"/>
+            </g>
+          </g>
+          <path id="body" fill="var(--body)"/>
+          <ellipse id="eye-l" fill="var(--eye)"/>
+          <ellipse id="eye-r" fill="var(--eye)"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="intro">I'm <em>Mahin Jahan</em> &mdash; a product designer in London,
+      three years in, shipping AI features people actually feel.
+      Founder of <em>Jobi</em>.</p>
+
+  </div>
+
+</div>
+
+<script>
+/* ---------- work rail ---------- */
+const projects = [
+  { title: 'Jobi',   role: 'Founder',    video: 'assets/videos/jobi-trailer-web.mp4', page: 'jobi' },
+  { title: 'Pactto', role: 'Internship', video: 'assets/videos/pactto.mp4',           page: 'pactto' },
+];
+
+document.getElementById('work').innerHTML = projects.map(p => `
+  <a class="tile" href="index.html#${p.page}">
+    <span class="shot">
+      <video src="${p.video}" autoplay muted loop playsinline></video>
+      <span class="label">${p.title} &mdash; ${p.role}</span>
+    </span>
+  </a>`).join('');
+
+[...document.querySelectorAll('.tile')].forEach((el, i) =>
+  setTimeout(() => el.classList.add('in'), 120 + i * 90));
+
+/* ---------- London clock ---------- */
+const clockEl = document.getElementById('clock');
+const tick = () => clockEl.textContent =
+  new Date().toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour12: false });
+tick(); setInterval(tick, 1000);
+</script>
+
+<script src="assets/mascot.js"></script>
+</body>
+</html>

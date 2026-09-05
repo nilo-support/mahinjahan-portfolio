@@ -6,6 +6,25 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-# source videos that are superseded by the compressed web versions.
-# Uncomment to carry the originals between machines as well.
-# assets/videos/jobi-trailer.mp4
+# the previous site at the repo root, superseded by portfolio/. Kept on disk
+# for reference, not shipped: Netlify publishes portfolio/ alone.
+/.vscode/
+/about.html
+/case-study.html
+/css/
+/decor/
+/favicon.svg
+/icons/
+/images/
+/index.html
+/jobi-panel.html
+/jobi-vids/
+/jobi.html
+/js/
+/og-image.png
+/play/
+/playground.html
+/videos/
+
+# the uncompressed trailer source (28MB); the page uses jobi-trailer-web.mp4
+portfolio/assets/videos/jobi-trailer.mp4
