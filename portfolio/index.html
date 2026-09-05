@@ -2149,6 +2149,10 @@ body:not(.home-active) .rain { display: none !important; }
      A frosted disc that morphs: it becomes a caret over text and locks onto
      interactive elements, wrapping them rather than floating over them.
      Mouse-and-trackpad only; touch and reduced-motion keep the native cursor. */
+  /* Outside the media query on purpose: where the rules below do not apply,
+     the orb is an ordinary block at the top of the body, and the View label
+     inside it rendered as a word above the clock on phones. */
+  #cursor-orb { display: none; }
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     /* blanket rather than a list: anything setting its own cursor (the flip
        cards use pointer, the carousel used grab) would otherwise punch a
@@ -2161,6 +2165,7 @@ body:not(.home-active) .rain { display: none !important; }
     /* carrier: JS owns its transform (translate only) — every visual state
        lives on the core inside, so the two never fight over one property */
     #cursor-orb {
+      display: block;
       position: fixed; top: 0; left: 0; z-index: 99999;
       pointer-events: none;
       opacity: 0;                       /* hidden until the pointer first moves */
