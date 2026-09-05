@@ -446,6 +446,24 @@ body:not(.home-active) .nightfall,
 body:not(.home-active) .nightfall-stars { display: none !important; }
 body.mascot-moon:not(.home-active) .wxwash { display: block; }
 body.mascot-moon { --wx-wash: linear-gradient(rgba(16, 27, 51, .14), rgba(16, 27, 51, .06)); }
+
+/* Weather at night: the moon keeps its post and the stars give way to what
+   the sky is doing. Rain and drizzle fall over the navy, thunder flashes
+   across it, snow and fog drift through it. The drops are lifted to a pale
+   blue so they read on navy; drizzle is a third of them, slowly, as by day. */
+body.mascot-moon[data-night-wx] .nightfall-stars { display: none !important; }
+body.mascot-moon[data-night-wx="rain"] .rain,
+body.mascot-moon[data-night-wx="drizzle"] .rain,
+body.mascot-moon[data-night-wx="thunder"] .rain { display: block; }
+body.mascot-moon[data-night-wx="thunder"] .lightning { display: block; }
+body.mascot-moon[data-night-wx="thunder"] .rain i { animation-duration: .42s !important; }
+body.mascot-moon[data-night-wx="snow"] .snow { display: block; }
+body.mascot-moon[data-night-wx="fog"] .fog { display: block; }
+body.mascot-moon .rain i {
+  background: linear-gradient(to bottom, rgba(198, 212, 240, 0), rgba(198, 212, 240, .62));
+}
+body.mascot-moon[data-night-wx="drizzle"] .rain i { animation-duration: 1.5s !important; }
+body.mascot-moon[data-night-wx="drizzle"] .rain i:not(:nth-child(3n)) { display: none; }
 .rain i {
   position: absolute; top: 0; width: 2px; border-radius: 2px;
   background: linear-gradient(to bottom, rgba(108,138,190,0), rgba(108,138,190,0.55));
@@ -2445,12 +2463,28 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     return w ? fromWeather(w) : onDuty();
   };
   window.mascotReading = reading;
+  /* what the night sky is doing, if anything: the moon keeps its post and
+     the sky shows this instead of stars. Thunder flashes over the navy, fog
+     drifts across it; wind alone leaves the stars where they are. */
+  window.mascotNightWx = function () {
+    var w = reading();
+    if (!w || w.isDay) return '';
+    var c = w.code;
+    if (c >= 95) return 'thunder';
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return 'rain';
+    if (c >= 51 && c <= 57) return 'drizzle';
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return 'snow';
+    if (c === 45 || c === 48) return 'fog';
+    return '';
+  };
   window.mascotStates = ['cloud', 'sun', 'moon', 'drizzle', 'rain', 'thunder', 'fog', 'snow', 'wind'];
 
   var which = window.mascotDecide(), b = document.body;
   if (which === 'sun') b.classList.add('mascot-sun');
   else if (which === 'moon') b.classList.add('mascot-moon');
   else if (which !== 'cloud') b.classList.add('wx-' + which);
+  var nwx = which === 'moon' ? window.mascotNightWx() : '';
+  if (nwx) b.dataset.nightWx = nwx;
   b.classList.add('arriving');
   var chrome = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
                  thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
@@ -4239,7 +4273,7 @@ updateRail();
     var rain = document.querySelector('.rain');
     /* the rain's own state only counts for the plain cloud, where the idle
        beat owns it; in a weather it was lit by the weather */
-    var wasWx = /(^|\s)wx-/.test(body.className);
+    var wasWx = /(^|\s)wx-/.test(body.className) || !!body.dataset.nightWx;
     var rainWasLit = !wasWx && !!(rain && rain.classList.contains('on'));
     layers.forEach(function (l) { l.classList.remove('on'); });
 
@@ -4249,7 +4283,10 @@ updateRail();
 
     rechrome(which);
 
+    var nwx = which === 'moon' ? window.mascotNightWx() : '';
+    if (nwx) body.dataset.nightWx = nwx; else delete body.dataset.nightWx;
     var sky = SKY[which];
+    if (nwx) sky += { snow: ', .snow', fog: ', .fog', thunder: ', .rain, .lightning' }[nwx] || ', .rain';
     var light = function () {
       if (sky) document.querySelectorAll(sky).forEach(function (l) { l.classList.add('on'); });
       else if (rainWasLit && rain) rain.classList.add('on');
@@ -4301,9 +4338,13 @@ updateRail();
     line.textContent = now;
   }
 
+  /* the night weather is part of the state, so rain starting after dark
+     re-applies even though the moon stays */
+  var onKey = '';
   function decide() {
     var next = window.mascotDecide();
-    if (next !== on) { on = next; apply(next); }
+    var key = next + '/' + (next === 'moon' ? window.mascotNightWx() : '');
+    if (key !== onKey) { onKey = key; on = next; apply(next); }
     say();
   }
 
@@ -4612,7 +4653,7 @@ updateRail();
     /* the rain alone: the sun and the moon own their skies outright, and a
        click on either is a reaction, not a weather switch */
     /* in a weather the rain is the weather, and a click must not switch it off */
-    if (!/(^|\s)wx-/.test(document.body.className)) {
+    if (!/(^|\s)wx-/.test(document.body.className) && !document.body.dataset.nightWx) {
       document.querySelectorAll('.rain').forEach(function (l) {
         l.classList.toggle('on', storming);
       });
@@ -4634,7 +4675,9 @@ updateRail();
      it. */
   /* In a weather the rain (or snow, or fog) is the state itself, not something
      the idle beat summons, so there is nothing here for it to start or stop. */
-  function inWeather() { return /(^|\s)wx-/.test(document.body.className); }
+  function inWeather() {
+    return /(^|\s)wx-/.test(document.body.className) || !!document.body.dataset.nightWx;
+  }
   function weatherLayers() { return inWeather() ? [] : document.querySelectorAll('.rain'); }
   var INACTIVE = 9000, idleT = null, rainT = null, sneaking = false;
   /* the two that answer being left alone with movement rather than weather */
