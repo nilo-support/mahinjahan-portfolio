@@ -211,7 +211,7 @@ body:has(.hp-card:hover) .cloud-mouth {
 /* The rain is meant to start and stop abruptly. Nightfall is a whole page
    changing colour, so it comes in over more than a second and leaves a little
    quicker than it arrives. */
-.sunbeam { transition: opacity 1s cubic-bezier(.4, 0, .2, 1); }
+.sunbeam { transition: opacity 1s cubic-bezier(.4, 0, .2, 1), --beam 1.6s ease; }
 .nightfall, .nightfall-stars { transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1); }
 .nightfall.on, .nightfall-stars.on { transition-duration: 1.4s; }
 .nightfall:not(.on), .nightfall-stars:not(.on) { transition-duration: 1s; }
@@ -247,18 +247,26 @@ body.wx-wind    { --wx-wash: linear-gradient(rgba(207, 224, 230, .30), rgba(207,
    corner keeps the origin out of the composition instead of sitting behind the
    mascot. Wide and heavily blurred so they overlap into a wash with only a
    suggestion of banding. */
+/* --beam scales every alpha in the light at once. Registered so a change
+   in it eases rather than jumps; where @property is unknown it still works,
+   it just switches. */
+@property --beam { syntax: '<number>'; inherits: true; initial-value: 1; }
 .sunbeam {
+  --beam: 1;
   /* a warm lift behind the shafts, so this reads as light in the room rather
      than as a set of stripes laid over it */
   background: radial-gradient(95% 80% at 100% 0%,
-              rgba(250, 196, 74, .11), rgba(250, 196, 74, .03) 45%,
+              rgba(250, 196, 74, calc(.20 * var(--beam))), rgba(250, 196, 74, calc(.06 * var(--beam))) 45%,
               rgba(250, 196, 74, 0) 72%);
 }
+/* Left alone, the sun comes out: on the same idle beat that sets him pulsing
+   (the cloud's equivalent is the rain starting), the light nearly doubles. */
+body.mascot-sun:has(.hello-wrap.is-restless) .sunbeam { --beam: 1.9; }
 .sunbeam i {
   position: absolute; top: -60vh;
   width: 13vw; height: 240vh;
   background: linear-gradient(to bottom,
-              rgba(255, 214, 122, .13), rgba(255, 214, 122, .05) 55%, rgba(255, 214, 122, 0) 88%);
+              rgba(255, 214, 122, calc(.22 * var(--beam))), rgba(255, 214, 122, calc(.08 * var(--beam))) 55%, rgba(255, 214, 122, 0) 88%);
   filter: blur(38px);
   animation-name: sunDrift;
   animation-timing-function: ease-in-out;
