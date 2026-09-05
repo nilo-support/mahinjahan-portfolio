@@ -219,6 +219,24 @@ body:not(.mascot-sun):not(.mascot-moon) .rain { display: block; }
 body.mascot-sun .sunbeam { display: block; }
 body.mascot-moon .nightfall,
 body.mascot-moon .nightfall-stars { display: block; }
+/* The cloud's weather. The rain layer is already drawn for any cloud; these
+   add the rest. Particles stay on the home page, like the rain; the wash
+   travels with the mode, like the sun's light and the night do. */
+body.wx-snow .snow { display: block; }
+body.wx-fog .fog { display: block; }
+body.wx-thunder .lightning { display: block; }
+body[class*="wx-"] .wxwash { display: block; }
+body:not(.home-active) .snow,
+body:not(.home-active) .fog,
+body:not(.home-active) .lightning { display: none !important; }
+/* the wash is a tint over the page, so it comes and goes like the night does */
+.wxwash { transition: opacity 1s cubic-bezier(.4, 0, .2, 1); background: var(--wx-wash, transparent); }
+body.wx-drizzle { --wx-wash: linear-gradient(rgba(201, 211, 227, .34), rgba(201, 211, 227, .10)); }
+body.wx-rain    { --wx-wash: linear-gradient(rgba(174, 187, 208, .42), rgba(174, 187, 208, .16)); }
+body.wx-thunder { --wx-wash: linear-gradient(rgba(75, 85, 99, .26), rgba(75, 85, 99, .10)); }
+body.wx-fog     { --wx-wash: linear-gradient(rgba(227, 230, 234, .62), rgba(227, 230, 234, .30)); }
+body.wx-snow    { --wx-wash: linear-gradient(rgba(214, 224, 238, .48), rgba(214, 224, 238, .18)); }
+body.wx-wind    { --wx-wash: linear-gradient(rgba(207, 224, 230, .30), rgba(207, 224, 230, .08)); }
 
 /* The sun's weather, on the same idle trigger and the same fade as the rain:
    light coming in from the top right corner and falling across the page on the
@@ -438,6 +456,48 @@ body:not(.home-active) .rain { display: none !important; }
   animation-play-state: paused;
 }
 .rain.on i { animation-play-state: running; }
+/* the rain engine at three intensities: a third of the drops, slowly, for
+   drizzle; every drop, fast, for thunder */
+body.wx-drizzle .rain i { animation-duration: 1.5s !important; }
+body.wx-drizzle .rain i:not(:nth-child(3n)) { display: none; }
+body.wx-thunder .rain i { animation-duration: .42s !important; }
+
+/* snow: the same engine, flakes instead of streaks, drifting as they fall.
+   Pale blue rather than white, since the page they fall on is white. */
+.snow i {
+  position: absolute; top: 0; border-radius: 50%;
+  background: rgba(176, 192, 216, .85);
+  animation-name: snowFall; animation-timing-function: linear; animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.snow.on i { animation-play-state: running; }
+@keyframes snowFall {
+  from { transform: translate(0, -6vh); }
+  50%  { transform: translate(18px, 56vh); }
+  to   { transform: translate(-10px, 118vh); }
+}
+
+/* fog: three soft bands drifting across, in front of everything on the page */
+.fog { z-index: 2; }
+.fog i {
+  position: absolute; left: -25%; width: 150%; height: 34vh; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(226, 229, 234, .82), rgba(226, 229, 234, 0) 70%);
+  filter: blur(26px);
+  animation-name: fogDrift; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.fog.on i { animation-play-state: running; }
+@keyframes fogDrift { from { transform: translateX(-6%); } 50% { transform: translateX(6%); } to { transform: translateX(-6%); } }
+
+/* lightning: a flash every seven seconds or so, with a smaller echo */
+.lightning i {
+  position: absolute; inset: 0; background: #FFFDF4; opacity: 0;
+  animation: lightningFlash 7.3s ease-out infinite; animation-play-state: paused;
+}
+.lightning.on i { animation-play-state: running; }
+@keyframes lightningFlash {
+  0%, 100% { opacity: 0; } 1% { opacity: .82; } 2.4% { opacity: 0; } 3.6% { opacity: .45; } 4.8% { opacity: 0; }
+}
 .hello-wrap.is-storm .eyes-open { opacity: 0; animation: none; }
 .hello-wrap.is-storm .eyes-happy { opacity: 1; }
 .hello-wrap.is-storm .cloud-mouth { opacity: 0 !important; }
@@ -479,6 +539,43 @@ body:not(.home-active) .rain { display: none !important; }
 .hello-wrap.is-happy .eyes-open { opacity: 0; }
 .hello-wrap.is-happy .eyes-happy { opacity: 1; }
 .hello-wrap.is-happy .cloud-mouth { opacity: 0 !important; }
+
+/* The cloud in its six weathers: a recolour through the fills it already
+   carries, and an expression from the eye and mouth states that exist. The
+   sun and the moon share .cloud-mascot for their eyes, so the cloud alone is
+   named by what it is not. */
+body.wx-drizzle .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #BFCBDD; }
+body.wx-rain    .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #A6B4CA; }
+body.wx-thunder .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #5B6472; }
+body.wx-fog     .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #D7DBE2; }
+body.wx-fog     .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) { opacity: .8; }
+body.wx-snow    .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #E4EBF6; }
+body.wx-wind    .hp .cloud-mascot:not(.sun-mascot):not(.moon-mascot) [fill="#D7E2F3"] { fill: #C9DAEE; }
+
+/* thunder: startled the whole time, and a flinch on each flash */
+body.wx-thunder .hello-wrap .cloud-mouth { transform: scale(1); opacity: 1; }
+/* fog: half-lidded, the top of each eye lost behind the lid */
+body.wx-fog .hello-wrap .eyes-open { clip-path: inset(40% 0 0 0); animation: none; }
+/* snow and wind: the squint, one against the cold and one into the gust */
+body.wx-snow .hello-wrap .eyes-open, body.wx-wind .hello-wrap .eyes-open { opacity: 0; animation: none; }
+body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  body.wx-thunder .hello-wrap .mascot-inner { animation: thunderFlinch 7.3s ease-out infinite; }
+  body.wx-wind .hello-wrap .mascot-inner {
+    animation: windLean 2.8s ease-in-out infinite;
+    transform-box: fill-box; transform-origin: 50% 82%;
+  }
+  body.wx-snow .hello-wrap .mascot-inner { animation: snowShiver 3.2s ease-in-out infinite; }
+  /* left alone, the weathered cloud bobs where the sun swells and the moon sways */
+  body[class*="wx-"]:not(.wx-wind):not(.wx-thunder) .hello-wrap.is-restless .mascot-inner {
+    animation: mascotBob 2.2s ease-in-out infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snow i, .fog i, .lightning i { animation: none; }
+  .lightning i { opacity: 0; }
+  .fog i { transform: none; }
+}
 .mascot-inner { transform-box: fill-box; transform-origin: 40% 58%; }
 @media (prefers-reduced-motion: no-preference) {
   .hello-wrap.is-happy .mascot-inner { animation: mascotWiggle .66s ease-in-out; }
@@ -531,6 +628,22 @@ body:not(.home-active) .rain { display: none !important; }
   50%      { transform: scale(1.075); }
 }
 @keyframes rainFall { from { transform: translateY(-22vh); } to { transform: translateY(118vh); } }
+@keyframes thunderFlinch {
+  0%, 100% { transform: none; }
+  1%   { transform: translate(-3px, 4px) rotate(-3deg); }
+  2.4% { transform: translate(2px, -2px) rotate(2deg); }
+  3.6% { transform: translate(-1px, 2px) rotate(-1deg); }
+  5%   { transform: none; }
+}
+@keyframes windLean {
+  0%, 100% { transform: rotate(-5deg) translateX(-5px); }
+  50%      { transform: rotate(3deg) translateX(3px); }
+}
+@keyframes snowShiver {
+  0%, 88%, 100% { transform: none; }
+  90% { transform: translateX(-1.5px); } 92% { transform: translateX(1.5px); }
+  94% { transform: translateX(-1.5px); } 96% { transform: translateX(1px); }
+}
 
 /* natural periodic blink: squash the eyes to a line and back */
 @media (prefers-reduced-motion: no-preference) {
@@ -658,6 +771,14 @@ body:not(.home-active) .rain { display: none !important; }
      with the night palette, since it only holds once the sky is lit. */
   body { --cta-mobile: #2F5AA8; }
   body.mascot-sun { --cta-mobile: #9A5B00; }
+  /* The cloud's weather states: the same cloud on a different ground. Each
+     ground carries the menu, the curtain, the loader and the cursor pill. */
+  body.wx-drizzle { --mascot-bg: #C9D3E3; }
+  body.wx-rain    { --mascot-bg: #AEBBD0; }
+  body.wx-thunder { --mascot-bg: #4B5563; --mascot-ink: #EAF1FF; --mascot-line: rgba(234, 241, 255, .22); }
+  body.wx-fog     { --mascot-bg: #E3E6EA; }
+  body.wx-snow    { --mascot-bg: #EEF3FA; }
+  body.wx-wind    { --mascot-bg: #CFE0E6; }
   body.mascot-moon {
     --mascot-bg: #101B33; --mascot-ink: #EAF1FF; --mascot-line: rgba(234, 241, 255, .22);
   }
@@ -679,6 +800,18 @@ body:not(.home-active) .rain { display: none !important; }
   body.menu-open { overflow: hidden; }
   .hp-nav-items { display: flex; align-items: center; gap: 24px; }
   .hp-burger { display: none; }
+  /* A preview of every state, held in memory only. Styled as a small pill in
+     the nav's own type, with its chevron drawn in rather than the platform's. */
+  .wx-pick {
+    appearance: none; -webkit-appearance: none;
+    font: 500 14px/1 var(--font); letter-spacing: .01em;
+    color: var(--ink); background-color: var(--card); border: 0; border-radius: 999px;
+    padding: 8px 30px 8px 14px; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23777' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 11px center; background-size: 12px 12px;
+    transition: color 1.4s cubic-bezier(.4, 0, .2, 1), background-color 1.4s cubic-bezier(.4, 0, .2, 1);
+  }
+  .wx-pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* the opposite corner to the nav, so the two sit as a pair across the top */
   .hp-clock {
     position: absolute; top: 26px; left: 30px; z-index: 20;
@@ -774,6 +907,12 @@ body:not(.home-active) .rain { display: none !important; }
     .hp-nav.open .hp-nav-items a:nth-of-type(1) { transition-delay: .17s; }
     .hp-nav.open .hp-nav-items a:nth-of-type(2) { transition-delay: .23s; }
     .hp-nav.open .hp-nav-items a:nth-of-type(3) { transition-delay: .29s; }
+    .hp-nav.open .hp-nav-items .wx-pick { transition-delay: .35s; }
+    /* on the sheet it sits under the links as a footer, in the sheet's own ink */
+    .hp-nav .hp-nav-items .wx-pick {
+      margin-top: 30px; font-size: 17px; padding: 13px 42px 13px 20px;
+      color: var(--mascot-ink); background-color: var(--mascot-line);
+    }
 
     @media (prefers-reduced-motion: reduce) {
       .hp-nav-items, .hp-nav-items > * { transition-duration: .01s; }
@@ -834,11 +973,12 @@ body:not(.home-active) .rain { display: none !important; }
   /* The fourth corner, opposite the clock and under the nav, on the same
      insets as both. A footnote on the chrome rather than a second sentence of
      the introduction, which is how it read while it sat under one. */
+  .hp-mode a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
   .hp-mode {
     position: absolute; right: 30px; bottom: 26px; z-index: 20;
     /* wide enough for two lines, balanced so they come out even rather than
        long-then-orphan */
-    max-width: 52ch; margin: 0; text-align: right; text-wrap: balance;
+    max-width: 58ch; margin: 0; text-align: right; text-wrap: balance;
     font-size: 13.6px; font-weight: 400; line-height: 1.55;
     letter-spacing: .014em; color: var(--case-cap);
   }
@@ -2293,13 +2433,48 @@ body:not(.home-active) .rain { display: none !important; }
     return 'moon';
   }
   window.mascotOnDuty = onDuty;
-  var which = onDuty(), b = document.body;
+
+  /* Live weather, from a reading cached for fifteen minutes. Codes are the
+     WMO set Open-Meteo returns: thunder, snow, fog, drizzle, rain; wind when
+     nothing is falling but it is blowing; then clear, which is the sun by day
+     and the moon by night; and the cloud for partly cloudy or overcast. */
+  function fromWeather(w) {
+    var c = w.code;
+    if (c >= 95) return 'thunder';
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return 'snow';
+    if (c === 45 || c === 48) return 'fog';
+    if (c >= 51 && c <= 57) return 'drizzle';
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return 'rain';
+    if (w.wind >= 32) return 'wind';
+    if (c <= 1) return w.isDay ? 'sun' : 'moon';
+    return 'cloud';
+  }
+  var FRESH = 15 * 60 * 1000;
+  function reading() {
+    try {
+      var w = JSON.parse(localStorage.getItem('wx') || 'null');
+      if (w && typeof w.code === 'number' && Date.now() - w.t < FRESH) return w;
+    } catch (e) {}
+    return null;
+  }
+  /* preview from the toggle, else the live reading, else the clock */
+  window.mascotDecide = function (preview) {
+    if (preview) return preview;
+    var w = reading();
+    return w ? fromWeather(w) : onDuty();
+  };
+  window.mascotReading = reading;
+  window.mascotStates = ['cloud', 'sun', 'moon', 'drizzle', 'rain', 'thunder', 'fog', 'snow', 'wind'];
+
+  var which = window.mascotDecide(null), b = document.body;
   if (which === 'sun') b.classList.add('mascot-sun');
-  if (which === 'moon') b.classList.add('mascot-moon');
+  else if (which === 'moon') b.classList.add('mascot-moon');
+  else if (which !== 'cloud') b.classList.add('wx-' + which);
   b.classList.add('arriving');
-  var chrome = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A' };
+  var chrome = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
+                 thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
   var m = document.querySelector('meta[name="theme-color"]');
-  if (m) m.setAttribute('content', chrome[which]);
+  if (m) m.setAttribute('content', chrome[which] || chrome.cloud);
 })();
 </script>
 
@@ -2354,6 +2529,18 @@ body:not(.home-active) .rain { display: none !important; }
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
       <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>
+      <select class="wx-pick" id="wx-pick" aria-label="Preview a weather">
+        <option value="live">Live weather</option>
+        <option value="cloud">Cloud</option>
+        <option value="sun">Sun</option>
+        <option value="moon">Moon</option>
+        <option value="drizzle">Drizzle</option>
+        <option value="rain">Rain</option>
+        <option value="thunder">Thunder</option>
+        <option value="fog">Fog</option>
+        <option value="snow">Snow</option>
+        <option value="wind">Wind</option>
+      </select>
     </div>
   </nav>
 
@@ -2577,8 +2764,9 @@ body:not(.home-active) .rain { display: none !important; }
 
     <div class="hp-strip" id="hp-strip" aria-label="Selected work"></div>
 
-    <p class="hp-mode">The weather here follows London time: cloud in the morning,
-      sun in the afternoon, moon after six.</p>
+    <p class="hp-mode">This is London&rsquo;s weather, live: the sun or the moon when
+      it is clear, the cloud for everything else. Data from
+      <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>.</p>
 
   </div>
 </section>
@@ -4057,10 +4245,16 @@ updateRail();
   /* Each mascot's own sky, lit for as long as it is on duty. The cloud has
      none: its rain is an event you have to sit still for, so it stays out of
      this and keeps whatever state it was already in. */
-  var SKY = { sun: '.sunbeam', moon: '.nightfall, .nightfall-stars' };
+  var SKY = {
+    sun: '.sunbeam', moon: '.nightfall, .nightfall-stars',
+    drizzle: '.rain, .wxwash', rain: '.rain, .wxwash', thunder: '.rain, .lightning, .wxwash',
+    fog: '.fog, .wxwash', snow: '.snow, .wxwash', wind: '.wxwash',
+  };
+  var WX = { drizzle: 1, rain: 1, thunder: 1, fog: 1, snow: 1, wind: 1 };
   /* the browser's own chrome, matched to the ground at the top of the page so
      a phone does not frame the night sky in white */
-  var CHROME = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A' };
+  var CHROME = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
+                 thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
   var chromeMeta = document.querySelector('meta[name="theme-color"]');
 
   function apply(which, instant) {
@@ -4074,11 +4268,15 @@ updateRail();
        which has every transition off, and the curtain is up over it. */
     var layers = document.querySelectorAll('.weather-layer');
     var rain = document.querySelector('.rain');
-    var rainWasLit = !!(rain && rain.classList.contains('on'));
+    /* the rain's own state only counts for the plain cloud, where the idle
+       beat owns it; in a weather it was lit by the weather */
+    var wasWx = /(^|\s)wx-/.test(body.className);
+    var rainWasLit = !wasWx && !!(rain && rain.classList.contains('on'));
     layers.forEach(function (l) { l.classList.remove('on'); });
 
     body.classList.toggle('mascot-sun', which === 'sun');
     body.classList.toggle('mascot-moon', which === 'moon');
+    window.mascotStates.forEach(function (s) { if (WX[s]) body.classList.toggle('wx-' + s, which === s); });
 
     if (chromeMeta) chromeMeta.setAttribute('content', CHROME[which] || CHROME.cloud);
 
@@ -4098,7 +4296,40 @@ updateRail();
      sun up at nine in June, and the line on the home page could not describe
      either. Intl is asked for the hour directly, because hour12:false has
      historically returned 24 at midnight in some engines. */
-  var onDuty = window.mascotOnDuty || function () { return 'cloud'; };
+  /* One decision, owned by the first script in <body>: a preview from the
+     toggle, else the live reading, else the clock. It is asked again every
+     half minute, and the reading is refreshed when it is older than fifteen
+     minutes, so a page left open follows the weather as it turns. */
+  var preview = null;
+  var on = window.mascotDecide(preview);
+
+  function decide() {
+    var next = window.mascotDecide(preview);
+    if (next !== on) { on = next; apply(next); }
+  }
+
+  /* Open-Meteo, London, no key: current code, day or night, and wind. The
+     clock has already put a mascot on duty, so nothing waits on this. */
+  var fetching = false;
+  function refresh() {
+    if (fetching || !window.fetch) return;
+    fetching = true;
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278' +
+          '&current=weather_code,is_day,wind_speed_10m&timezone=Europe%2FLondon')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var c = d && d.current;
+        if (!c || typeof c.weather_code !== 'number') return;
+        try {
+          localStorage.setItem('wx', JSON.stringify({
+            t: Date.now(), code: c.weather_code, isDay: c.is_day === 1, wind: c.wind_speed_10m || 0,
+          }));
+        } catch (e) {}
+        decide();
+      })
+      .catch(function () {})
+      .then(function () { fetching = false; });
+  }
 
   /* Arrival. The first script in <body> has already set the class, so the
      loader is up in the mascot's ground. The sky layers are built by the
@@ -4106,22 +4337,30 @@ updateRail();
      inline script has run, while the body is still marked arriving with its
      transitions off and the loader still covers the page. Two frames later,
      once that has painted, arriving is lifted and things may move again. */
-  var on = onDuty();
   function arrive() {
     apply(on, true);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { body.classList.remove('arriving'); });
     });
+    if (!window.mascotReading()) refresh();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrive);
   else arrive();
 
-  /* a page left open at 17:58 turns over on its own. Only on a change, so the
-     sky is not restarted every half minute. */
   setInterval(function () {
-    var next = onDuty();
-    if (next !== on) { on = next; apply(next); }
+    if (!window.mascotReading()) refresh();
+    decide();
   }, 30000);
+
+  /* the toggle: a preview held in memory, so a visitor who never touches it
+     gets London, and a reload gets London again */
+  var pick = document.getElementById('wx-pick');
+  if (pick) {
+    pick.addEventListener('change', function () {
+      preview = pick.value === 'live' ? null : pick.value;
+      decide();
+    });
+  }
 })();
 
 /* ---------- the mobile menu ----------
@@ -4318,6 +4557,40 @@ updateRail();
   document.body.insertBefore(stars, document.body.firstChild);
   document.body.insertBefore(night, document.body.firstChild);
 
+  /* the cloud's other weathers: snow from the same engine as the rain, fog
+     as three drifting bands, a flash for the thunder, and a wash that tints
+     the page in any of them */
+  var snow = document.createElement('div');
+  snow.className = 'weather-layer snow'; snow.setAttribute('aria-hidden', 'true');
+  var flakes = '';
+  for (var f = 0; f < 70; f++) {
+    var fx = (Math.random() * 100).toFixed(2);
+    var fs = (4 + Math.random() * 5).toFixed(1);
+    var fd = (6 + Math.random() * 6).toFixed(2);
+    var fdl = (-Math.random() * fd).toFixed(2);
+    var fo = (0.45 + Math.random() * 0.45).toFixed(2);
+    flakes += '<i style="left:' + fx + '%;width:' + fs + 'px;height:' + fs + 'px;opacity:' + fo +
+              ';animation-duration:' + fd + 's;animation-delay:' + fdl + 's"></i>';
+  }
+  snow.innerHTML = flakes;
+  document.body.insertBefore(snow, document.body.firstChild);
+
+  var fog = document.createElement('div');
+  fog.className = 'weather-layer fog'; fog.setAttribute('aria-hidden', 'true');
+  fog.innerHTML = '<i style="top:4%;animation-duration:22s"></i>' +
+                  '<i style="top:36%;animation-duration:30s;animation-delay:-9s"></i>' +
+                  '<i style="top:66%;animation-duration:26s;animation-delay:-17s"></i>';
+  document.body.insertBefore(fog, document.body.firstChild);
+
+  var bolt = document.createElement('div');
+  bolt.className = 'weather-layer lightning'; bolt.setAttribute('aria-hidden', 'true');
+  bolt.innerHTML = '<i></i>';
+  document.body.insertBefore(bolt, document.body.firstChild);
+
+  var wash = document.createElement('div');
+  wash.className = 'weather-layer wxwash'; wash.setAttribute('aria-hidden', 'true');
+  document.body.insertBefore(wash, document.body.firstChild);
+
   /* The gradient belongs to the page, so it has to be as tall as the page.
      Body is the scroll container with a fixed height, so no percentage reaches
      the content; scrollHeight is measured instead and reapplied whenever the
@@ -4346,9 +4619,12 @@ updateRail();
     document.querySelectorAll('.hello-wrap').forEach(function (w) { w.classList.toggle('is-storm', storming); });
     /* the rain alone: the sun and the moon own their skies outright, and a
        click on either is a reaction, not a weather switch */
-    document.querySelectorAll('.rain').forEach(function (l) {
-      l.classList.toggle('on', storming);
-    });
+    /* in a weather the rain is the weather, and a click must not switch it off */
+    if (!/(^|\s)wx-/.test(document.body.className)) {
+      document.querySelectorAll('.rain').forEach(function (l) {
+        l.classList.toggle('on', storming);
+      });
+    }
   }
   /* Only the mascot in its wrapper on the home page commands the weather. The
      About mascot shares the .cloud-mascot class so it inherits the eyes and
@@ -4364,12 +4640,15 @@ updateRail();
   /* Only the cloud's. Sitting still is what summons rain; the other two skies
      are already there, and must survive both the wait and the touch that ends
      it. */
-  function weatherLayers() { return document.querySelectorAll('.rain'); }
+  /* In a weather the rain (or snow, or fog) is the state itself, not something
+     the idle beat summons, so there is nothing here for it to start or stop. */
+  function inWeather() { return /(^|\s)wx-/.test(document.body.className); }
+  function weatherLayers() { return inWeather() ? [] : document.querySelectorAll('.rain'); }
   var INACTIVE = 9000, idleT = null, rainT = null, sneaking = false;
   /* the two that answer being left alone with movement rather than weather */
   function restlessMascot() {
     return document.body.classList.contains('mascot-sun') ||
-           document.body.classList.contains('mascot-moon');
+           document.body.classList.contains('mascot-moon') || inWeather();
   }
   function startSneak() {
     var ok = false;
