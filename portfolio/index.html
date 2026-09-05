@@ -971,6 +971,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      insets as both. A footnote on the chrome rather than a second sentence of
      the introduction, which is how it read while it sat under one. */
   .hp-mode a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  /* the credit the licence asks for, at the smallest size that is still a credit */
+  .hp-mode .hp-src { opacity: .62; font-size: .92em; white-space: nowrap; }
   .hp-mode {
     position: absolute; right: 30px; bottom: 26px; z-index: 20;
     /* wide enough for two lines, balanced so they come out even rather than
@@ -2763,9 +2765,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 
     <div class="hp-strip" id="hp-strip" aria-label="Selected work"></div>
 
-    <p class="hp-mode">This is London&rsquo;s weather, live: the sun or the moon when
-      it is clear, the cloud for everything else. Data from
-      <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>.</p>
+    <p class="hp-mode"><span id="wx-now">London&rsquo;s weather is on its way.</span>
+      <span class="hp-src">via <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></span></p>
 
   </div>
 </section>
@@ -4300,9 +4301,40 @@ updateRail();
   var preview = null;
   var on = window.mascotDecide(preview);
 
+  /* the WMO codes as a weather app would say them */
+  function describe(w) {
+    var c = w.code, s;
+    if (c === 0) s = w.isDay ? 'clear' : 'a clear night';
+    else if (c === 1) s = 'mainly clear';
+    else if (c === 2) s = 'partly cloudy';
+    else if (c === 3) s = 'overcast';
+    else if (c === 45 || c === 48) s = 'foggy';
+    else if (c === 51) s = 'light drizzle';
+    else if (c === 53 || c === 55) s = 'drizzle';
+    else if (c === 56 || c === 57) s = 'freezing drizzle';
+    else if (c === 61 || c === 80) s = 'light rain';
+    else if (c === 63 || c === 81) s = 'rain';
+    else if (c === 65 || c === 82) s = 'heavy rain';
+    else if (c === 66 || c === 67) s = 'freezing rain';
+    else if (c === 71 || c === 85) s = 'light snow';
+    else if (c === 73 || c === 75 || c === 77 || c === 86) s = 'snow';
+    else if (c >= 95) s = c === 95 ? 'a thunderstorm' : 'a thunderstorm with hail';
+    else s = 'cloudy';
+    if (w.wind >= 32 && c <= 3) s += ' and windy';
+    return s + (typeof w.temp === 'number' ? ', ' + w.temp + '\u00b0' : '');
+  }
+  var line = document.getElementById('wx-now');
+  function say() {
+    if (!line) return;
+    var w = window.mascotReading();
+    var now = w ? 'London right now: ' + describe(w) + '.' : 'London\u2019s weather is on its way.';
+    line.textContent = preview ? 'Previewing ' + preview + '. ' + now : now;
+  }
+
   function decide() {
     var next = window.mascotDecide(preview);
     if (next !== on) { on = next; apply(next); }
+    say();
   }
 
   /* Open-Meteo, London, no key: current code, day or night, and wind. The
@@ -4312,7 +4344,7 @@ updateRail();
     if (fetching || !window.fetch) return;
     fetching = true;
     fetch('https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278' +
-          '&current=weather_code,is_day,wind_speed_10m&timezone=Europe%2FLondon')
+          '&current=weather_code,is_day,wind_speed_10m,temperature_2m&timezone=Europe%2FLondon')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) {
         var c = d && d.current;
@@ -4320,6 +4352,7 @@ updateRail();
         try {
           localStorage.setItem('wx', JSON.stringify({
             t: Date.now(), code: c.weather_code, isDay: c.is_day === 1, wind: c.wind_speed_10m || 0,
+            temp: typeof c.temperature_2m === 'number' ? Math.round(c.temperature_2m) : null,
           }));
         } catch (e) {}
         decide();
@@ -4336,6 +4369,7 @@ updateRail();
      once that has painted, arriving is lifted and things may move again. */
   function arrive() {
     apply(on, true);
+    say();
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { body.classList.remove('arriving'); });
     });
