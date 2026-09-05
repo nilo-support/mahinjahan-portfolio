@@ -271,6 +271,7 @@ body.mascot-moon:has(.nightfall.on) {
   --case-cap:  #9FB2D4;
 
   --accent:      #FF9A6B;   /* 8.7:1 on the deep blue */
+  --cta-mobile:  #D7E2F3;   /* the moon's own body, 13.9:1 on the sky */
   /* white on this peach is 2.1:1, so selection takes the sky's own ink */
   --accent-on:   #16233F;   /* 7.5:1 on the accent */
   --sprout:      #58D6AC;
@@ -345,6 +346,14 @@ body { position: relative; }
   background-repeat: no-repeat, no-repeat;
   background-position: bottom, top;
   background-size: 100% 100vh, 100% calc(100% - 100vh);
+}
+
+/* On a phone the page is short and the cards run down most of it, so a
+   viewport-tall ramp puts two captions on a mid-slate ground that no text
+   colour clears. Shorter here: the horizon lives in the bottom padding and
+   the tail of the last footage, and every caption stays on the deep sky. */
+@media (max-width: 900px) {
+  .nightfall { background-size: 100% 40vh, 100% calc(100% - 40vh); }
 }
 /* The stars stay with the window rather than the document: spread over a
    19,000px case study they would thin to nothing, and pinning them to the
@@ -637,6 +646,12 @@ body:not(.home-active) .rain { display: none !important; }
      in 1.4s; this has to have changed by the time the finger lifts. */
   body { --mascot-bg: #D3DEF3; --mascot-ink: #14141B; --mascot-line: rgba(20, 20, 27, .16); }
   body.mascot-sun { --mascot-bg: #FDDC8C; }
+  /* The mobile "View case study" link, in the mascot's own hue deepened to
+     AA rather than the counterpoint accent: the cloud's blue at 6.7:1 on
+     white, the sun's amber at 5.4:1 (5.1:1 on the wash). The moon's is set
+     with the night palette, since it only holds once the sky is lit. */
+  body { --cta-mobile: #2F5AA8; }
+  body.mascot-sun { --cta-mobile: #9A5B00; }
   body.mascot-moon {
     --mascot-bg: #101B33; --mascot-ink: #EAF1FF; --mascot-line: rgba(234, 241, 255, .22);
   }
@@ -991,7 +1006,7 @@ body:not(.home-active) .rain { display: none !important; }
        as a link, on the one breakpoint with no hover to say so */
     .hp-card .hp-cta {
       margin-top: 6px; font-size: 16px; letter-spacing: .014em;
-      color: var(--accent); text-shadow: none;
+      color: var(--cta-mobile); text-shadow: none;
     }
   }
 
