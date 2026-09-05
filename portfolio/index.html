@@ -797,18 +797,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   body.menu-open { overflow: hidden; }
   .hp-nav-items { display: flex; align-items: center; gap: 24px; }
   .hp-burger { display: none; }
-  /* A preview of every state, held in memory only. Styled as a small pill in
-     the nav's own type, with its chevron drawn in rather than the platform's. */
-  .wx-pick {
-    appearance: none; -webkit-appearance: none;
-    font: 500 14px/1 var(--font); letter-spacing: .01em;
-    color: var(--ink); background-color: var(--card); border: 0; border-radius: 999px;
-    padding: 8px 30px 8px 14px; cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23777' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 11px center; background-size: 12px 12px;
-    transition: color 1.4s cubic-bezier(.4, 0, .2, 1), background-color 1.4s cubic-bezier(.4, 0, .2, 1);
-  }
-  .wx-pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* the opposite corner to the nav, so the two sit as a pair across the top */
   .hp-clock {
     position: absolute; top: 26px; left: 30px; z-index: 20;
@@ -904,12 +892,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .hp-nav.open .hp-nav-items a:nth-of-type(1) { transition-delay: .17s; }
     .hp-nav.open .hp-nav-items a:nth-of-type(2) { transition-delay: .23s; }
     .hp-nav.open .hp-nav-items a:nth-of-type(3) { transition-delay: .29s; }
-    .hp-nav.open .hp-nav-items .wx-pick { transition-delay: .35s; }
-    /* on the sheet it sits under the links as a footer, in the sheet's own ink */
-    .hp-nav .hp-nav-items .wx-pick {
-      margin-top: 30px; font-size: 17px; padding: 13px 42px 13px 20px;
-      color: var(--mascot-ink); background-color: var(--mascot-line);
-    }
 
     @media (prefers-reduced-motion: reduce) {
       .hp-nav-items, .hp-nav-items > * { transition-duration: .01s; }
@@ -2432,11 +2414,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   }
   window.mascotOnDuty = onDuty;
 
-  /* Live weather, from a reading cached for fifteen minutes. Codes are the
-     WMO set Open-Meteo returns: thunder, snow, fog, drizzle, rain; wind when
-     nothing is falling but it is blowing; then clear, which is the sun by day
-     and the moon by night; and the cloud for partly cloudy or overcast. */
+  /* Live weather, from a reading cached for fifteen minutes. The night is
+     the moon whatever the sky is doing: it stands for the time, not the
+     weather. By day the codes are the WMO set Open-Meteo returns: thunder,
+     snow, fog, drizzle, rain; wind when nothing is falling but it is blowing;
+     the sun when it is clear; the cloud for partly cloudy or overcast. */
   function fromWeather(w) {
+    if (!w.isDay) return 'moon';
     var c = w.code;
     if (c >= 95) return 'thunder';
     if ((c >= 71 && c <= 77) || c === 85 || c === 86) return 'snow';
@@ -2455,16 +2439,15 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     } catch (e) {}
     return null;
   }
-  /* preview from the toggle, else the live reading, else the clock */
-  window.mascotDecide = function (preview) {
-    if (preview) return preview;
+  /* the live reading, else the clock */
+  window.mascotDecide = function () {
     var w = reading();
     return w ? fromWeather(w) : onDuty();
   };
   window.mascotReading = reading;
   window.mascotStates = ['cloud', 'sun', 'moon', 'drizzle', 'rain', 'thunder', 'fog', 'snow', 'wind'];
 
-  var which = window.mascotDecide(null), b = document.body;
+  var which = window.mascotDecide(), b = document.body;
   if (which === 'sun') b.classList.add('mascot-sun');
   else if (which === 'moon') b.classList.add('mascot-moon');
   else if (which !== 'cloud') b.classList.add('wx-' + which);
@@ -2530,18 +2513,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
       <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>
-      <select class="wx-pick" id="wx-pick" aria-label="Preview a weather">
-        <option value="live">Live weather</option>
-        <option value="cloud">Cloud</option>
-        <option value="sun">Sun</option>
-        <option value="moon">Moon</option>
-        <option value="drizzle">Drizzle</option>
-        <option value="rain">Rain</option>
-        <option value="thunder">Thunder</option>
-        <option value="fog">Fog</option>
-        <option value="snow">Snow</option>
-        <option value="wind">Wind</option>
-      </select>
     </div>
   </nav>
 
@@ -4294,12 +4265,11 @@ updateRail();
      sun up at nine in June, and the line on the home page could not describe
      either. Intl is asked for the hour directly, because hour12:false has
      historically returned 24 at midnight in some engines. */
-  /* One decision, owned by the first script in <body>: a preview from the
-     toggle, else the live reading, else the clock. It is asked again every
-     half minute, and the reading is refreshed when it is older than fifteen
-     minutes, so a page left open follows the weather as it turns. */
-  var preview = null;
-  var on = window.mascotDecide(preview);
+  /* One decision, owned by the first script in <body>: the live reading,
+     else the clock. It is asked again every half minute, and the reading is
+     refreshed when it is older than fifteen minutes, so a page left open
+     follows the weather as it turns. */
+  var on = window.mascotDecide();
 
   /* the WMO codes as a weather app would say them */
   function describe(w) {
@@ -4328,11 +4298,11 @@ updateRail();
     if (!line) return;
     var w = window.mascotReading();
     var now = w ? 'London right now: ' + describe(w) + '.' : 'London\u2019s weather is on its way.';
-    line.textContent = preview ? 'Previewing ' + preview + '. ' + now : now;
+    line.textContent = now;
   }
 
   function decide() {
-    var next = window.mascotDecide(preview);
+    var next = window.mascotDecide();
     if (next !== on) { on = next; apply(next); }
     say();
   }
@@ -4383,15 +4353,6 @@ updateRail();
     decide();
   }, 30000);
 
-  /* the toggle: a preview held in memory, so a visitor who never touches it
-     gets London, and a reload gets London again */
-  var pick = document.getElementById('wx-pick');
-  if (pick) {
-    pick.addEventListener('change', function () {
-      preview = pick.value === 'live' ? null : pick.value;
-      decide();
-    });
-  }
 })();
 
 /* ---------- the mobile menu ----------
