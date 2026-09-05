@@ -1,4 +1,6 @@
 # mahinjahan.com is a static site served straight from the portfolio folder;
-# there is nothing to build. Netlify reads this when the repo is linked.
+# there is nothing to build. Netlify reads this when the repo is linked, and it
+# overrides whatever the site was set to before: publish dir and build command.
 [build]
   publish = "portfolio"
+  command = ""
