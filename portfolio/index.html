@@ -1218,7 +1218,12 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: 0;
       color: var(--ink);
     }
-    .hp-card .hp-title::after { content: '→'; color: var(--cta-mobile); font-size: 18px; line-height: 1; flex: 0 0 auto; }
+    /* a chevron, drawn the way the back link's is, rather than an arrow glyph */
+    .hp-card .hp-title::after {
+      content: ''; flex: 0 0 auto; width: 8px; height: 8px; margin-right: 5px;
+      border-right: 2px solid var(--cta-mobile); border-bottom: 2px solid var(--cta-mobile);
+      transform: rotate(-45deg);
+    }
     .hp-card .hp-label { min-width: 0; }
     /* the year and whether it shipped, in the caption grey after a dash */
     .hp-card .hp-when { color: var(--case-cap); font-weight: 400; font-size: 15px; letter-spacing: .014em; }
@@ -3061,7 +3066,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
           <p>1 Product Design Intern (Me)</p>
           <p>5 Designers</p>
         </div>
-        <p class="cm-year">2025 &middot; Shipped</p>
+        <p class="cm-year">2026 &middot; Shipped</p>
       </div>
     </div>
 
@@ -3956,11 +3961,11 @@ const projects = [
     mark: 'assets/case-jobi/jobi-wordmark-night.svg',
     video: 'assets/videos/jobi-jd-web.mp4' },
   { title: 'Pactto', desc: 'Collaboration that doesn\u2019t end when the call does.',
-    meta: 'Product design intern \u00b7 Shipped 2025', when: '2025 \u00b7 Shipped', page: 'pactto',
+    meta: 'Product design intern \u00b7 Shipped 2026', when: '2026 \u00b7 Shipped', page: 'pactto',
     mark: 'assets/case-pactto/pactto-wordmark-night.svg',
     video: 'assets/videos/pactto.mp4' },
   { title: 'Nothing', desc: 'The right tools, exactly when you need them.',
-    meta: 'Concept \u00b7 48 hours', when: 'Concept', page: 'nothing',
+    meta: 'Concept \u00b7 48 hours', when: '2026 · Concept', page: 'nothing',
     video: 'assets/videos/nothing.mp4' },
 ];
 
