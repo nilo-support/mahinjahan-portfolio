@@ -28,3 +28,6 @@ Desktop.ini
 
 # the uncompressed trailer source (28MB); the page uses jobi-trailer-web.mp4
 portfolio/assets/videos/jobi-trailer.mp4
+
+# local publish helper: strips wip:* blocks before committing
+publish.py

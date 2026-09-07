@@ -1022,6 +1022,18 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     letter-spacing: .014em; color: var(--case-body);
     text-wrap: balance;
   }
+  /* CV and LinkedIn: the person's links, under the sentence about the
+     person rather than in the nav, which is for the site's own pages. Set
+     in the accent, small, with the outward arrow that says they leave. */
+  .hp-links {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 22px;
+    margin: 12px 0 0; font-size: 15.2px; font-weight: 500; line-height: 1.6; letter-spacing: .02em;
+  }
+  .hp-links a { color: var(--accent); text-decoration: none; transition: color .2s ease; }
+  .hp-links a span { display: inline-block; font-size: .9em; transition: transform .25s var(--ease-out); }
+  .hp-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .hp-links a:hover span { transform: translate(2px, -2px); }
+  .about-links { justify-content: flex-start; margin-top: 6px; }
   /* The fourth corner, opposite the clock and under the nav, on the same
      insets as both. A footnote on the chrome rather than a second sentence of
      the introduction, which is how it read while it sat under one. */
@@ -1253,9 +1265,38 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   /* ---------- About ----------
      The weather mascot's own page: him, two boxes of bio, and a player. The
      mascot is the same element as the home hero, moved here by setActive. */
+  /* ---------- Playground ----------
+     A grid of footage, three across, on the home strip's own width and inset.
+     The cards are the home cards' footage-and-reveal, minus the button, since
+     there is no page behind an experiment. */
+  #playground .case {
+    /* the grid sits in the middle of the screen when it fits; the way back
+       takes the clock's corner */
+    min-height: 100vh; box-sizing: border-box; align-content: center;
+    padding-top: 72px; padding-bottom: 72px;
+    grid-template-columns:
+      [full-start] minmax(30px, 1fr)
+      [content-start] minmax(0, 1540px) [content-end]
+      minmax(30px, 1fr) [full-end];
+  }
+  .pg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .pg-card { cursor: default; }
+  .pg-card .pg-mark { font-family: var(--font); font-size: 24px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
+  body[data-page="playground"] .hp-nav-items a[data-page="playground"] { display: none; }
+  body[data-page="playground"] .case-back { top: 26px; left: 30px; }
+  @media (max-width: 900px) {
+    #playground .case { grid-template-columns: [full-start] minmax(20px, 1fr) [content-start] minmax(0, 1540px) [content-end] minmax(20px, 1fr) [full-end]; }
+    body[data-page="playground"] .case-back { top: 20px; left: 20px; }
+    .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+    /* no page to open, so the line about it shows under the footage here */
+    .pg-card .hp-desc { display: block; color: var(--case-body); text-shadow: none; margin: 4px 0 2px; }
+  }
   #about .case {
-    /* sized so the whole page fits a laptop screen without scrolling */
-    padding-top: min(120px, 10vh); padding-bottom: 40px;
+    /* the page's content sits in the middle of the screen when it fits, and
+       flows on when it does not; the way back is in the corner the clock
+       holds on home */
+    min-height: 100vh; box-sizing: border-box; align-content: center;
+    padding-top: 72px; padding-bottom: 72px;
     /* a wider column than the case studies, so two boxes have room */
     grid-template-columns:
       [full-start] minmax(20px, 1fr)
@@ -1296,6 +1337,10 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .about-hero { min-height: 120px; margin-bottom: 26px; }
   }
 
+  /* On About and the Playground the way back takes the corner the London
+     clock has on home, so the page reads as the same frame. */
+  body[data-page="about"] .case-back { top: 26px; left: 30px; }
+  @media (max-width: 900px) { body[data-page="about"] .case-back { top: 20px; left: 20px; } }
   /* 'Home' opens the rail: same left edge, 64px of air to the list below */
   .case-back {
     position: fixed; top: 73px; left: max(28px, calc(50% - 720px));
@@ -2553,8 +2598,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <div class="hp-nav-items" id="hp-menu">
       <a href="#home" data-page="home">Home</a>
       <a href="#about" data-page="about">About</a>
-      <a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV</a>
-      <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#playground" data-page="playground">Playground</a>
     </div>
   </nav>
 
@@ -2800,6 +2844,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <div class="hp-intro">
       <p>I&rsquo;m a product designer in London, shipping AI products people actually
         use and building tools that feel a little bit alive.</p>
+      <!-- the person's links, under the sentence about the person -->
+      <p class="hp-links"><a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a><a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&nearr;</span></a></p>
     </div>
 
     <div class="hp-strip" id="hp-strip" aria-label="Selected work"></div>
@@ -2838,6 +2884,69 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 </nav>
 <a class="case-back" href="#home" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Home</span></a>
 
+<section id="playground" class="page">
+  <div class="case playground">
+    <!-- no title, no lede: the work is the page. The five experiments from
+         the Framer page, in its order; the media is still served from Framer. -->
+    <div class="pg-grid">
+      <div class="hp-card pg-card" tabindex="0">
+        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/SYSdRjm9u489drfjUsimy8iDcrQ.mp4" poster="https://framerusercontent.com/images/5ILRvlYXf72kHSVHqpa3snGzjU.jpg" muted loop playsinline></video></span>
+        <span class="hp-text">
+          <span class="hp-title">Discord reply</span>
+          <span class="hp-reveal">
+            <span class="hp-mark hp-mark-type pg-mark" aria-label="Discord reply">Discord reply</span>
+            <span class="hp-desc">Discord&rsquo;s reply interaction, rebuilt for the small motion in it: the text field&rsquo;s corners morph, and the reply button spins in and changes colour.</span>
+            <span class="hp-meta-line">Experiment &middot; Motion</span>
+          </span>
+        </span>
+      </div>
+      <div class="hp-card pg-card" tabindex="0">
+        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/nwUOaipUWGOIGZT53W0wIKc.mp4" muted loop playsinline></video></span>
+        <span class="hp-text">
+          <span class="hp-title">Sword Art Online VR</span>
+          <span class="hp-reveal">
+            <span class="hp-mark hp-mark-type pg-mark" aria-label="Sword Art Online VR">Sword Art Online VR</span>
+            <span class="hp-desc">One scene from Sword Art Online rebuilt in VR: the anime&rsquo;s interface, its sound cues and its world, so the moment feels the way it does on screen.</span>
+            <span class="hp-meta-line">Experiment &middot; VR</span>
+          </span>
+        </span>
+      </div>
+      <div class="hp-card pg-card" tabindex="0">
+        <span class="shot"><img src="https://framerusercontent.com/images/MMNpjApWUwJzT4QQhuXCuQbrMuo.png" alt="" loading="lazy"></span>
+        <span class="hp-text">
+          <span class="hp-title">TripUp</span>
+          <span class="hp-reveal">
+            <span class="hp-mark hp-mark-type pg-mark" aria-label="TripUp">TripUp</span>
+            <span class="hp-desc">A travel companion that merges group expenses with shared photos, so one app carries what a scattered set of tools did.</span>
+            <span class="hp-meta-line">Concept &middot; App</span>
+          </span>
+        </span>
+      </div>
+      <div class="hp-card pg-card" tabindex="0">
+        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/cDmCG4Ev2NiriOtXY8y2GOITTog.mp4" muted loop playsinline></video></span>
+        <span class="hp-text">
+          <span class="hp-title">Printl</span>
+          <span class="hp-reveal">
+            <span class="hp-mark hp-mark-type pg-mark" aria-label="Printl">Printl</span>
+            <span class="hp-desc">A Chrome extension that summarises Terms of Service the moment one appears, explains the confusing clauses, and checks contracts and subscriptions for hidden changes.</span>
+            <span class="hp-meta-line">Chrome extension &middot; Shipped</span>
+          </span>
+        </span>
+      </div>
+      <div class="hp-card pg-card" tabindex="0">
+        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/kxpZV8Fh6WMEfWeFOuj7cxSQI.mp4" muted loop playsinline></video></span>
+        <span class="hp-text">
+          <span class="hp-title">Deku&rsquo;s Notebook battle pass</span>
+          <span class="hp-reveal">
+            <span class="hp-mark hp-mark-type pg-mark" aria-label="Deku's Notebook battle pass">Deku&rsquo;s Notebook battle pass</span>
+            <span class="hp-desc">A battle pass themed on Deku&rsquo;s Notebook: comic panels, halftones and bold type, with progression, purchases and rewards kept legible on a controller.</span>
+            <span class="hp-meta-line">Concept &middot; Game UI</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
 <section id="about" class="page">
   <div class="case about">
 
@@ -2849,6 +2958,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
         <p class="lead">Product designer, by way of a startup, an economics degree and one very good summer.</p>
         <p>In my second year reading economics I was running a startup, <span class="mk">Quest Up</span>, and wanted to design it properly. A summer at <span class="mk">BrainStation</span> gave me the same kick the startup did: <b>you make something, people use it, and the progress is right there in front of you.</b> A Master&rsquo;s in <span class="mk">Human-Computer Interaction</span> added the theory, and an internship at <span class="mk">Pactto</span> put my first feature into a public beta.</p>
         <p>Off the clock I cook, play <span class="mk">League of Legends</span> and run. Cooking is the one that maps onto the work: <b>UI is the plating and UX is the food.</b> One attracts, the other keeps them.</p>
+        <p class="hp-links about-links"><a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a><a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&nearr;</span></a></p>
       </div>
       <div class="about-box about-listen">
         <div class="tag">Today&rsquo;s mood</div>
@@ -4247,11 +4357,13 @@ updateRail();
      <button>. Project tiles take a state of their own: the disc becomes a
      pill that says View, since the tile shows footage and nothing else at
      rest, and the pointer is the one place a visitor is already looking. */
-  const LINK = 'a, button, summary, [data-page]';
+  /* [data-page] excludes body, which carries the current page's name and
+     was making every hover on the site count as a link */
+  const LINK = 'a, button, summary, [data-page]:not(body)';
   const TEXT = 'p, h1, h2, h3, h4, li, blockquote, cite, dd, dt, figcaption, .case-sub';
 
   window.addEventListener('mouseover', e => {
-    const tile = e.target.closest('.hp-card');
+    const tile = e.target.closest('.hp-card:not(.pg-card)');
     const link = e.target.closest(LINK);
     const text = e.target.closest(TEXT);
 
