@@ -1198,28 +1198,18 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     /* .hp carries the side padding here */
     .hp-strip { flex-direction: column; gap: 30px; padding: 0; }
     .hp-card { flex: 0 0 auto; width: 100%; }
-    /* no hover to reveal anything, so the name in type and the role sit
-       under the footage as they always did here; the mark and the line stay
-       with the desktop reveal */
-    .hp-card .hp-text { padding: 12px 0 0; }
+    /* No hover here, and no room for words: under the footage there is one
+       row, the name and an arrow, and the arrow is the whole affordance. The
+       role and the line about the project stay with the desktop reveal. */
+    .hp-card .hp-text { padding: 10px 0 0; }
     .hp-card .hp-title {
-      display: block;
-      font-size: 20.8px; font-weight: 500; line-height: 1.4; letter-spacing: 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: 0;
       color: var(--ink);
     }
+    .hp-card .hp-title::after { content: '92'; color: var(--cta-mobile); font-size: 18px; line-height: 1; }
     .hp-card .hp-mark { display: none; }
-    .hp-card .hp-reveal {
-      position: static; aspect-ratio: auto; opacity: 1; padding: 2px 0 0;
-      align-items: flex-start; text-align: left; gap: 0;
-    }
-    .hp-card .hp-desc { display: none; }
-    .hp-card .hp-meta-line { color: var(--case-cap); text-shadow: none; }
-    /* under the role, in the accent: the first thing on the card that reads
-       as a link, on the one breakpoint with no hover to say so */
-    .hp-card .hp-cta {
-      margin-top: 6px; font-size: 16px; letter-spacing: .014em;
-      color: var(--cta-mobile); text-shadow: none;
-    }
+    .hp-card .hp-reveal { display: none; }
   }
 
 
@@ -1281,15 +1271,31 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   }
   .pg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
   .pg-card { cursor: default; }
+  /* the tapped-open state: the same treatment the hover gives */
+  .pg-card.is-open video, .pg-card.is-open .shot > img {
+    filter: blur(9px) brightness(.42) saturate(.9); transform: scale(1.04);
+  }
   .pg-card .pg-mark { font-family: var(--font); font-size: 24px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
   body[data-page="playground"] .hp-nav-items a[data-page="playground"] { display: none; }
   body[data-page="playground"] .case-back { top: 26px; left: 30px; }
   @media (max-width: 900px) {
     #playground .case { grid-template-columns: [full-start] minmax(20px, 1fr) [content-start] minmax(0, 1540px) [content-end] minmax(20px, 1fr) [full-end]; }
     body[data-page="playground"] .case-back { top: 20px; left: 20px; }
-    .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
-    /* no page to open, so the line about it shows under the footage here */
-    .pg-card .hp-desc { display: block; color: var(--case-body); text-shadow: none; margin: 4px 0 2px; }
+    .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+    /* Nothing to open, so the row ends in a plus instead, and a tap brings the
+       desktop's frosted reveal over the footage: the line about it, and the
+       meta, white on the blurred clip. Tap again and it goes. */
+    .pg-card .hp-title::after {
+      content: '+'; color: var(--case-cap); font-size: 22px; font-weight: 400;
+      transition: transform .25s var(--ease-out);
+    }
+    .pg-card.is-open .hp-title::after { transform: rotate(45deg); }
+    .pg-card .hp-reveal {
+      display: flex; position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 16 / 9;
+      opacity: 0; padding: 20px; gap: 8px;
+    }
+    .pg-card.is-open .hp-reveal { opacity: 1; }
+    .pg-card .hp-desc { font-size: 16px; }
   }
   #about .case {
     /* the page's content sits in the middle of the screen when it fits, and
@@ -3967,6 +3973,17 @@ strip.addEventListener('click', e => {
   const card = e.target.closest('.hp-card[data-page]');
   if (card) goTo(card.dataset.page);
 });
+
+/* on a phone the playground footage is tapped to read about it; one open at a time */
+if (matchMedia('(hover: none)').matches) {
+  document.querySelectorAll('.pg-card').forEach(c => {
+    c.addEventListener('click', () => {
+      const open = !c.classList.contains('is-open');
+      document.querySelectorAll('.pg-card.is-open').forEach(o => o.classList.remove('is-open'));
+      c.classList.toggle('is-open', open);
+    });
+  });
+}
 
 /* ---------- London clock ---------- */
 /* the home footer that carried it is gone; the script stays harmless in case
