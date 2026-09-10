@@ -1,0 +1,6 @@
+# Each page is its own URL; the one file answers for all of them.
+/about       /index.html  200
+/playground  /index.html  200
+/jobi        /index.html  200
+/pactto      /index.html  200
+/nothing     /index.html  200

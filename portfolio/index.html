@@ -1,16 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mahin — Product Designer</title>
-<meta name="description" content="Product designer in London, shipping AI products people actually use and building tools that feel a little bit alive.">
+<title>Mahin Jahan — Product Designer in London</title>
+<meta name="description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta name="author" content="Mahin Jahan">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://mahinjahan.com/" id="canonical">
 <!-- kept in step with the sky by the script that puts the mascot on duty -->
 <meta name="theme-color" content="#FFFFFF">
+<!-- the card a link unfurls into, on any network that reads Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Mahin — Product Designer">
-<meta property="og:description" content="Product designer in London, shipping AI products people actually use and building tools that feel a little bit alive.">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="Mahin Jahan">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://mahinjahan.com/">
+<meta property="og:title" content="Mahin Jahan — Product Designer in London">
+<meta property="og:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta property="og:image" content="https://mahinjahan.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mahin Jahan, product designer in London, with the cloud mascot from his portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mahin Jahan — Product Designer in London">
+<meta name="twitter:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta name="twitter:image" content="https://mahinjahan.com/assets/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- who this is, what this site is, and the work on it, for the engines that read it -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://mahinjahan.com/#person",
+      "name": "Mahin Jahan",
+      "jobTitle": "Product Designer",
+      "description": "Product designer in London shipping AI products people actually use and building tools that feel a little bit alive.",
+      "url": "https://mahinjahan.com/",
+      "image": "https://mahinjahan.com/assets/og.png",
+      "address": { "@type": "PostalAddress", "addressLocality": "London", "addressCountry": "GB" },
+      "sameAs": ["https://www.linkedin.com/in/mahinjahan/"],
+      "knowsAbout": ["Product design", "UX design", "UI design", "Interaction design", "Human-computer interaction", "AI products", "Prototyping", "Motion design"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mahinjahan.com/#website",
+      "url": "https://mahinjahan.com/",
+      "name": "Mahin Jahan",
+      "description": "Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.",
+      "inLanguage": "en-GB",
+      "author": { "@id": "https://mahinjahan.com/#person" }
+    },
+    {
+      "@type": "ItemList",
+      "name": "Case studies",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "item": { "@type": "CreativeWork", "name": "Jobi", "url": "https://mahinjahan.com/jobi", "description": "A companion for the job hunt, not an autopilot for it. Founder and product designer; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
+        { "@type": "ListItem", "position": 2, "item": { "@type": "CreativeWork", "name": "Pactto", "url": "https://mahinjahan.com/pactto", "description": "Collaboration that doesn’t end when the call does. Product design internship; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
+        { "@type": "ListItem", "position": 3, "item": { "@type": "CreativeWork", "name": "Nothing: Essential Context", "url": "https://mahinjahan.com/nothing", "description": "A shape-shifting home screen concept for Nothing OS, made in 48 hours.", "author": { "@id": "https://mahinjahan.com/#person" } } }
+      ]
+    }
+  ]
+}
+</script>
 <style>
 /* Ndot, the dot-matrix face Nothing is known for. Subset to Basic Latin and
    served as woff2, which takes it from 61KB to 2.9KB. It sets one word on one
@@ -18,7 +73,7 @@
    arrives. */
 @font-face {
   font-family: 'Ndot';
-  src: url('assets/fonts/ndot.woff2') format('woff2');
+  src: url('/assets/fonts/ndot.woff2') format('woff2');
   font-weight: 400; font-style: normal; font-display: swap;
 }
 
@@ -705,6 +760,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     97%          { transform: scaleY(1); }
   }
 }
+
+  /* off screen but in the document: a heading for readers and engines where
+     the design shows none */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 
   /* ---------- Loader ---------- */
   /* The arrival screen. The first script in <body> sets the mascot class
@@ -2566,7 +2628,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   var chrome = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
                  thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
   /* the moon's sky is home only; a deep link into a case study opens on the tint */
-  var h = location.hash.replace('#', '');
+  var h = location.pathname.replace(/^\/+|\/+$/g, '') || location.hash.replace('#', '');
   var atHome = !h || h === 'home';
   var m = document.querySelector('meta[name="theme-color"]');
   if (m) m.setAttribute('content', (which === 'moon' && !atHome) ? '#E4E7EE' : (chrome[which] || chrome.cloud));
@@ -2621,9 +2683,9 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <span class="hp-burger-box"><span></span><span></span><span></span></span>
     </button>
     <div class="hp-nav-items" id="hp-menu">
-      <a href="#home" data-page="home">Home</a>
-      <a href="#about" data-page="about">About</a>
-      <a href="#playground" data-page="playground">Playground</a>
+      <a href="/" data-page="home">Home</a>
+      <a href="/about" data-page="about">About</a>
+      <a href="/playground" data-page="playground">Playground</a>
       <!-- the person's links: on phones only, as a second group in the sheet;
            on desktop they sit under the introduction instead -->
       <a class="nav-out" href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a>
@@ -2870,6 +2932,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     })();
     </script>
 
+    <h1 class="sr-only">Mahin Jahan, product designer in London</h1>
     <div class="hp-intro">
       <p>I&rsquo;m a product designer in London, shipping AI products people actually
         use and building tools that feel a little bit alive.</p>
@@ -2911,12 +2974,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   <a href="#n-decisions">Decisions</a>
   <a href="#n-future">Future</a>
 </nav>
-<a class="case-back" href="#home" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Home</span></a>
+<a class="case-back" href="/" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Home</span></a>
 
 <section id="playground" class="page">
   <div class="case playground">
     <!-- no title, no lede: the work is the page. The five experiments from
          the Framer page, in its order; the media is still served from Framer. -->
+    <h1 class="sr-only">Playground: interaction and motion experiments by Mahin Jahan</h1>
     <div class="pg-grid">
       <div class="hp-card pg-card" tabindex="0">
         <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/SYSdRjm9u489drfjUsimy8iDcrQ.mp4" poster="https://framerusercontent.com/images/5ILRvlYXf72kHSVHqpa3snGzjU.jpg" muted loop playsinline></video></span>
@@ -2979,6 +3043,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 <section id="about" class="page">
   <div class="case about">
 
+    <h1 class="sr-only">About Mahin Jahan</h1>
     <!-- the weather mascot moves in here from the home page; see setActive -->
     <div class="about-hero" id="about-hero"></div>
 
@@ -3070,7 +3135,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </div>
     </div>
 
-    <video preload="none" class="case-video" src="assets/case-pactto/hero.mp4" muted loop playsinline></video>
+    <video preload="none" class="case-video" src="/assets/case-pactto/hero.mp4" muted loop playsinline></video>
 
     <div class="callout">
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
@@ -3081,7 +3146,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
     </div>
 
     <h3 class="metrics-head">Success Metrics</h3>
-    <img class="card-art" src="assets/case-pactto/success-metrics.svg"
+    <img class="card-art" src="/assets/case-pactto/success-metrics.svg"
          alt="Success metrics. Around 65% less tool switching: Pactto keeps conversations and context in one place. Around 40% faster reviews: teams now spend less time switching between tools. 3 methods of commenting: pin, drag and timeline comment types.">
     <div class="case-stats">
       <div class="stat"><b>~65%</b><span>Less Tool Switching</span><small>Pactto keeps conversations and context in one place</small></div>
@@ -3094,11 +3159,11 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Context</div>
       <h2>Too Many Tools</h2>
       <p>The video editing workflow is fragmented. Teams are forced to juggle separate tools for feedback, tasks, and communication, losing critical context with every switch.</p>
-      <img class="case-media" src="assets/case-pactto/too-many-tools.png" alt="The video editing workflow is fragmented: a scatter of app icons around that line: Miro, Monday, Wondershare Filmora, Slack, Zoom, Descript, Gmail, Premiere Pro, Google Drive, Photoshop, Notes and CapCut" data-nocaption loading="lazy">
+      <img class="case-media" src="/assets/case-pactto/too-many-tools.png" alt="The video editing workflow is fragmented: a scatter of app icons around that line: Miro, Monday, Wondershare Filmora, Slack, Zoom, Descript, Gmail, Premiere Pro, Google Drive, Photoshop, Notes and CapCut" data-nocaption loading="lazy">
 
       <h3>Enter Pactto: One Room, Full Story</h3>
       <p>Pactto unifies live conferencing and the entire video editing workflow into a single, canvas-based &ldquo;Room.&rdquo; It replaces scattered tools with one intelligent space where feedback, decisions, and production happen together.</p>
-      <video preload="none" class="case-media" src="assets/case-pactto/one-room.mp4" muted loop playsinline data-nocaption></video>
+      <video preload="none" class="case-media" src="/assets/case-pactto/one-room.mp4" muted loop playsinline data-nocaption></video>
     </section>
 
     <section id="c-research" data-nav>
@@ -3107,28 +3172,28 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <p>We synthesized our research into an affinity map. While we uncovered several friction points, we prioritized <em>one key insight</em> to tackle first.</p>
 
       <div class="feature-frame">
-        <img src="assets/case-pactto/research-1.jpg" alt="Research finding, board one" loading="lazy">
+        <img src="/assets/case-pactto/research-1.jpg" alt="Research finding, board one" loading="lazy">
       </div>
       <div class="feature-frame">
-        <img src="assets/case-pactto/research-2.jpg" alt="Research finding, board two" loading="lazy">
+        <img src="/assets/case-pactto/research-2.jpg" alt="Research finding, board two" loading="lazy">
       </div>
       <div class="feature-frame">
-        <img src="assets/case-pactto/research-3.jpg" alt="Research finding, board three" loading="lazy">
+        <img src="/assets/case-pactto/research-3.jpg" alt="Research finding, board three" loading="lazy">
       </div>
       <div class="feature-frame">
-        <img src="assets/case-pactto/research-4.jpg" alt="Research finding, board four" loading="lazy">
+        <img src="/assets/case-pactto/research-4.jpg" alt="Research finding, board four" loading="lazy">
       </div>
       <div class="feature-frame">
-        <img src="assets/case-pactto/research-5.jpg" alt="Research finding, board five" loading="lazy">
+        <img src="/assets/case-pactto/research-5.jpg" alt="Research finding, board five" loading="lazy">
       </div>
 
       <details class="deep-dive">
         <summary><svg class="note-icon dd-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg><span class="dd-title"><b>Deep Dive:</b> Is Pactto a conferencing or collaboration tool?</span><span class="dd-chev"></span></summary>
         <div class="dd-wrap"><div class="dd-body"><div class="dd-inner">
           <p>When I first joined, Pactto faced a core positioning dilemma: compete as a conferencing app or a collaboration workspace.</p>
-          <img src="assets/case-pactto/dd-positioning-1.jpg" alt="Positioning against conferencing tools" loading="lazy">
+          <img src="/assets/case-pactto/dd-positioning-1.jpg" alt="Positioning against conferencing tools" loading="lazy">
           <p>I initially advocated for the conferencing route based on competitive defensibility. Legacy tools like Zoom and Teams would struggle to copy our unique Canvas UI without completely breaking their users' established cognitive models. In contrast, competing as a collaboration tool meant facing off against giants like Miro and FigJam, who already owned the canvas format and simply needed to add a video call feature to close the gap.</p>
-          <img src="assets/case-pactto/dd-positioning-2.jpg" alt="Positioning against collaboration tools" loading="lazy">
+          <img src="/assets/case-pactto/dd-positioning-2.jpg" alt="Positioning against collaboration tools" loading="lazy">
           <p>However, after realigning with the founders, we committed to the collaboration model. The business strategy was to scale vertically (targeting specific creative workflows) rather than horizontally (building a generic meeting tool for everyone). Returning to our primary goal of reducing tool-switching, we realized Pactto couldn't just be a temporary meeting link. It needed to be the persistent, singular home where the entire end-to-end workflow actually happens.</p>
         </div>
         </div></div>
@@ -3136,7 +3201,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
       <h3>The Problem We Focused On</h3>
       <p>We synthesized our research into an affinity map, where <em>one key insight stood out</em> as the root cause of the fragmentation.</p>
-      <img class="case-media" src="assets/case-pactto/affinity-map.png" alt="Mapping out Insights: the research affinity map, clustered into pros and perceived negatives of AI usage, what makes a feedback session successful, pain points narrowed down, pain points in presenting work, and the tools used for filmmaking, note taking, video conferencing and design" data-nocaption loading="lazy">
+      <img class="case-media" src="/assets/case-pactto/affinity-map.png" alt="Mapping out Insights: the research affinity map, clustered into pros and perceived negatives of AI usage, what makes a feedback session successful, pain points narrowed down, pain points in presenting work, and the tools used for filmmaking, note taking, video conferencing and design" data-nocaption loading="lazy">
 
       <div class="callout">
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
@@ -3151,11 +3216,11 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <div class="dd-wrap"><div class="dd-body"><div class="dd-inner">
           <p>While our primary objective was solving the asynchronous feedback gap, our research uncovered three additional insights that heavily influenced our final design.</p>
           <p><em>Cognitive Load of the Canvas:</em> Video editors found the infinite canvas &ldquo;alien&rdquo; because they are accustomed to working inside linear timelines. This paradigm shift meant we needed to provide structured starting spaces to reduce initial friction.</p>
-          <img src="assets/case-pactto/dd-insight-canvas.png" alt="Structured starting spaces on the canvas" loading="lazy">
+          <img src="/assets/case-pactto/dd-insight-canvas.png" alt="Structured starting spaces on the canvas" loading="lazy">
           <p><em>The Need for Presentation Control:</em> Presenters lost their flow when audience members jumped ahead or crowded the screen with cursors. Users explicitly noted they needed to control the pace to prevent visual chaos and maintain sharp, focused feedback.</p>
-          <img src="assets/case-pactto/dd-insight-presentation.png" alt="Presenter pace and cursor control" loading="lazy">
+          <img src="/assets/case-pactto/dd-insight-presentation.png" alt="Presenter pace and cursor control" loading="lazy">
           <p><em>AI for Admin, Not Art:</em> Creatives firmly stated they want AI to handle administrative tasks rather than generative creative work. They highly valued tools that quietly turn conversations into itemized notes so they can stay in their flow state.</p>
-          <img src="assets/case-pactto/dd-insight-ai.png" alt="AI turning conversation into itemised notes" loading="lazy">
+          <img src="/assets/case-pactto/dd-insight-ai.png" alt="AI turning conversation into itemised notes" loading="lazy">
         </div>
         </div></div>
       </details>
@@ -3174,13 +3239,13 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Design process</div>
       <h2>We took an Iterative Approach</h2>
       <p>We followed a classic iterative design approach, testing and updating our prototypes on a rigorous weekly cycle to ensure constant validation.</p>
-      <img class="case-media" src="assets/case-pactto/design-process.jpg" alt="The weekly iterative loop: build, test, update, review" data-nocaption loading="lazy">
+      <img class="case-media" src="/assets/case-pactto/design-process.jpg" alt="The weekly iterative loop: build, test, update, review" data-nocaption loading="lazy">
 
       <h3>Accelerating Prototyping with AI</h3>
       <p>Our stakeholder cycle required us to present functional features every week. Static mocks couldn't capture the complexity of video scrubbing or interaction timing, so we inverted the traditional workflow.</p>
       <p>Instead of perfecting pixels first, we used <em>Google AI Studio</em> to &ldquo;vibe code&rdquo; functional prototypes.</p>
 
-      <img class="card-art" src="assets/case-pactto/prototyping-approach.svg"
+      <img class="card-art" src="/assets/case-pactto/prototyping-approach.svg"
            alt="Strategy: we built interactive code prototypes to validate interaction feel, like drag-to-comment, in weekly reviews. Benefit: this let us iterate on complex mechanics in real-time, then codify visual specs in Figma. Handoff: engineers received a dual handoff, the code prototype for behavior and the Figma design system for visuals.">
       <!-- kept in step with the artwork above, which is what everyone else sees -->
       <div class="case-cards">
@@ -3195,18 +3260,18 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h2>Designing for Expressive Feedback</h2>
 
       <h3>Defining the MVP Together</h3>
-      <video preload="none" class="case-media" src="assets/case-pactto/mvp-prioritization.mp4" muted loop playsinline data-nocaption></video>
+      <video preload="none" class="case-media" src="/assets/case-pactto/mvp-prioritization.mp4" muted loop playsinline data-nocaption></video>
       <p>We ran group reviews in Google Sheets, weighing Priority against Effort to decide what was critical for the Open Beta and what could wait.</p>
 
       <h3>Prioritizing Async Collaboration</h3>
       <p>With the live tools already stable, the <em>Commenting Suite</em> became our absolute <em>P0</em>: a persistent feedback layer sitting alongside the real-time workflow.</p>
-      <img class="case-media" src="assets/case-pactto/rejected-sidebar.jpg" alt="The collapsible sidebar proposal that was rejected" data-nocaption loading="lazy">
+      <img class="case-media" src="/assets/case-pactto/rejected-sidebar.jpg" alt="The collapsible sidebar proposal that was rejected" data-nocaption loading="lazy">
       <details class="deep-dive">
         <summary><svg class="note-icon dd-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg><span class="dd-title"><b>Rejected Idea:</b> The Collapsible Sidebar Proposal</span><span class="dd-chev"></span></summary>
         <div class="dd-wrap"><div class="dd-body"><div class="dd-inner">
-          <img src="assets/case-pactto/dd-sidebar-original.jpg" alt="The original top-anchored webcam layout" loading="lazy">
+          <img src="/assets/case-pactto/dd-sidebar-original.jpg" alt="The original top-anchored webcam layout" loading="lazy">
           <p>The original top-anchored webcams ate a third of the screen and stole focus from the canvas. They also failed to scale: at twenty people the strip collapsed over the presentation.</p>
-          <img src="assets/case-pactto/dd-sidebar-proposal.png" alt="The proposed collapsible sidebar for video feeds" loading="lazy">
+          <img src="/assets/case-pactto/dd-sidebar-proposal.png" alt="The proposed collapsible sidebar for video feeds" loading="lazy">
           <p>I designed a collapsible sidebar for the feeds, like Google Meet, letting users hide the webcams entirely and focus on the work.</p>
           <p>Stakeholders rejected it. Human connection was meant to be an unavoidable pillar of Pactto, and hiding the feeds undermined that.</p>
         <p>So the cameras scale instead of hiding. The more people join, the smaller each feed becomes, so the container never grows, so the room stays human without costing canvas.</p>
@@ -3218,21 +3283,21 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <p>We designed three distinct commenting primitives to handle every type of creative feedback:</p>
 
       <div class="feature-frame">
-        <video preload="none" src="assets/case-pactto/comment-pin.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-pactto/comment-pin.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Pin Comments (Spatial)</h4>
           <p>Anchors feedback to a precise coordinate on the frame. Click exactly where the issue is, and there is no ambiguity about which pixel needs attention.</p>
         </div>
       </div>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-pactto/comment-drag.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-pactto/comment-drag.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Drag Comments (Area)</h4>
           <p>Draws a box around a region to define the scope of a change, without having to describe where it is.</p>
         </div>
       </div>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-pactto/comment-timeline.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-pactto/comment-timeline.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Timeline Comments (Temporal)</h4>
           <p>Spans a duration rather than a single frame, so pacing, audio sync and action can be critiqued by marking start and end on the scrubber.</p>
@@ -3250,7 +3315,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h3>Design Decision: The &ldquo;Comment vs. Task&rdquo; Friction</h3>
       <p><em>The crossroads:</em> generic comments like Figma's, or strict accountability. For video editors generic simplicity caused paralysis: no way to tell a casual &ldquo;maybe&rdquo; from a critical &ldquo;must-do&rdquo; in a flood of feedback.</p>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-pactto/task-toggle.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-pactto/task-toggle.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Unified Activity Panel</h4>
           <p>A lightweight &ldquo;Task&rdquo; toggle inside the comment box. Chat and work coexist in one stream, and the feed filters down to a prioritised checklist of action items.</p>
@@ -3268,7 +3333,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h3>Pactto Intelligence: Smart Voice</h3>
       <p>While we developed a suite of AI tools, I want to highlight <em>Smart Voice</em>, the feature that solves the conflict between speed and documentation.</p>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-pactto/smart-voice.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-pactto/smart-voice.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Smart Voice</h4>
           <p>Transcribes spoken feedback and anchors it to the timeline. Reviewers give nuanced context without typing; editors get precise text synced to the exact moment.</p>
@@ -3287,7 +3352,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
     <section id="c-handoff" data-nav>
       <div class="eyebrow">Developer handoff</div>
       <h2>The Handoff: From Prototype to Production</h2>
-      <video preload="none" class="case-media" src="assets/case-pactto/handoff.mp4" muted loop playsinline data-nocaption></video>
+      <video preload="none" class="case-media" src="/assets/case-pactto/handoff.mp4" muted loop playsinline data-nocaption></video>
 
       <div class="case-cards">
         <div class="case-card"><h4>The System</h4><p>We expanded Pactto's existing UI into a modular Design System (Typography, Color, Components) to ensure consistency.</p></div>
@@ -3315,16 +3380,16 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </div>
 
       <figure class="team-shots reveal">
-        <img src="assets/case-pactto/team-1.jpg" alt="The Pactto team together in the studio" loading="lazy" width="815" height="1086">
-        <img src="assets/case-pactto/team-2.jpg" alt="The Pactto team in the office, gathered around a table" loading="lazy" width="1448" height="1086">
+        <img src="/assets/case-pactto/team-1.jpg" alt="The Pactto team together in the studio" loading="lazy" width="815" height="1086">
+        <img src="/assets/case-pactto/team-2.jpg" alt="The Pactto team in the office, gathered around a table" loading="lazy" width="1448" height="1086">
       </figure>
       <p class="team-note">Unfortunately I couldn&rsquo;t make it in person, so please enjoy these completely un-edited photographs of me with the team.</p>
     </section>
 
     <div class="case-next">
       <div class="eyebrow">Next</div>
-      <a href="#jobi" data-page="jobi">
-        <video preload="none" src="assets/videos/jobi-trailer-web.mp4" muted loop playsinline></video>
+      <a href="/jobi" data-page="jobi">
+        <video preload="none" src="/assets/videos/jobi-trailer-web.mp4" muted loop playsinline></video>
         <span class="cn-text">
           <span class="cn-title">Jobi</span>
           <span class="cn-sub">A companion for the job hunt, not an autopilot for it.</span>
@@ -3355,7 +3420,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </div>
     </div>
 
-    <video preload="none" class="case-video" src="assets/videos/jobi-trailer-web.mp4" muted loop playsinline></video>
+    <video preload="none" class="case-video" src="/assets/videos/jobi-trailer-web.mp4" muted loop playsinline></video>
 
     <div class="callout">
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
@@ -3371,7 +3436,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Secondary Research</div>
       <h2>The Search Damages Mental Health</h2>
       <p>We started with published surveys. They show that the job search harms most of the people going through it, not a small minority. What they do not show is <b>why</b>. That is what our interviews were for.</p>
-      <img class="case-media" src="assets/case-jobi/mental-health.png"
+      <img class="case-media" src="/assets/case-jobi/mental-health.png"
            alt="Job searching takes a serious toll on mental health and leads to burnout"
            data-nocaption loading="lazy">
       <p class="figure-note"><b>72%</b> say the job search has harmed their mental health
@@ -3384,7 +3449,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Primary Research</div>
       <h2>Three Focus Points for Investigation</h2>
       <p>The surveys showed the damage but not its causes, so we built the interview guide around three questions a survey cannot answer.</p>
-      <img class="card-art" src="assets/case-jobi/focus-points.png"
+      <img class="card-art" src="/assets/case-jobi/focus-points.png"
            alt="Three questions a survey could not answer. Methods: how do people actually track applications once the volume climbs? Friction: which parts of applying cost the most time, and which cost the most energy? Emotion: what makes someone lose momentum, and what gets them started again?">
       <div class="focus-grid">
         <div class="focus">
@@ -3406,7 +3471,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Interviews &amp; Competitive Analysis</div>
       <h2>The Tools Organise the Work. None of Them Question It.</h2>
       <p>We interviewed five job seekers mid-search, applying to anywhere from four roles a week to thirty, then audited the two tools they kept mentioning. Teal and Simplify both autofill forms, track statuses and help you apply to more jobs. Not one of our interviewees said that applying to more jobs was their problem.</p>
-      <img class="case-media" src="assets/case-jobi/research-overview.jpg"
+      <img class="case-media" src="/assets/case-jobi/research-overview.jpg"
            alt="Research overview: the affinity map; a participant quote, I copy-paste the same answers into every single form; 92% never finish a job application; 15 minutes to 3 days per application, with every one restarting the same work from scratch; mostly silence, since most applications get no reply; the user interview transcripts; competitor audits of Simplify and Teal; and the persona, Mark, 27, eight months in, applying to 10 to 30 roles a week across Excel, Notion and Google Docs."
            data-nocaption loading="lazy">
     </section>
@@ -3415,8 +3480,9 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Analysis</div>
       <h2>What the Interviews Kept Saying</h2>
       <p>We sorted every interview quote into an affinity map. The clusters that came out were <em>all about emotional fatigue</em>, not about a missing feature.</p>
-      <img class="case-media" src="assets/case-jobi/affinity-map.png" alt="Mapping out Insights: the interview affinity map, clustered into resume and CV management, repetitive forms and platforms, tracking and organisation, cover letters and research, and the emotional toll and feedback gap" data-nocaption loading="lazy">
-      <img class="case-media" src="assets/case-jobi/insights.svg" data-nocaption
+      <img class="case-media" src="/assets/case-jobi/affinity-map.png" alt="Mapping out Insights: the interview affinity map, clustered into resume and CV management, repetitive forms and platforms, tracking and organisation, cover letters and research, and the emotional toll and feedback gap" data-nocaption loading="lazy">
+      <img class="case-media" src="/assets/case-jobi/insights.svg" data-nocaption
+           alt="Five insights from the research, each paired with the design focus it led to"
         loading="lazy" width="1046" height="257"
         alt="Three insight cards: statuses are logged by hand and go stale; a participant quote, I usually take a week off after a rejection from a final round; research is paid upfront, before a word is written.">
       <p class="figure-note">The three insights a product could answer. The fourth cluster, silence from employers, is outside any product's control: no feature makes a company reply.</p>
@@ -3444,7 +3510,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         no product controls. What we could promise honestly is growth, because skills
         and habits build long before anyone says yes. So the brand is designed to calm
         you down, not to keep you hooked.</p>
-      <img class="case-media" src="assets/case-jobi/brand-sheet.png" loading="lazy"
+      <img class="case-media" src="/assets/case-jobi/brand-sheet.png" loading="lazy"
         alt="The identity on one sheet: the sprout wordmark, a three-colour palette, Inter, the icon set, and the mascot in its working poses.">
       <div class="case-cards">
         <div class="case-card">
@@ -3492,7 +3558,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h2>One Companion, End to End</h2>
       <p>Jobi runs as a browser side-panel next to the job search. You choose which roles to go for; Jobi handles everything around them: the research, the documents, the tracking and the practice. Each of the three insights has a feature behind it. One more thing the interviews asked for, autofill, was built and then removed; the reason is further down.</p>
 
-      <img class="case-media" src="assets/case-jobi/solution-overview.png"
+      <img class="case-media" src="/assets/case-jobi/solution-overview.png"
            alt="The surfaces Jobi ships: a CV tailored to the role that explains what it changed, a tracker holding every application from applied through to offer, storage for CVs, letters and links, a streak counter, a cover letter written from the posting and your own CV, spoken interview practice, voice dictation into application forms, and a job description broken down into a fit score."
            data-nocaption loading="lazy">
 
@@ -3550,7 +3616,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <p class="answers">Answers the third insight: the research you have to do before you can write a word.</p>
       <p>The home screen is a chat. Paste a job posting and Jobi tells you whether it is worth applying for, tailors your CV and cover letter, and researches the company, so you stop juggling tabs.</p>
       <div class="feature-frame no-carousel">
-        <video preload="none" src="assets/case-jobi/jobi-jd.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-jobi/jobi-jd.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>Analyse a Job Description</h4>
           <p>Scores how well you match the role out of 100 and lists the gaps, based on your actual CV rather than on keywords.</p>
@@ -3558,10 +3624,10 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </div>
       <div class="feature-frame no-carousel feature-switch">
         <div class="fs-pane on">
-          <video preload="none" src="assets/case-jobi/jobi-tailor-cv.mp4" muted loop playsinline></video>
+          <video preload="none" src="/assets/case-jobi/jobi-tailor-cv.mp4" muted loop playsinline></video>
         </div>
         <div class="fs-pane">
-          <video preload="none" src="assets/case-jobi/jobi-cover-letter.mp4" muted loop playsinline></video>
+          <video preload="none" src="/assets/case-jobi/jobi-cover-letter.mp4" muted loop playsinline></video>
         </div>
         <div class="ff-caption">
           <div class="fs-cap on">
@@ -3596,7 +3662,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h3>Interview Practice</h3>
       <p class="answers">Answers the silence from employers: when replies are rare, the few interviews you get have to count.</p>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-jobi/jobi-interview.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-jobi/jobi-interview.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>The first time you say it out loud isn't in the real room</h4>
           <p>A voice-driven mock interview that role-plays the real thing: questions, follow-ups, and feedback in the moment.</p>
@@ -3605,7 +3671,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h3>The Tracker</h3>
       <p class="answers">Answers the first insight: statuses logged by hand go stale.</p>
       <div class="feature-frame">
-        <video preload="none" src="assets/case-jobi/jobi-tracker.mp4" muted loop playsinline></video>
+        <video preload="none" src="/assets/case-jobi/jobi-tracker.mp4" muted loop playsinline></video>
         <div class="ff-caption">
           <h4>One pipeline, from saved through to offer</h4>
           <p>Trackers fail because logging is manual, so we stopped asking people to log. One click captures the role, with reminders so nothing goes quiet because you forgot.</p>
@@ -3651,7 +3717,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
       <h2>Design, Build, and Lead in One Loop</h2>
       <p>The three of us ran research, ideation and design together in Figma. The build I took on alone: every screen went into Claude Code and came out as working software.</p>
-      <img class="case-media" src="assets/case-jobi/jobi-ideation.png" alt="The Figma board, in five labelled sections: mascot ideation sketches, mascot designs and app-icon variants, mid-fi screen designs, lo-fi and reference layouts, and moodboards." loading="lazy">
+      <img class="case-media" src="/assets/case-jobi/jobi-ideation.png" alt="The Figma board, in five labelled sections: mascot ideation sketches, mascot designs and app-icon variants, mid-fi screen designs, lo-fi and reference layouts, and moodboards." loading="lazy">
       <p>I am a designer, not an engineer, so the build had to be set up as a system
         before any of it was written. Two things carried it.</p>
       <div class="case-cards">
@@ -3698,8 +3764,8 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
     <div class="case-next">
       <div class="eyebrow">Next</div>
-      <a href="#nothing" data-page="nothing">
-        <video preload="none" src="assets/videos/nothing.mp4" muted loop playsinline></video>
+      <a href="/nothing" data-page="nothing">
+        <video preload="none" src="/assets/videos/nothing.mp4" muted loop playsinline></video>
         <span class="cn-text">
           <span class="cn-title">Nothing</span>
           <span class="cn-sub">The right tools, exactly when you need them.</span>
@@ -3730,7 +3796,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </div>
     </div>
 
-    <video preload="none" class="case-video" src="assets/case-nothing/hero.mp4" muted loop playsinline></video>
+    <video preload="none" class="case-video" src="/assets/case-nothing/hero.mp4" muted loop playsinline></video>
 
     <div class="callout">
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
@@ -3746,11 +3812,11 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="eyebrow">Scenario</div>
       <h2>A shape-shifting canvas for real-world moments</h2>
       <p>Imagine heading out for the evening. Instead of hunting through cluttered app drawers for ride-shares and reservations, the OS does the heavy lifting. It instantly generates a distraction-free, temporary environment containing only the relevant tools, keeping you focused on the physical world.</p>
-      <img class="case-media" src="assets/case-nothing/scenario-canvas.jpg" alt="The regular home screen beside the Essential Context screen, annotated: a weather widget giving real-time climate for the evening ahead, a reservation widget surfacing booking details, a quick contact widget for one-tap calls and messages to the night's priority contact, and a curated app row filtered to the moment." data-nocaption loading="lazy" width="1693" height="1089">
+      <img class="case-media" src="/assets/case-nothing/scenario-canvas.jpg" alt="The regular home screen beside the Essential Context screen, annotated: a weather widget giving real-time climate for the evening ahead, a reservation widget surfacing booking details, a quick contact widget for one-tap calls and messages to the night's priority contact, and a curated app row filtered to the moment." data-nocaption loading="lazy" width="1693" height="1089">
 
       <h3>Mapping the Journey</h3>
       <p>Holding the essential button from the lock screen opens the configuration menu alongside a sweeping light animation. After selecting &ldquo;Date Night,&rdquo; the system drops the user into their curated home screen and updates the hardware to display an &ldquo;Auto-Expire&rdquo; progress bar. A persistent yellow status pill remains at the top right, letting users effortlessly tweak settings or exit the context to restore the standard OS.</p>
-      <img class="case-media" src="assets/case-nothing/journey-map.jpg" alt="A six-step flow: holding the essential button on the lock screen, configuring Date Night and its preference chips, a brief wait while the system rebuilds, entering the curated screen, managing it from the yellow context pill, and exiting back to the regular home screen." data-nocaption loading="lazy" width="1888" height="539">
+      <img class="case-media" src="/assets/case-nothing/journey-map.jpg" alt="A six-step flow: holding the essential button on the lock screen, configuring Date Night and its preference chips, a brief wait while the system rebuilds, entering the curated screen, managing it from the yellow context pill, and exiting back to the regular home screen." data-nocaption loading="lazy" width="1888" height="539">
     </section>
 
     <section id="n-purpose" data-nav>
@@ -3758,7 +3824,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h2>Intentional usage through a unified ecosystem</h2>
       <p>Nothing&rsquo;s philosophy centers on intentional smartphone usage: less time navigating apps, more time living in the moment. Essential Context realizes this vision by acting as the central intelligence hub for the entire Nothing ecosystem. By synchronizing with other Essential features, it reduces cognitive load and transforms raw data into a highly focused environment.</p>
       <p>As illustrated in the Date Night example below, each Essential feature works together to silently curate your experience:</p>
-      <img class="case-media" src="assets/case-nothing/ecosystem.jpg" alt="Date Night draws on four Essential features: Essential Space extracts your reservation and location data, Essential Apps generates widgets for rides and quick contact, Essential Search pre-loads the restaurant menu and route, and Essential Notifications silences everything except messages from your date." data-nocaption loading="lazy" width="1888" height="879">
+      <img class="case-media" src="/assets/case-nothing/ecosystem.jpg" alt="Date Night draws on four Essential features: Essential Space extracts your reservation and location data, Essential Apps generates widgets for rides and quick contact, Essential Search pre-loads the restaurant menu and route, and Essential Notifications silences everything except messages from your date." data-nocaption loading="lazy" width="1888" height="879">
       <p>By unifying these tools, the OS evolves from a passive grid of icons into a shape-shifting, predictive canvas. Ultimately, the more Essential features you use, the more deeply personalized your environment becomes, allowing you to remain fully present in the physical world.</p>
     </section>
 
@@ -3772,21 +3838,21 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <h3>The Trigger</h3>
         <p>Holding the essential button pulls up the Essential Context setup.</p>
       </div>
-      <img class="case-media" src="assets/case-nothing/system-trigger.jpg" alt="The essential button on the side of the phone, captioned Hold To Set Context." data-nocaption loading="lazy" width="1888" height="539">
+      <img class="case-media" src="/assets/case-nothing/system-trigger.jpg" alt="The essential button on the side of the phone, captioned Hold To Set Context." data-nocaption loading="lazy" width="1888" height="539">
 
       <div class="decision">
         <div class="decision-num">02</div>
         <h3>The Glyph Matrix</h3>
         <p>When active, the back of the phone displays a minimalist, static icon (like a cocktail glass) to project your &ldquo;focus state&rdquo; to the physical room.</p>
       </div>
-      <img class="case-media" src="assets/case-nothing/system-glyph-matrix.jpg" alt="The Glyph Matrix on the back of the phone lit with a cocktail glass icon, captioned Date Night Focus Mode." data-nocaption loading="lazy" width="1888" height="539">
+      <img class="case-media" src="/assets/case-nothing/system-glyph-matrix.jpg" alt="The Glyph Matrix on the back of the phone lit with a cocktail glass icon, captioned Date Night Focus Mode." data-nocaption loading="lazy" width="1888" height="539">
 
       <div class="decision">
         <div class="decision-num">03</div>
         <h3>The Glyph Lights</h3>
         <p>Classic Glyphs act as a visual timer for the context&rsquo;s &ldquo;Auto-Expire&rdquo; progress, and strictly limit light notifications to your pinned priority contacts.</p>
       </div>
-      <img class="case-media" src="assets/case-nothing/system-glyph-lights.jpg" alt="A Glyph light arc running part-way around the camera housing, captioned Essential Context Auto-Expire Timer." data-nocaption loading="lazy" width="1888" height="539">
+      <img class="case-media" src="/assets/case-nothing/system-glyph-lights.jpg" alt="A Glyph light arc running part-way around the camera housing, captioned Essential Context Auto-Expire Timer." data-nocaption loading="lazy" width="1888" height="539">
     </section>
 
     <section id="n-decisions" data-nav>
@@ -3799,14 +3865,14 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <h3>Smart Chips over Menus</h3>
         <p>I utilized 1-tap actionable chips (like &ldquo;Smart App Filter&rdquo; and &ldquo;Priority Contact&rdquo;) to eliminate friction by minimizing clicks.</p>
       </div>
-      <img class="case-media" src="assets/case-nothing/decisions-chips.jpg" alt="The Essential Context sheet: saved contexts for Gym, Work and Date Night, one-tap preference chips for Essential Apps, Essential Notifications, Auto-Expire and Priority Contact, and an Add Context field with a microphone." data-nocaption loading="lazy" width="1693" height="840">
+      <img class="case-media" src="/assets/case-nothing/decisions-chips.jpg" alt="The Essential Context sheet: saved contexts for Gym, Work and Date Night, one-tap preference chips for Essential Apps, Essential Notifications, Auto-Expire and Priority Contact, and an Add Context field with a microphone." data-nocaption loading="lazy" width="1693" height="840">
 
       <div class="decision">
         <div class="decision-num">Decision 02</div>
         <h3>The Status Pill</h3>
         <p>I created a persistent, non-intrusive anchor in the top right of the screen. Tapping it drops down a quick-action menu to Edit or Exit, keeping control exactly one thumb-swipe away without burying it in Android Settings.</p>
       </div>
-      <img class="case-media" src="assets/case-nothing/decisions-pill.jpg" alt="The status pill across three contexts: Workout Mode in blue, Date Night Mode in yellow and Work Mode in red, each confirming that the mode can be managed from the top right icon." data-nocaption loading="lazy" width="1693" height="485">
+      <img class="case-media" src="/assets/case-nothing/decisions-pill.jpg" alt="The status pill across three contexts: Workout Mode in blue, Date Night Mode in yellow and Work Mode in red, each confirming that the mode can be managed from the top right icon." data-nocaption loading="lazy" width="1693" height="485">
     </section>
 
     <section id="n-future" data-nav>
@@ -3826,8 +3892,8 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
     <div class="case-next">
       <div class="eyebrow">Next</div>
-      <a href="#pactto" data-page="pactto">
-        <video preload="none" src="assets/videos/pactto.mp4" muted loop playsinline></video>
+      <a href="/pactto" data-page="pactto">
+        <video preload="none" src="/assets/videos/pactto.mp4" muted loop playsinline></video>
         <span class="cn-text">
           <span class="cn-title">Pactto</span>
           <span class="cn-sub">Collaboration that doesn&rsquo;t end when the call does.</span>
@@ -3864,6 +3930,31 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 const PAGE_NAMES = {
   jobi: 'Jobi', pactto: 'Pactto', nothing: 'Nothing'
 };
+/* Each page is its own URL, with its own title and description, so an engine
+   can rank a case study on its own. Netlify's _redirects serves index.html
+   for every path here; the page reads the path on arrival. */
+const PAGE_META = {
+  home:       { path: '/',           title: 'Mahin Jahan — Product Designer in London',
+                desc: 'Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.' },
+  about:      { path: '/about',      title: 'About Mahin Jahan \u2014 Product Designer in London',
+                desc: 'How Mahin Jahan came to product design: a startup, an economics degree, a Master\u2019s in Human-Computer Interaction and an internship at Pactto. Off the clock: cooking, League of Legends and running.' },
+  playground: { path: '/playground', title: 'Playground \u2014 Interaction and motion experiments by Mahin Jahan',
+                desc: 'Small experiments in motion and interaction by Mahin Jahan: a Discord reply interaction, a Sword Art Online VR scene, TripUp, the Printl Chrome extension and a Deku\u2019s Notebook battle pass.' },
+  jobi:       { path: '/jobi',       title: 'Jobi case study \u2014 Mahin Jahan, Product Designer',
+                desc: 'Jobi: a companion for the job hunt, not an autopilot for it. How Mahin Jahan researched, branded and shipped an AI job-search companion as founder and product designer.' },
+  pactto:     { path: '/pactto',     title: 'Pactto case study \u2014 Mahin Jahan, Product Designer',
+                desc: 'Pactto: collaboration that doesn\u2019t end when the call does. Mahin Jahan\u2019s product design internship, from research to a feature shipped into a public beta.' },
+  nothing:    { path: '/nothing',    title: 'Nothing OS concept: Essential Context \u2014 Mahin Jahan',
+                desc: 'Essential Context, a shape-shifting home screen concept for Nothing OS that surfaces the right tools exactly when you need them. Designed in 48 hours by Mahin Jahan.' },
+};
+/* which page a location names: the path first, the old #hash as a fallback */
+function pageFromLocation() {
+  const p = location.pathname.replace(/^\/+|\/+$/g, '');
+  if (p && PAGE_META[p]) return p;
+  const h = location.hash.replace('#', '');
+  if (h && PAGE_META[h]) return h;
+  return 'home';
+}
 const curtain = document.getElementById('curtain');
 let navigating = false;
 
@@ -3877,6 +3968,15 @@ function setActive(page) {
   document.body.classList.toggle('case-active', page !== 'home');
   /* the nav is shared by every page now, so it needs to know which one */
   document.body.dataset.page = page;
+  /* the page's own title, description and canonical, for the engines that render */
+  const meta = PAGE_META[page];
+  if (meta) {
+    document.title = meta.title;
+    const d = document.querySelector('meta[name="description"]');
+    if (d) d.setAttribute('content', meta.desc);
+    const c = document.getElementById('canonical');
+    if (c) c.setAttribute('href', 'https://mahinjahan.com' + meta.path);
+  }
   /* the moon's browser chrome is the sky on home and the tint elsewhere */
   if (window.mascotRechrome) window.mascotRechrome();
 
@@ -3895,7 +3995,7 @@ function setActive(page) {
   }
 }
 
-function goTo(page) {
+function goTo(page, fromHistory) {
   const target = document.getElementById(page);
   if (!target || target.classList.contains('current') || navigating) return;
   navigating = true;
@@ -3912,7 +4012,8 @@ function goTo(page) {
     target.classList.add('current');
     window.scrollTo(0, 0);
     setActive(page);
-    history.replaceState(null, '', '#' + page);
+    /* a new entry for a click, none when the browser is walking its history */
+    if (!fromHistory && PAGE_META[page]) history.pushState({ page }, '', PAGE_META[page].path);
     curtain.classList.remove('sweep-in');
     curtain.classList.add('sweep-out');
     let cleaned = false;
@@ -3935,15 +4036,19 @@ function goTo(page) {
   setTimeout(switchPage, 700);
 }
 
-/* deep link */
-const initial = location.hash.replace('#', '');
-if (initial && document.getElementById(initial)) {
+/* deep link: the path, or an old #hash link, which is rewritten to the path */
+const initial = pageFromLocation();
+if (initial !== 'home') {
   document.querySelectorAll('.page').forEach(s => s.classList.remove('current'));
   document.getElementById(initial).classList.add('current');
-  setActive(initial);
-} else {
-  setActive('home');
 }
+setActive(initial);
+history.replaceState({ page: initial }, '', PAGE_META[initial].path);
+/* back and forward walk the same pages, through the same curtain */
+window.addEventListener('popstate', () => {
+  const page = pageFromLocation();
+  if (!document.getElementById(page).classList.contains('current')) goTo(page, true);
+});
 
 /* ---------- home gallery ---------- */
 const featured = [{ i: 0 }, { i: 1 }];   /* Jobi, Pactto */
@@ -3958,15 +4063,15 @@ const projects = [
   /* when: the year and whether it shipped, which is all the phone shows beside the name */
   { title: 'Jobi', desc: 'A companion for the job hunt, not an autopilot for it.',
     meta: 'Founder \u00b7 Shipped 2026', when: '2026 \u00b7 Shipped', page: 'jobi',
-    mark: 'assets/case-jobi/jobi-wordmark-night.svg',
-    video: 'assets/videos/jobi-jd-web.mp4' },
+    mark: '/assets/case-jobi/jobi-wordmark-night.svg',
+    video: '/assets/videos/jobi-jd-web.mp4' },
   { title: 'Pactto', desc: 'Collaboration that doesn\u2019t end when the call does.',
     meta: 'Product design intern \u00b7 Shipped 2026', when: '2026 \u00b7 Shipped', page: 'pactto',
-    mark: 'assets/case-pactto/pactto-wordmark-night.svg',
-    video: 'assets/videos/pactto.mp4' },
+    mark: '/assets/case-pactto/pactto-wordmark-night.svg',
+    video: '/assets/videos/pactto.mp4' },
   { title: 'Nothing', desc: 'The right tools, exactly when you need them.',
     meta: 'Concept \u00b7 48 hours', when: '2026 · Concept', page: 'nothing',
-    video: 'assets/videos/nothing.mp4' },
+    video: '/assets/videos/nothing.mp4' },
 ];
 
 document.getElementById('hp-strip').innerHTML = projects.map(pr => {
@@ -4045,7 +4150,7 @@ document.querySelectorAll('.case-media, .case-video').forEach(el => {
 const PAGE_LOGOS = {
   /* Jobi has no entry: its wordmark is the full lockup, mascot included, so it
      stands on its own. Pactto's wordmark is letterforms only and keeps its icon. */
-  pactto: 'assets/case-pactto/pactto-appicon.png',
+  pactto: '/assets/case-pactto/pactto-appicon.png',
 };
 /* projects with a real wordmark show it instead of the typeset title —
    the light variant, since the site ground is dark */
@@ -4053,8 +4158,8 @@ const PAGE_WORDMARKS = {
   /* Jobi's is the real lockup, taken verbatim off jobi.life — mascot and
      letterforms together, the mascot outlined by a stroked halo layer drawn
      under the fills. Pactto's is letterforms only and pairs with its icon. */
-  jobi: 'assets/case-jobi/jobi-wordmark.svg',
-  pactto: 'assets/case-pactto/pactto-wordmark.svg',
+  jobi: '/assets/case-jobi/jobi-wordmark.svg',
+  pactto: '/assets/case-pactto/pactto-wordmark.svg',
 };
 document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   const page = t.closest('.page').id;
@@ -4100,10 +4205,10 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   var players = [];
 
   function start() {
-    window.rive.RuntimeLoader.setWasmUrl('assets/vendor/rive.wasm');
+    window.rive.RuntimeLoader.setWasmUrl('/assets/vendor/rive.wasm');
     cells.forEach(function (c) {
       var r = new window.rive.Rive({
-        src: 'assets/case-jobi/rive/' + c.dataset.riv,
+        src: '/assets/case-jobi/rive/' + c.dataset.riv,
         canvas: c, autoplay: true, animations: c.dataset.anim,
         fit: window.rive.Fit.Contain,
         onLoad: function () { r.resizeDrawingSurfaceToCanvas(); },
@@ -4127,7 +4232,7 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
     if (!es[0].isIntersecting || fetched) return;
     fetched = true; self.disconnect();
     var s = document.createElement('script');
-    s.src = 'assets/vendor/rive.js';
+    s.src = '/assets/vendor/rive.js';
     s.onload = start;
     document.body.appendChild(s);
   }, { rootMargin: '600px 0px' }).observe(frame);

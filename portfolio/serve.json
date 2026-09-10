@@ -1,16 +1,14 @@
 {
+  "rewrites": [
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/playground", "destination": "/index.html" },
+    { "source": "/jobi", "destination": "/index.html" },
+    { "source": "/pactto", "destination": "/index.html" },
+    { "source": "/nothing", "destination": "/index.html" }
+  ],
   "headers": [
-    {
-      "source": "**/*.html",
-      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
-    },
-    {
-      "source": "**/*.js",
-      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
-    },
-    {
-      "source": "**/*.{svg,json}",
-      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
-    }
+    { "source": "**/*.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "**/*.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "**/*.{svg,json}", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
   ]
 }
