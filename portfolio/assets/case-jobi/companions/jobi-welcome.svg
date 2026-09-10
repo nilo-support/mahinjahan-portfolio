@@ -1,0 +1,1084 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="-24 -34 468 528"
+     width="468"
+     height="528"
+     role="img"
+     aria-label="Jobi entrance, wave, then idle">
+  <defs>
+    <!-- Accessory art, defined once and referenced by every pose in this
+         file. All seven rigs across the four mascot files draw the body at
+         the identical path (M132 132 C98 132 74 156 74 190 ...), so one
+         definition lands correctly in all of them unchanged. -->
+    <g id="acc-bow-art" transform="translate(210 128)"><path d="M-12.0 -15.0 C-30.0 -57.5 -90.2 -52.5 -95.0 -4.0 C-95.0 45.0 -30.0 50.0 -12.0 15.0 Z" fill="#E5789B"/><path d="M12.0 -15.0 C30.0 -57.5 90.2 -52.5 95.0 -4.0 C95.0 45.0 30.0 50.0 12.0 15.0 Z" fill="#E5789B"/><rect x="-17" y="-23" width="34" height="46" rx="15" fill="#A93E60"/></g>
+    <g id="acc-violets-art"><g transform="translate(210 139.4) scale(0.75) translate(-210 -150) translate(22.98 -33.23) scale(2.298)"><path d="M83.5823 74.9894C87.7699 82.2425 103.129 81.2149 117.887 72.6941C132.646 64.1734 141.215 51.3861 137.027 44.133C132.84 36.8798 117.481 37.9074 102.722 46.4282C87.9641 54.949 79.3947 67.7363 83.5823 74.9894Z" fill="#6C56B9"/><path d="M79.0272 74.9894C74.8396 82.2425 59.4808 81.2149 44.7224 72.6941C29.964 64.1734 21.3947 51.3861 25.5823 44.133C29.7699 36.8798 45.1287 37.9074 59.8871 46.4282C74.6455 54.949 83.2148 67.7363 79.0272 74.9894Z" fill="#6C56B9"/><path d="M91.0817 3.27012C94.0601 5.84006 95.7832 9.13736 96.0932 13.0464C96.1138 13.7607 96.111 14.474 96.1048 15.1885C96.104 15.3754 96.1032 15.5623 96.1023 15.7548C96.1001 16.2106 96.0971 16.6664 96.0932 17.1222C96.3594 16.9947 96.3594 16.9947 96.6309 16.8646C100.226 15.1878 103.846 14.5239 107.765 15.4548C107.97 15.5025 107.97 15.5025 108.18 15.5511C111.938 16.616 114.624 19.5668 116.472 22.8654C116.724 23.4138 116.893 23.9453 117.028 24.5327C117.084 24.7634 117.084 24.7634 117.142 24.9988C117.979 29.0794 117.245 32.7741 115.082 36.2861C114.823 36.652 114.55 36.983 114.249 37.3159C114.116 37.4635 113.984 37.6111 113.847 37.7632C111.41 40.3322 108.315 41.8798 104.801 42.318C104.921 42.4795 105.042 42.6409 105.167 42.8073C107.973 46.6087 109.024 50.3998 108.647 55.0947C108.122 58.282 106.034 61.4374 103.449 63.3556C100.304 65.5353 96.7852 66.4413 92.9836 65.9392C90.7277 65.4995 88.9872 64.6212 87.0153 63.4381C86.9542 67.2897 86.8931 71.1414 86.8301 75.1097C82.9784 75.1097 79.1268 75.1097 75.1585 75.1097C75.0973 71.3803 75.0362 67.651 74.9732 63.8086C74.3007 64.1754 73.6282 64.5423 72.9353 64.9202C71.6922 65.4076 70.3848 65.7926 69.0448 65.8465C68.8277 65.8561 68.6106 65.8656 68.3869 65.8755C64.832 65.9803 61.4725 64.9904 58.7388 62.6507C56.1074 60.1439 54.6302 57.0972 54.3561 53.4773C54.2871 50.6102 54.9303 47.91 56.4468 45.4675C56.598 45.2214 56.598 45.2214 56.7522 44.9704C56.9106 44.7178 56.9106 44.7178 57.0721 44.4602C57.1767 44.2923 57.2813 44.1244 57.3891 43.9514C57.7836 43.3709 58.2134 42.8508 58.67 42.318C58.5066 42.2722 58.5066 42.2722 58.34 42.2255C54.1681 41.0339 50.5517 39.2182 48.11 35.4633C46.3055 32.173 45.4248 28.6635 46.4086 24.959C47.1823 22.8013 48.2864 20.7595 49.9279 19.1485C50.0271 19.0508 50.1263 18.9531 50.2285 18.8525C52.7757 16.377 55.9497 15.4165 59.4574 15.4201C59.6884 15.4203 59.6884 15.4203 59.924 15.4205C61.1393 15.4326 62.3007 15.5512 63.4869 15.8253C63.7192 15.8769 63.9516 15.9285 64.191 15.9817C65.0162 16.1902 65.7709 16.5154 66.5437 16.8675C66.6784 16.9276 66.8131 16.9878 66.9519 17.0498C67.2795 17.1964 67.6064 17.3444 67.9332 17.4927C67.9274 17.2759 67.9274 17.2759 67.9214 17.0548C67.9058 16.3864 67.8963 15.718 67.8869 15.0496C67.8807 14.8223 67.8744 14.5951 67.868 14.361C67.851 12.7433 68.1069 11.4096 68.6742 9.89691C68.7585 9.67171 68.8428 9.44651 68.9297 9.21448C69.0021 9.04611 69.0744 8.87775 69.149 8.70428C69.2263 8.52397 69.3037 8.34367 69.3834 8.1579C69.6261 7.61671 69.8795 7.08664 70.1563 6.56217C70.2786 6.56217 70.4009 6.56217 70.5269 6.56217C70.5422 6.45805 70.5574 6.35392 70.5732 6.24664C71.2424 4.19705 74.0619 2.32452 75.8995 1.37479C80.8956 -1.01407 86.7865 -0.231672 91.0817 3.27012Z" fill="#8069CA"/><path d="M86.9111 27.3233C88.3967 28.4488 89.463 29.5461 90.3501 31.203C90.4308 31.3503 90.5115 31.4977 90.5947 31.6495C91.1198 32.8081 91.1609 33.9454 91.1722 35.1977C91.1741 35.3597 91.176 35.5217 91.1779 35.6887C91.1556 37.3537 90.7756 38.7759 89.8174 40.1535C89.6956 40.3324 89.5738 40.5113 89.4484 40.6956C89.042 41.2218 88.607 41.6742 88.1269 42.1335C88.0271 42.2329 87.9273 42.3322 87.8244 42.4346C86.927 43.2615 85.9214 43.7281 84.7922 44.1714C84.6226 44.2397 84.453 44.308 84.2783 44.3784C82.0218 44.9958 79.314 44.6537 77.2803 43.5433C76.863 43.2772 76.4738 42.995 76.0848 42.6893C75.9689 42.6014 75.8531 42.5136 75.7338 42.423C74.9166 41.7678 74.2054 41.0045 73.6763 40.0956C73.6763 39.9122 73.6763 39.7288 73.6763 39.5398C73.5541 39.5398 73.4318 39.5398 73.3058 39.5398C73.1855 39.1889 73.066 38.8376 72.9469 38.4862C72.8469 38.1928 72.8469 38.1928 72.745 37.8935C72.0431 35.647 72.2455 33.3648 73.2016 31.2377C74.4083 28.9416 76.3709 27.0868 78.8406 26.224C81.5876 25.3989 84.5366 25.6701 86.9111 27.3233Z" fill="#F4C13D"/><path d="M81.4574 56.3984C82.0127 56.877 82.2775 57.4272 82.6037 58.0774C83.4884 59.7518 84.7831 61.758 86.4733 62.7341C86.8301 63.0679 86.8301 63.0679 86.9192 63.5919C86.9167 63.911 86.9167 63.911 86.9142 64.2365C86.9141 64.4775 86.9141 64.7186 86.914 64.9669C86.9102 65.2301 86.9064 65.4933 86.9024 65.7564C86.901 66.0256 86.9 66.2948 86.8993 66.564C86.8964 67.2722 86.8891 67.9802 86.8809 68.6884C86.872 69.5382 86.8686 70.388 86.8643 71.2379C86.8571 72.5287 86.8429 73.8192 86.8301 75.1101C82.9784 75.1101 79.1268 75.1101 75.1585 75.1101C75.1164 73.2148 75.0744 71.3196 75.0311 69.3669C75.0125 68.771 74.994 68.1752 74.9749 67.5613C74.9689 67.0863 74.9637 66.6113 74.9594 66.1364C74.9541 66.0147 74.9488 65.893 74.9433 65.7677C74.9094 64.9518 74.917 64.2215 75.1585 63.4385C75.7627 62.7909 76.4282 62.3853 77.1964 61.9563C79.0003 60.418 80.3441 58.4799 81.4574 56.3984Z" fill="#6C56B9"/></g></g><g id="acc-flower-art"><g transform="translate(22.98 -33.23) scale(2.298)"><path d="M138.366 93.3554L118.766 82.0437C116.892 80.9625 114.497 81.6041 113.415 83.4769C112.333 85.3497 112.975 87.7445 114.849 88.8257L134.449 100.137C136.322 101.219 138.718 100.577 139.799 98.7042C140.881 96.8314 140.239 94.4367 138.366 93.3554Z" fill="#6C56B9"/><path d="M110.068 83.2601C114.155 83.2601 117.467 78.78 117.467 73.2536C117.467 67.7271 114.155 63.2471 110.068 63.2471C105.982 63.2471 102.669 67.7271 102.669 73.2536C102.669 78.78 105.982 83.2601 110.068 83.2601Z" fill="#AA8FFF"/><path d="M110.896 83.861C112.159 87.7459 117.445 89.5107 122.703 87.803C127.961 86.0952 131.2 81.5615 129.937 77.6767C128.674 73.7919 123.388 72.027 118.13 73.7348C112.872 75.4425 109.633 79.9762 110.896 83.861Z" fill="#AA8FFF"/><path d="M110.58 84.8342C107.274 87.2352 107.228 92.806 110.478 97.277C113.727 101.748 119.042 103.426 122.348 101.025C125.654 98.6241 125.699 93.0533 122.45 88.5823C119.2 84.1113 113.886 82.4332 110.58 84.8342Z" fill="#AA8FFF"/><path d="M109.557 84.8339C106.251 82.4329 100.936 84.111 97.6868 88.582C94.4372 93.053 94.4828 98.6238 97.7887 101.025C101.095 103.426 106.409 101.748 109.659 97.2766C112.908 92.8057 112.863 87.2349 109.557 84.8339Z" fill="#AA8FFF"/><path d="M109.24 83.8612C110.503 79.9763 107.264 75.4427 102.006 73.7349C96.7484 72.0271 91.4623 73.792 90.1996 77.6768C88.9368 81.5617 92.1756 86.0954 97.4336 87.8031C102.692 89.5109 107.978 87.746 109.24 83.8612Z" fill="#AA8FFF"/><path d="M110.068 89.7853C113.193 89.7853 115.726 87.2531 115.726 84.1295C115.726 81.0058 113.193 78.4736 110.068 78.4736C106.943 78.4736 104.41 81.0058 104.41 84.1295C104.41 87.2531 106.943 89.7853 110.068 89.7853Z" fill="#F5C542"/></g></g>
+    <g id="acc-fedora-art"><path d="M74 178 L98 127 Q98 90 135 90 L285 90 Q322 90 322 127 L346 178 Z" fill="#4A4E52"/><rect x="77" y="160" width="266" height="18" fill="#8C9297"/><rect x="50" y="180" width="320" height="46" rx="16" fill="#111111" opacity=".13"/><rect x="24" y="174" width="372" height="36" rx="18" fill="#41454A"/></g>
+    <g id="acc-tophat-art"><path d="M117 142 L107 14 Q107 0 121 0 L299 0 Q313 0 313 14 L303 142 Z" fill="#4A4E52"/><rect x="116" y="102" width="188" height="32" fill="#8C9297"/><rect x="54" y="148" width="312" height="46" rx="20" fill="#111111" opacity=".15"/><rect x="36" y="134" width="348" height="32" rx="16" fill="#41454A"/></g>
+  
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+
+  <style>
+    /* An accessory that is meant to COVER the plant hides it outright
+       rather than relying on the art to overlap it. The hat rides the head
+       group while the sprout has its own motion, so on the inspect pose they
+       diverge and the leaves escaped the crown for 15 frames of 48 (t=1.3s to
+       2.7s, worst at 2.1s, measured). Not drawing it cannot fail on any
+       frame; enlarging the crown to chase the divergence could. */
+    #ent-sprout, #wave-sprout, #idle-sprout { display: var(--jobi-sprout, inline); }
+    /* One variable per accessory id, so new art needs no new plumbing:
+       paintJobiObject sets the matching "--jobi-acc-" variable for whichever
+       accessory is chosen; every other one stays at its default of none. */
+
+    [data-acc="bow"]     { display: var(--jobi-acc-bow, none); }
+    [data-acc="flower"]  { display: var(--jobi-acc-flower, none); }
+    [data-plant="leaf"]    { display: var(--jobi-plant-leaf, inline); }
+    [data-plant="violets"] { display: var(--jobi-plant-violets, none); }
+    [data-acc="fedora"]  { display: var(--jobi-acc-fedora, none); }
+    [data-acc="tophat"]  { display: var(--jobi-acc-tophat, none); }
+    /* Character skin. The onboarding customiser sets --jobi-body and
+       --jobi-leaf on this document root. Presentation attributes cannot take
+       var(), and ANY css rule outranks one, so the two skinnable fills are
+       restated here; the attributes stay as the standalone fallback. Nothing
+       animates fill, so smil never fights these. Eyes and shadow are
+       deliberately not skinnable. */
+    [data-skin="body"] { fill: var(--jobi-body, #F7F6F3); }
+    [data-skin="leaf"] { fill: var(--jobi-leaf, #0FB790); }
+
+    /* Accessories. Hidden unless the host opts IN by setting the variable, so
+       the same file stays plain Jobi everywhere it is already mounted (chat,
+       every other onboarding step) and only the customiser's own mascot wears
+       anything. `display` takes var() in a rule, which is what makes a single
+       shared file able to do both. */
+    /* One variable per accessory id, so new art needs no new plumbing:
+       paintJobiObject sets the matching "--jobi-acc-" variable for whichever
+       accessory is chosen, and every other one stays at its default of none. */
+
+    svg { overflow: visible; }
+
+    /* PHASE 1 — exact approved entrance */
+    
+    svg { overflow: visible; }
+
+    #ent-shadow {
+      transform-box: view-box;
+      transform-origin: 210px 430px;
+      animation: ent-kf-shadow 1.8s linear forwards;
+    }
+
+    #ent-whole {
+      transform-box: view-box;
+      transform-origin: 210px 290px;
+      animation: ent-kf-whole-follow 1.8s linear forwards;
+    }
+
+    /* Main rig now contains BOTH body and sprout, so they scale together from frame 1 */
+    #ent-body-rig {
+      transform-box: view-box;
+      transform-origin: 210px 273px;
+      animation: ent-kf-body-burst 1.8s linear forwards;
+    }
+
+    #ent-body-shell {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ent-kf-body-squash 1.8s linear forwards;
+    }
+
+    /* Sprout is now a child of body-rig, so it inherits the exact same burst scaling */
+    #ent-sprout {
+      transform-box: view-box;
+      transform-origin: 210px 170px;
+      animation: ent-kf-sprout-grow 1.8s linear forwards;
+    }
+
+    #ent-stem {
+      transform-box: view-box;
+      transform-origin: 208px 170px;
+      animation: ent-kf-stem-grow 1.8s linear forwards;
+    }
+
+    #ent-leaves {
+      transform-box: view-box;
+      transform-origin: 210px 92px;
+      animation: ent-kf-leaves-grow 1.8s linear forwards;
+    }
+
+    #ent-arm-left {
+      transform-box: view-box;
+      transform-origin: 126px 304px;
+      animation: ent-kf-arm-left-pop 1.8s linear forwards;
+    }
+
+    #ent-arm-right {
+      transform-box: view-box;
+      transform-origin: 294px 304px;
+      animation: ent-kf-arm-right-pop 1.8s linear forwards;
+    }
+
+    #ent-eyes {
+      transform-box: view-box;
+      transform-origin: 210px 262px;
+      animation: ent-kf-eyes-pop 1.8s linear forwards;
+    }
+
+    .ent-eye {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ent-kf-eye-pop 1.8s linear forwards;
+    }
+
+    @keyframes ent-kf-body-burst {
+      0%    { transform: translateX(0px)  translateY(40px) scale(.235,.235) rotate(0deg); }
+      12%   { transform: translateX(0px)  translateY(38px) scale(.255,.255) rotate(0deg); }
+      24%   { transform: translateX(0px)  translateY(35px) scale(.278,.278) rotate(0deg); }
+
+      /* clearer left-right tipping wiggle before the burst */
+      32%   { transform: translateX(-3px) translateY(33px) scale(.296,.300) rotate(-1.5deg); }
+      38%   { transform: translateX(4px)  translateY(31px) scale(.314,.300) rotate(2.1deg); }
+      44%   { transform: translateX(-5px) translateY(30px) scale(.304,.318) rotate(-2.7deg); }
+      49%   { transform: translateX(5px)  translateY(29px) scale(.323,.300) rotate(3.0deg); }
+      54%   { transform: translateX(-4px) translateY(27px) scale(.308,.322) rotate(-2.2deg); }
+
+      /* burst */
+      58%   { transform: translateX(1px)  translateY(21px) scale(.46,.50) rotate(1.0deg); }
+      62%   { transform: translateX(0px)  translateY(11px) scale(.72,.80) rotate(-.55deg); }
+      66%   { transform: translateX(0px)  translateY(2px)  scale(.95,1.01) rotate(.20deg); }
+      70%   { transform: translateX(0px)  translateY(-5px) scale(1.075,1.085) rotate(-.12deg); }
+      77%   { transform: translateX(0px)  translateY(2px)  scale(.982,.972) rotate(.06deg); }
+      85%   { transform: translateX(0px)  translateY(-1px) scale(1.012,1.016) rotate(-.03deg); }
+      92%   { transform: translateX(0px)  translateY(.5px) scale(.997,.996) rotate(.015deg); }
+      100%  { transform: translateX(0px)  translateY(0px)  scale(1,1) rotate(0deg); }
+    }
+
+    @keyframes ent-kf-body-squash {
+      0%, 30% { transform: scale(1,1); }
+      38%     { transform: scale(1.035,.975); }
+      44%     { transform: scale(.975,1.035); }
+      49%     { transform: scale(1.045,.965); }
+      53%     { transform: scale(.965,1.045); }
+      59%     { transform: scale(.92,1.07); }
+      66%     { transform: scale(1.035,.97); }
+      74%     { transform: scale(.992,1.012); }
+      84%     { transform: scale(1.006,.996); }
+      100%    { transform: scale(1,1); }
+    }
+
+    /* Slightly adjusted so the sprout begins lower INSIDE the head and stays visually attached */
+    @keyframes ent-kf-sprout-grow {
+      0%    { opacity:1; transform: translateY(118px) scale(.10,.035) rotate(0deg); }
+      8%    { opacity:1; transform: translateY(108px) scale(.13,.05) rotate(0deg); }
+      18%   { opacity:1; transform: translateY(92px) scale(.22,.12) rotate(-.3deg); }
+      28%   { opacity:1; transform: translateY(70px) scale(.38,.27) rotate(.5deg); }
+      38%   { opacity:1; transform: translateY(46px) scale(.58,.49) rotate(-.7deg); }
+      47%   { opacity:1; transform: translateY(26px) scale(.75,.70) rotate(.9deg); }
+      55%   { opacity:1; transform: translateY(9px) scale(.90,.88) rotate(-1.1deg); }
+      64%   { opacity:1; transform: translateY(-5px) scale(1.07,1.10) rotate(2deg); }
+      72%   { opacity:1; transform: translateY(2px) scale(.975,.96) rotate(-1.3deg); }
+      82%   { opacity:1; transform: translateY(-1px) scale(1.012,1.02) rotate(.65deg); }
+      91%   { opacity:1; transform: translateY(.4px) scale(.997,.995) rotate(-.25deg); }
+      100%  { opacity:1; transform: translateY(0px) scale(1,1) rotate(0deg); }
+    }
+
+    @keyframes ent-kf-stem-grow {
+      0%    { opacity:1; transform: scaleY(.02) scaleX(.55); }
+      8%    { opacity:1; transform: scaleY(.05) scaleX(.60); }
+      18%   { opacity:1; transform: scaleY(.18) scaleX(.72); }
+      28%   { opacity:1; transform: scaleY(.42) scaleX(.84); }
+      38%   { opacity:1; transform: scaleY(.68) scaleX(.94); }
+      47%   { opacity:1; transform: scaleY(.90) scaleX(.99); }
+      55%   { opacity:1; transform: scaleY(1.00) scaleX(1); }
+      64%   { opacity:1; transform: scaleY(1.03) scaleX(1.03); }
+      72%   { opacity:1; transform: scaleY(.98) scaleX(.99); }
+      82%   { opacity:1; transform: scaleY(1.01) scaleX(1.01); }
+      91%   { opacity:1; transform: scaleY(.998) scaleX(.998); }
+      100%  { opacity:1; transform: scaleY(1) scaleX(1); }
+    }
+
+    @keyframes ent-kf-leaves-grow {
+      0%    { opacity:0; transform: translateY(16px) scale(.02,.02) rotate(0deg); }
+      14%   { opacity:0; transform: translateY(15px) scale(.03,.03) rotate(0deg); }
+      24%   { opacity:.25; transform: translateY(12px) scale(.14,.12) rotate(.2deg); }
+      34%   { opacity:.70; transform: translateY(8px) scale(.36,.32) rotate(-.4deg); }
+      44%   { opacity:1; transform: translateY(4px) scale(.64,.60) rotate(.6deg); }
+      52%   { opacity:1; transform: translateY(1px) scale(.88,.86) rotate(-.8deg); }
+      55%   { opacity:1; transform: translateY(0px) scale(1,1) rotate(0deg); }
+      64%   { opacity:1; transform: translateY(-1px) scale(1.04,1.05) rotate(1.2deg); }
+      72%   { opacity:1; transform: translateY(.5px) scale(.985,.98) rotate(-.8deg); }
+      82%   { opacity:1; transform: translateY(-.2px) scale(1.01,1.015) rotate(.35deg); }
+      91%   { opacity:1; transform: translateY(0px) scale(.998,.998) rotate(-.15deg); }
+      100%  { opacity:1; transform: translateY(0px) scale(1,1) rotate(0deg); }
+    }
+
+    @keyframes ent-kf-arm-left-pop {
+      0%, 51% { opacity:0; transform: translate(48px,10px) scale(.04) rotate(12deg); }
+      56%     { opacity:.22; transform: translate(37px,8px) scale(.18) rotate(9deg); }
+      61%     { opacity:.68; transform: translate(22px,5px) scale(.46) rotate(5deg); }
+      66%     { opacity:1; transform: translate(7px,1px) scale(.82) rotate(1.5deg); }
+      71%     { opacity:1; transform: translate(-6px,-1px) scale(1.09) rotate(-2deg); }
+      78%     { opacity:1; transform: translate(2px,.5px) scale(.975) rotate(.7deg); }
+      87%     { opacity:1; transform: translate(-.7px,0) scale(1.008) rotate(-.2deg); }
+      100%    { opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+    }
+
+    @keyframes ent-kf-arm-right-pop {
+      0%, 51% { opacity:0; transform: translate(-48px,10px) scale(.04) rotate(-12deg); }
+      56%     { opacity:.22; transform: translate(-37px,8px) scale(.18) rotate(-9deg); }
+      61%     { opacity:.68; transform: translate(-22px,5px) scale(.46) rotate(-5deg); }
+      66%     { opacity:1; transform: translate(-7px,1px) scale(.82) rotate(-1.5deg); }
+      71%     { opacity:1; transform: translate(6px,-1px) scale(1.09) rotate(2deg); }
+      78%     { opacity:1; transform: translate(-2px,.5px) scale(.975) rotate(-.7deg); }
+      87%     { opacity:1; transform: translate(.7px,0) scale(1.008) rotate(.2deg); }
+      100%    { opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+    }
+
+    @keyframes ent-kf-eyes-pop {
+      0%, 57% { opacity:0; transform: translateY(6px) scale(.65); }
+      61%     { opacity:.20; transform: translateY(5px) scale(.72); }
+      65%     { opacity:.70; transform: translateY(2px) scale(.90); }
+      69%     { opacity:1; transform: translateY(-1px) scale(1.07); }
+      75%     { opacity:1; transform: translateY(.5px) scale(.975); }
+      84%     { opacity:1; transform: translateY(-.2px) scale(1.008); }
+      100%    { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes ent-kf-eye-pop {
+      0%, 58% { transform: scale(.72,.06); }
+      63%     { transform: scale(.88,.30); }
+      68%     { transform: scale(1.06,1.12); }
+      74%     { transform: scale(.98,.93); }
+      82%     { transform: scale(1.01,1.025); }
+      100%    { transform: scale(1,1); }
+    }
+
+    @keyframes ent-kf-shadow {
+      0%    { opacity:0; transform: scaleX(.18); }
+      28%   { opacity:.03; transform: scaleX(.28); }
+      50%   { opacity:.045; transform: scaleX(.34); }
+      60%   { opacity:.07; transform: scaleX(.60); }
+      68%   { opacity:.125; transform: scaleX(1.08); }
+      76%   { opacity:.103; transform: scaleX(.96); }
+      86%   { opacity:.113; transform: scaleX(1.015); }
+      100%  { opacity:.11; transform: scaleX(1); }
+    }
+
+    @keyframes ent-kf-whole-follow {
+      0%, 61% { transform: translateY(0) rotate(0deg); }
+      68%     { transform: translateY(-2px) rotate(-.25deg); }
+      76%     { transform: translateY(1px) rotate(.12deg); }
+      86%     { transform: translateY(-.4px) rotate(-.05deg); }
+      100%    { transform: translateY(0) rotate(0deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #ent-shadow,#ent-whole,#ent-body-rig,#ent-body-shell,#ent-sprout,#ent-stem,#ent-leaves,#ent-arm-left,#ent-arm-right,#ent-eyes,.ent-eye {
+        animation:none !important;
+        opacity:1 !important;
+        transform:none !important;
+      }
+    }
+  
+
+    /* PHASE 2 — approved hello wave, delayed until 1.8s */
+    
+    svg { overflow: visible; }
+
+    #wave-mascot {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: wave-kf-bob 2.3s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #wave-body-wrap {
+      transform-box: view-box;
+      transform-origin: 210px 278px;
+      animation:
+        wave-kf-body-breathe 2.3s cubic-bezier(.45,0,.2,1) infinite,
+        wave-kf-body-follow 2.3s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #wave-arm-left {
+      transform-box: fill-box;
+      transform-origin: 112px 302px;
+      animation: wave-kf-arm-left-idle 2.3s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #wave-sprout {
+      transform-box: view-box;
+      transform-origin: 210px 160px;
+      animation: wave-kf-sprout-sway 2.3s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #wave-eyes {
+      transform-box: view-box;
+      transform-origin: 210px 262px;
+      animation: wave-kf-gaze 2.3s cubic-bezier(.4,0,.2,1) infinite;
+    }
+
+    .wave-eye {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: wave-kf-blink 2.3s cubic-bezier(.4,0,.2,1) infinite;
+    }
+
+    #wave-shadow {
+      transform-box: view-box;
+      transform-origin: 210px 430px;
+      animation: wave-kf-shadow-pulse 2.3s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+
+    #wave-arm-right-stretch {
+      transform-box: view-box;
+      transform-origin: 306px 304px;
+      animation: wave-kf-arm-right-stretch 2.3s cubic-bezier(.42,0,.18,1) 1.8s 1 both;
+    }
+
+    @keyframes wave-kf-arm-right-stretch {
+      0%,16%,92%,100% { transform: scaleX(1); }
+      44%,80%         { transform: scaleX(1.13); }
+    }
+      44%,80%         { transform: scaleX(1.13); }
+    }
+
+    @keyframes wave-kf-bob {
+      0%,100% { transform: translateY(0px); }
+      18%     { transform: translateY(-2px); }
+      42%     { transform: translateY(-5px); }
+      66%     { transform: translateY(-3px); }
+      84%     { transform: translateY(-1px); }
+    }
+
+    @keyframes wave-kf-body-breathe {
+      0%,100% { transform: scale(1,1); }
+      24%     { transform: scale(1.006,.996); }
+      48%     { transform: scale(1.012,.992); }
+      72%     { transform: scale(1.008,.995); }
+      88%     { transform: scale(1.004,.998); }
+    }
+
+    @keyframes wave-kf-body-follow {
+      0%,14%,100% { transform: translateX(0px) rotate(0deg) scaleX(1); }
+      32%         { transform: translateX(-2px) rotate(-.45deg) scaleX(.998); }
+      48%         { transform: translateX(-5px) rotate(-1.15deg) scaleX(.992); }
+      62%         { transform: translateX(-7px) rotate(-1.65deg) scaleX(.986); }
+      78%         { transform: translateX(-5px) rotate(-1.15deg) scaleX(.992); }
+      92%         { transform: translateX(-1px) rotate(-.25deg) scaleX(.998); }
+      100%        { transform: translateX(0px) rotate(0deg) scaleX(1); }
+    }
+
+    @keyframes wave-kf-arm-left-idle {
+      0%,100% { transform: rotate(0deg); }
+      50%,80% { transform: rotate(-.6deg); }
+    }
+
+    @keyframes wave-kf-sprout-sway {
+      0%,100% { transform: rotate(0deg); }
+      28%     { transform: rotate(-.5deg); }
+      48%     { transform: rotate(-1.2deg); }
+      64%     { transform: rotate(-1.6deg); }
+      78%     { transform: rotate(-1deg); }
+      92%     { transform: rotate(0deg); }
+    }
+
+    @keyframes wave-kf-gaze {
+      0%,14%,100% { transform: translate(0px,0px); }
+      28%         { transform: translate(3px,-2px); }
+      44%         { transform: translate(8px,-6px); }
+      60%         { transform: translate(9px,-7px); }
+      78%         { transform: translate(8px,-6px); }
+      92%         { transform: translate(0px,0px); }
+    }
+
+    @keyframes wave-kf-blink {
+      0%,18%,20%,66%,68%,100% { transform: scaleY(1); }
+      19%,67% { transform: scaleY(.08); }
+    }
+
+    @keyframes wave-kf-shadow-pulse {
+      0%,100% { transform: scaleX(1); opacity:.11; }
+      42%     { transform: scaleX(.98); opacity:.105; }
+      66%     { transform: scaleX(.965); opacity:.095; }
+      88%     { transform: scaleX(.99); opacity:.103; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #wave-mascot, #wave-body-wrap, #wave-arm-left, #wave-arm-right-stretch, #wave-sprout, #wave-eyes, .wave-eye, #wave-shadow {
+        animation: none !important;
+      }
+    }
+  
+    #wave-mascot,
+    #wave-body-wrap,
+    #wave-arm-left,
+    #wave-sprout,
+    #wave-eyes,
+    .wave-eye,
+    #wave-shadow,
+    #wave-arm-right-stretch {
+      animation-delay: 1.8s !important;
+      animation-iteration-count: 1 !important;
+      animation-fill-mode: both !important;
+    }
+
+
+    /* PHASE 3 — original neutral idle, delayed until 7.0s and loops forever */
+    
+    svg { overflow: visible; }
+
+    /* One singular neutral loop:
+       - subtle body breathing
+       - soft gaze wander
+       - blinking
+       - slight body follow-through when the eyes look sideways
+       - root-anchored sprout sway
+       - tiny arm easing
+       - very light grounding bob / shadow response
+
+       I avoided strong skewing. A tiny rotation + micro horizontal shift feels
+       more natural than a literal skew for suggesting that the mascot is
+       turning a little with its gaze.
+    */
+
+    /* Levitation. This rule used to name #mascot, which does not exist in this
+       file, so the character never actually left the ground and the idle read
+       as a breath rather than a hover. It is #idle-jobi that moves.
+
+       Floating, not bobbing: the travel never returns to 0, so he hovers
+       BETWEEN 3px and 11px up and never touches down, and the curve is a
+       symmetric sine rather than the settle easing the rest of the idle uses.
+       The tilt peaks past the midpoint so the rise and the lean do not land on
+       the same beat, which is what keeps a 4.6s loop from reading as a loop. */
+    #idle-hover {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-float 4.6s cubic-bezier(.37,0,.63,1) infinite;
+    }
+
+    /* The handover from the wave used to pop. The wave's own bob is 6.5% into
+       its second cycle when the phase switches at 4.25s, which leaves the
+       character at about translateY(-1) and no tilt; the float's first frame
+       is translateY(-8) rotate(-0.6deg). Swapping groups jumped 7 units and
+       0.6 degrees in a single frame, and it read as exactly that.
+
+       So this is a one-shot bridge on the INNER group, composing with the
+       float on the wrapper. It starts at +7 / +0.6deg, which cancels the
+       float's first frame back to the wave's last one, then eases to zero over
+       0.9s and leaves the hover running clean. Two elements because one
+       element has one transform: the loop and the lead-in cannot share it. */
+    #idle-jobi {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-handover 0.9s cubic-bezier(.22,.61,.36,1) 1 forwards;
+    }
+
+    #idle-body {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-body-breathe 8s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #idle-body-follow {
+      transform-box: fill-box;
+      transform-origin: 210px 274px;
+      animation: idle-kf-body-follow 8s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #idle-arm-left {
+      transform-box: fill-box;
+      transform-origin: 118px 300px;
+      animation: idle-kf-arm-left-loop 8s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #idle-arm-right {
+      transform-box: fill-box;
+      transform-origin: 302px 300px;
+      animation: idle-kf-arm-right-loop 8s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #idle-sprout {
+      transform-box: fill-box;
+      transform-origin: 210px 160px;
+      animation: idle-kf-sprout-neutral 8s cubic-bezier(.45,0,.2,1) infinite;
+    }
+
+    #idle-eyes {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-gaze-neutral 8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+
+    .idle-eye {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-blink-neutral 8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+
+    /* The shadow is what actually says "off the ground": it shrinks and fades
+       as he rises, firms up as he settles. Same 4.6s clock as the float, on
+       purpose — a shadow drifting out of step with its object reads as two
+       animations rather than one thing in the air. */
+    #idle-shadow {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: idle-kf-shadow-float 4.6s cubic-bezier(.37,0,.63,1) infinite;
+    }
+
+    /* These are viewBox USER UNITS, not screen pixels — the artboard is 528
+       tall and renders about 200, so a value here lands at roughly 0.38x on
+       screen. 8 to 30 units is the ~8px of real travel the hover needs; the
+       first pass used 3 to 11 and moved him two pixels. */
+    @keyframes idle-kf-handover {
+      0%   { transform: translateY(7px) rotate(0.6deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes idle-kf-float {
+      0%   { transform: translateY(-8px)  rotate(-0.6deg); }
+      25%  { transform: translateY(-19px) rotate(0deg); }
+      50%  { transform: translateY(-30px) rotate(0.6deg); }
+      75%  { transform: translateY(-19px) rotate(0deg); }
+      100% { transform: translateY(-8px)  rotate(-0.6deg); }
+    }
+
+    @keyframes idle-kf-body-breathe {
+      0%, 100% { transform: scale(1, 1); }
+      12%      { transform: scale(1.006, .996); }
+      26%      { transform: scale(1.012, .992); }
+      42%      { transform: scale(1.004, .998); }
+      58%      { transform: scale(1.014, .990); }
+      74%      { transform: scale(1.006, .996); }
+      88%      { transform: scale(1.010, .994); }
+    }
+
+    /* Tiny body follow-through synced to where the eyes are looking. */
+    @keyframes idle-kf-body-follow {
+      0%, 8%, 100% { transform: translateX(0px) rotate(0deg); }
+      18%, 28%     { transform: translateX(2px) rotate(1.15deg); }
+      40%, 50%     { transform: translateX(-2px) rotate(-1.15deg); }
+      60%, 68%     { transform: translateX(1px) rotate(.45deg); }
+      78%, 88%     { transform: translateX(-1px) rotate(-.45deg); }
+    }
+
+    @keyframes idle-kf-gaze-neutral {
+      0%, 8%, 100% { transform: translate(0px, 0px); }
+      18%, 28%     { transform: translate(8px, -1px); }
+      40%, 50%     { transform: translate(-8px, 1px); }
+      60%, 68%     { transform: translate(2px, -5px); }
+      78%, 88%     { transform: translate(-3px, 2px); }
+    }
+
+    @keyframes idle-kf-blink-neutral {
+      0%, 11%, 13%, 36%, 38%, 63%, 65%, 84%, 86%, 100% { transform: scaleY(1); }
+      12%, 37% { transform: scaleY(.08); }
+      64%      { transform: scaleY(.20); } /* slightly softer blink */
+      85%      { transform: scaleY(.08); }
+    }
+
+    @keyframes idle-kf-sprout-neutral {
+      0%, 100% { transform: rotate(0deg); }
+      18%, 28% { transform: rotate(2.4deg); }
+      40%, 50% { transform: rotate(-2.4deg); }
+      60%, 68% { transform: rotate(1.6deg); }
+      78%, 88% { transform: rotate(-1.4deg); }
+    }
+
+    @keyframes idle-kf-arm-left-loop {
+      0%, 100% { transform: rotate(0deg); }
+      18%, 28% { transform: rotate(1.4deg); }
+      40%, 50% { transform: rotate(-1.2deg); }
+      60%, 68% { transform: rotate(.8deg); }
+      78%, 88% { transform: rotate(-.7deg); }
+    }
+
+    @keyframes idle-kf-arm-right-loop {
+      0%, 100% { transform: rotate(0deg); }
+      18%, 28% { transform: rotate(1.0deg); }
+      40%, 50% { transform: rotate(-1.4deg); }
+      60%, 68% { transform: rotate(.6deg); }
+      78%, 88% { transform: rotate(-.8deg); }
+    }
+
+    @keyframes idle-kf-shadow-float {
+      0%, 100% { transform: scaleX(1) scaleY(1);     opacity: .13; }
+      50%      { transform: scaleX(.84) scaleY(.86); opacity: .055; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #idle-hover, #idle-jobi, #idle-body, #idle-body-follow, #idle-arm-left, #idle-arm-right, #idle-sprout, #idle-eyes, .idle-eye, #idle-shadow {
+        animation: none !important;
+      }
+    }
+  
+    /* #idle-jobi, not #idle-mascot: that id is not in this file, so the float
+       had no delay and was already part-way through its cycle by the time the
+       idle phase appeared at 4.25s. */
+    #idle-hover,
+    #idle-jobi,
+    #idle-body,
+    #idle-body-follow,
+    #idle-arm-left,
+    #idle-arm-right,
+    #idle-sprout,
+    #idle-eyes,
+    .idle-eye,
+    #idle-shadow {
+      animation-delay: 4.25s;
+    }
+
+  
+    #phase-entrance, #phase-wave, #phase-idle {
+      opacity: 1 !important;
+      transition: none !important;
+    }
+
+
+    /* ── Skip the intro ──
+       Mounted as jobi-welcome.svg#phase-idle, the entrance and the wave never
+       play and the idle starts immediately. The panel asks for this on every
+       mount after the first, so a background re-render - and there are plenty:
+       billing resolving, the profile landing, a screen-cache revalidate - can
+       no longer restart an intro the user has already watched.
+
+       Declarative, and that is the point. The first attempt seeked the SVG
+       clock from the host page after the object's load event, which raced the
+       first paint: the entrance had already begun before the seek landed, so
+       it visibly played twice. A :target rule is applied before anything is
+       painted. It also survives the SMIL set elements that gate these groups,
+       which was the real question - verified in the browser across the whole
+       1.8s to 4.25s wave window, where the wave stays hidden.
+
+       (No raw angle bracket anywhere in this comment: the file is XML, and an
+       unescaped one is read as an open tag. That is not hypothetical - it is
+       how this block broke the file the first time it was written.) */
+    /* Mounted as jobi-welcome.svg#phase-wave, the entrance is skipped and the
+       file opens on the hello instead. Onboarding's first screen asks for the
+       wave and not the drop-in: the character arriving with a pop competes
+       with the one instruction on that screen, and the wave IS the greeting.
+
+       The wave's own rules carry animation-delay: 1.8s, timed to follow an
+       entrance that is no longer playing, so those are zeroed too - without
+       that the screen holds a still character for 1.8s and only then waves.
+
+       The idle takeover at 4.25s is left alone: he waves, then settles, which
+       is what the file already knows how to do. Nothing here fights SMIL. */
+    svg:has(#phase-wave:target) #phase-entrance { display: none !important; }
+    /* NOT !important, and that is the whole rule. Plain CSS still beats the
+       group's own display="none" attribute, so the wave shows from the first
+       frame; but SMIL outranks plain CSS, so the set that hides this group at
+       4.25s still lands and the idle takes over cleanly. With !important here
+       that set was blocked, the wave never left, and the idle faded up
+       UNDERNEATH it - two characters, slightly offset by the float. */
+    svg:has(#phase-wave:target) #phase-wave { display: inline; }
+    svg:has(#phase-wave:target) #wave-mascot,
+    svg:has(#phase-wave:target) #wave-body-wrap,
+    svg:has(#phase-wave:target) #wave-body-follow,
+    svg:has(#phase-wave:target) #wave-arm-left,
+    svg:has(#phase-wave:target) #wave-arm-right-wave,
+    svg:has(#phase-wave:target) #wave-arm-right-stretch,
+    svg:has(#phase-wave:target) #wave-sprout,
+    svg:has(#phase-wave:target) #wave-eyes,
+    svg:has(#phase-wave:target) .wave-eye,
+    svg:has(#phase-wave:target) #wave-shadow { animation-delay: 0s !important; }
+
+    svg:has(#phase-idle:target) #phase-entrance,
+    svg:has(#phase-idle:target) #phase-wave { display: none !important; }
+    svg:has(#phase-idle:target) #phase-idle { display: inline !important; }
+    /* ...and the idle runs NOW, not 4.25s from now, since there is no longer
+       an intro in front of it to wait for. */
+    svg:has(#phase-idle:target) #idle-jobi { animation: none !important; }
+    svg:has(#phase-idle:target) #idle-hover,
+    svg:has(#phase-idle:target) #idle-body,
+    svg:has(#phase-idle:target) #idle-body-follow,
+    svg:has(#phase-idle:target) #idle-arm-left,
+    svg:has(#phase-idle:target) #idle-arm-right,
+    svg:has(#phase-idle:target) #idle-sprout,
+    svg:has(#phase-idle:target) #idle-eyes,
+    svg:has(#phase-idle:target) .idle-eye,
+    svg:has(#phase-idle:target) #idle-shadow { animation-delay: 0s !important; }
+  </style>
+
+  <!--
+    Timeline:
+    0.0–1.8s   entrance
+    1.8–4.1s   fast hello wave
+    4.1–4.25s  neutral settle
+    4.25s+      neutral idle forever
+
+    Each phase is its original animation. The phase handoffs happen while
+    Jobi is in the same neutral pose, so there is no crossfade or geometry morph.
+  -->
+
+  <g id="phase-entrance" display="inline">
+    <ellipse id="ent-shadow" cx="210" cy="430" rx="104" ry="15" fill="#111111" filter="url(#softShadow)" opacity=".11"/>
+
+  <g id="ent-whole">
+    <path id="ent-arm-left"
+      d="M86 257
+         C54 269 32 300 25 330
+         C18 360 31 378 54 380
+         C74 382 92 367 108 345
+         C120 328 129 307 128 288
+         C127 269 110 249 86 257Z"
+      fill="#F7F6F3" data-skin="body"/>
+
+    <path id="ent-arm-right"
+      d="M334 257
+         C366 269 388 300 395 330
+         C402 360 389 378 366 380
+         C346 382 328 367 312 345
+         C300 328 291 307 292 288
+         C293 269 310 249 334 257Z"
+      fill="#F7F6F3" data-skin="body"/>
+
+    <g id="ent-body-rig">
+      <!-- Sprout is now part of the exact same scaling rig as the little square/body -->
+      <g id="ent-sprout">
+        <rect id="ent-stem" x="193" y="88" width="30" height="82" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+        <g id="ent-leaves">
+          <path d="M117 32.1 L117 44.8 L119.7 54.2 L125 63.5 L135.1 73.6 L149.8 82.3 L163.8 87.6 L193.9 92.3 L193.9 131.1 L221.4 131.1 L222 93 L250.1 89.6 L278.2 78.3 L295 62.9 L299.7 54.2 L302.3 44.1 L301.7 30.1 L296.3 18.7 L291 14 L276.2 8.7 L263.5 8.7 L246.1 14.7 L222.7 31.4 L210 46.1 L193.9 28.7 L179.2 18 L167.2 11.3 L154.5 8 L139.7 8.7 L128.4 13.4 L121 20.7 Z" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+        </g>
+      <g data-plant="violets"><use href="#acc-violets-art"/></g></g>
+
+      <g id="ent-body-shell">
+        <path d="M132 132
+                 C98 132 74 156 74 190
+                 L74 356
+                 C74 392 96 414 132 414
+                 L288 414
+                 C324 414 346 392 346 356
+                 L346 190
+                 C346 156 322 132 288 132
+                 Z"
+              fill="#F7F6F3" data-skin="body"/>
+
+        <g id="ent-eyes">
+          <ellipse class="ent-eye" cx="169" cy="262" rx="23" ry="37" fill="#232323"/>
+          <ellipse class="ent-eye" cx="251" cy="262" rx="23" ry="37" fill="#232323"/>
+        </g>
+      
+          <g data-acc="bow"><use href="#acc-bow-art"/></g>
+          <g data-acc="flower"><use href="#acc-flower-art"/></g>
+          <g data-acc="fedora"><use href="#acc-fedora-art"/></g>
+          <g data-acc="tophat"><use href="#acc-tophat-art"/></g>
+        </g>
+    </g>
+  </g>
+    <set attributeName="display" to="none" begin="1.8s" fill="freeze"/>
+  </g>
+
+  <g id="phase-wave" display="none">
+    <ellipse id="wave-shadow" cx="210" cy="430" rx="104" ry="15" fill="#111111" opacity=".11" filter="url(#softShadow)"/>
+
+  <g id="wave-mascot">
+    <g id="wave-sprout">
+      <rect x="193" y="88" width="30" height="82" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+      <path d="M117 32.1 L117 44.8 L119.7 54.2 L125 63.5 L135.1 73.6 L149.8 82.3 L163.8 87.6 L193.9 92.3 L193.9 131.1 L221.4 131.1 L222 93 L250.1 89.6 L278.2 78.3 L295 62.9 L299.7 54.2 L302.3 44.1 L301.7 30.1 L296.3 18.7 L291 14 L276.2 8.7 L263.5 8.7 L246.1 14.7 L222.7 31.4 L210 46.1 L193.9 28.7 L179.2 18 L167.2 11.3 L154.5 8 L139.7 8.7 L128.4 13.4 L121 20.7 Z" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+    <g data-plant="violets"><use href="#acc-violets-art"/></g></g>
+
+    <!-- Both arms use the same shape language and size. -->
+    <path id="wave-arm-left"
+      d="M86 257
+         C54 269 32 300 25 330
+         C18 360 31 378 54 380
+         C74 382 92 367 108 345
+         C120 328 129 307 128 288
+         C127 269 110 249 86 257Z"
+      fill="#F7F6F3" data-skin="body"/>
+
+    <!-- Waving arm keeps the exact same silhouette as the resting arm.
+         It is animated as a rigid rotation inside a group, while the body
+         stays on top to hide the shoulder root. -->
+    <g id="wave-arm-right-wave">
+      <g id="wave-arm-right-stretch">
+        <path
+          d="M334 257
+             C366 269 388 300 395 330
+             C402 360 389 378 366 380
+             C346 382 328 367 312 345
+             C300 328 291 307 292 288
+             C293 269 310 249 334 257Z"
+          fill="#F7F6F3" data-skin="body"/>
+      </g>
+
+      <animateTransform
+        attributeName="transform"
+        attributeType="XML"
+        type="rotate"
+        dur="2.3s"
+        begin="1.8s"
+        repeatCount="1"
+        fill="freeze"
+        calcMode="spline"
+        keyTimes="0;0.16;0.44;0.56;0.68;0.80;0.92;1"
+        values="0 306 304;
+                0 306 304;
+                -80 306 304;
+                -67 306 304;
+                -82 306 304;
+                -68 306 304;
+                0 306 304;
+                0 306 304"
+        keySplines=".42 0 .18 1;
+                    .42 0 .18 1;
+                    .45 0 .25 1;
+                    .45 0 .25 1;
+                    .45 0 .25 1;
+                    .42 0 .18 1;
+                    .42 0 .18 1"/>
+    </g>
+
+    <!-- Body rendered last so the arm root stays hidden/attached. -->
+    <g id="wave-body-wrap">
+      <path
+        d="M132 132
+           C98 132 74 156 74 190
+           L74 356
+           C74 392 96 414 132 414
+           L288 414
+           C324 414 346 392 346 356
+           L346 190
+           C346 156 322 132 288 132
+           Z"
+        fill="#F7F6F3" data-skin="body"/>
+
+      <g id="wave-eyes">
+        <path id="wave-eye-left" fill="#232323"
+              d="M146.000 262.000 C146.000 248.781 150.384 236.566 157.500 229.957 C164.616 223.348 173.384 223.348 180.500 229.957 C187.616 236.566 192.000 248.781 192.000 262.000 C192.000 275.219 187.616 287.434 180.500 294.043 C173.384 300.652 164.616 300.652 157.500 294.043 C150.384 287.434 146.000 275.219 146.000 262.000 Z">
+          <animate attributeName="d"
+                   begin="1.8s"
+                   dur="2.3s"
+                   repeatCount="1"
+                   fill="freeze"
+                   calcMode="linear"
+                   keyTimes="0;0.12;0.1275;0.135;0.1425;0.15;0.1575;0.165;0.1725;0.18;0.1875;0.195;0.2025;0.21;0.2175;0.225;0.2325;0.24;0.2475;0.255;0.2625;0.27;0.2775;0.285;0.2925;0.3;0.74;0.7475;0.755;0.7625;0.77;0.7775;0.785;0.7925;0.8;0.8075;0.815;0.8225;0.83;0.8375;0.845;0.8525;0.86;0.8675;0.875;0.8825;0.89;0.8975;0.905;0.9125;0.92;1"
+                   values="M146.000 262.000 C146.000 248.781 150.384 236.566 157.500 229.957 C164.616 223.348 173.384 223.348 180.500 229.957 C187.616 236.566 192.000 248.781 192.000 262.000 C192.000 275.219 187.616 287.434 180.500 294.043 C173.384 300.652 164.616 300.652 157.500 294.043 C150.384 287.434 146.000 275.219 146.000 262.000 Z;
+                           M146.000 262.000 C146.000 248.781 150.384 236.566 157.500 229.957 C164.616 223.348 173.384 223.348 180.500 229.957 C187.616 236.566 192.000 248.781 192.000 262.000 C192.000 275.219 187.616 287.434 180.500 294.043 C173.384 300.652 164.616 300.652 157.500 294.043 C150.384 287.434 146.000 275.219 146.000 262.000 Z;
+                           M146.001 262.002 C146.001 248.787 150.385 236.576 157.501 229.969 C164.616 223.362 173.384 223.362 180.499 229.969 C187.615 236.576 191.999 248.787 191.999 262.002 C191.999 275.214 187.616 287.421 180.502 294.023 C173.386 300.623 164.614 300.623 157.498 294.023 C150.384 287.421 146.001 275.214 146.001 262.002 Z;
+                           M146.005 262.015 C146.010 248.828 150.392 236.640 157.508 230.044 C164.613 223.453 173.387 223.453 180.492 230.044 C187.608 236.640 191.990 248.828 191.995 262.015 C191.995 275.182 187.618 287.340 180.518 293.890 C173.402 300.435 164.598 300.435 157.482 293.890 C150.382 287.340 146.005 275.182 146.005 262.015 Z;
+                           M146.016 262.048 C146.032 248.929 150.410 236.798 157.524 230.231 C164.606 223.679 173.394 223.679 180.476 230.231 C187.590 236.798 191.968 248.929 191.984 262.048 C191.984 275.103 187.622 287.138 180.556 293.561 C173.442 299.968 164.558 299.968 157.444 293.561 C150.378 287.138 146.016 275.103 146.016 262.048 Z;
+                           M146.035 262.106 C146.071 249.108 150.441 237.079 157.553 230.562 C164.594 224.081 173.406 224.081 180.447 230.562 C187.559 237.079 191.929 249.108 191.965 262.106 C191.965 274.963 187.630 286.779 180.624 292.977 C173.512 299.138 164.488 299.138 157.376 292.977 C150.370 286.779 146.035 274.963 146.035 262.106 Z;
+                           M146.065 262.194 C146.129 249.376 150.488 237.498 157.597 231.057 C164.576 224.680 173.424 224.680 180.403 231.057 C187.512 237.498 191.871 249.376 191.935 262.194 C191.935 274.753 187.641 286.244 180.726 292.105 C173.617 297.900 164.383 297.900 157.274 292.105 C150.359 286.244 146.065 274.753 146.065 262.194 Z;
+                           M146.104 262.311 C146.207 249.735 150.551 238.061 157.655 231.721 C164.552 225.485 173.448 225.485 180.345 231.721 C187.449 238.061 191.793 249.735 191.896 262.311 C191.896 274.472 187.656 285.525 180.862 290.933 C173.758 296.237 164.242 296.237 157.138 290.933 C150.344 285.525 146.104 274.472 146.104 262.311 Z;
+                           M146.152 262.457 C146.304 250.185 150.630 238.764 157.728 232.552 C164.522 226.492 173.478 226.492 180.272 232.552 C187.370 238.764 191.696 250.185 191.848 262.457 C191.848 274.120 187.675 284.627 181.033 289.469 C173.934 294.159 164.066 294.159 156.967 289.469 C150.325 284.627 146.152 274.120 146.152 262.457 Z;
+                           M146.210 262.630 C146.420 250.716 150.723 239.596 157.815 233.534 C164.487 227.682 173.513 227.682 180.185 233.534 C187.277 239.596 191.580 250.716 191.790 262.630 C191.790 273.704 187.697 283.565 181.235 287.738 C174.143 291.701 163.857 291.701 156.765 287.738 C150.303 283.565 146.210 273.704 146.210 262.630 Z;
+                           M146.275 262.826 C146.550 251.318 150.829 240.539 157.913 234.647 C164.447 229.031 173.553 229.031 180.087 234.647 C187.171 240.539 191.450 251.318 191.725 262.826 C191.725 273.232 187.722 282.360 181.463 285.775 C174.379 288.914 163.621 288.914 156.537 285.775 C150.278 282.360 146.275 273.232 146.275 262.826 Z;
+                           M146.347 263.040 C146.693 251.977 150.944 241.569 158.020 235.864 C164.403 230.506 173.597 230.506 179.980 235.864 C187.056 241.569 191.307 251.977 191.653 263.040 C191.653 272.717 187.749 281.044 181.713 283.629 C174.637 285.868 163.363 285.868 156.287 283.629 C150.251 281.044 146.347 272.717 146.347 263.040 Z;
+                           M146.422 263.267 C146.844 252.674 151.066 242.661 158.133 237.153 C164.356 232.068 173.644 232.068 179.867 237.153 C186.934 242.661 191.156 252.674 191.578 263.267 C191.578 272.171 187.778 279.650 181.978 281.358 C174.911 282.643 163.089 282.643 156.022 281.358 C150.222 279.650 146.422 272.171 146.422 263.267 Z;
+                           M146.500 263.500 C147.000 253.391 151.192 243.783 158.250 238.479 C164.308 233.674 173.692 233.674 179.750 238.479 C186.808 243.783 191.000 253.391 191.500 263.500 C191.500 271.609 187.808 278.217 182.250 279.021 C175.192 279.326 162.808 279.326 155.750 279.021 C150.192 278.217 146.500 271.609 146.500 263.500 Z;
+                           M146.578 263.733 C147.156 254.107 151.318 244.906 158.367 239.804 C164.260 235.280 173.740 235.280 179.633 239.804 C186.682 244.906 190.844 254.107 191.422 263.733 C191.422 271.048 187.838 276.783 182.522 276.685 C175.473 276.009 162.527 276.009 155.478 276.685 C150.162 276.783 146.578 271.048 146.578 263.733 Z;
+                           M146.653 263.960 C147.307 254.805 151.440 245.997 158.480 241.093 C164.214 236.841 173.786 236.841 179.520 241.093 C186.560 245.997 190.693 254.805 191.347 263.960 C191.347 270.502 187.867 275.389 182.787 274.413 C175.747 272.784 162.253 272.784 155.213 274.413 C150.133 275.389 146.653 270.502 146.653 263.960 Z;
+                           M146.725 264.174 C147.450 255.463 151.555 247.028 158.587 242.310 C164.170 238.316 173.830 238.316 179.413 242.310 C186.445 247.028 190.550 255.463 191.275 264.174 C191.275 269.987 187.894 274.073 183.037 272.268 C176.005 269.738 161.995 269.738 154.963 272.268 C150.106 274.073 146.725 269.987 146.725 264.174 Z;
+                           M146.790 264.370 C147.580 256.065 151.661 247.971 158.685 243.423 C164.129 239.666 173.871 239.666 179.315 243.423 C186.339 247.971 190.420 256.065 191.210 264.370 C191.210 269.515 187.919 272.869 183.265 270.305 C176.241 266.952 161.759 266.952 154.735 270.305 C150.081 272.869 146.790 269.515 146.790 264.370 Z;
+                           M146.848 264.543 C147.696 256.597 151.754 248.803 158.772 244.406 C164.094 240.856 173.906 240.856 179.228 244.406 C186.246 248.803 190.304 256.597 191.152 264.543 C191.152 269.099 187.942 271.806 183.467 268.573 C176.449 264.493 161.551 264.493 154.533 268.573 C150.058 271.806 146.848 269.099 146.848 264.543 Z;
+                           M146.896 264.689 C147.793 257.046 151.833 249.506 158.845 245.236 C164.064 241.862 173.936 241.862 179.155 245.236 C186.167 249.506 190.207 257.046 191.104 264.689 C191.104 268.747 187.960 270.908 183.638 267.110 C176.626 262.415 161.374 262.415 154.362 267.110 C150.040 270.908 146.896 268.747 146.896 264.689 Z;
+                           M146.935 264.806 C147.871 257.405 151.896 250.069 158.903 245.900 C164.040 242.668 173.960 242.668 179.097 245.900 C186.104 250.069 190.129 257.405 191.065 264.806 C191.065 268.466 187.975 270.189 183.774 265.938 C176.767 260.752 161.233 260.752 154.226 265.938 C150.025 270.189 146.935 268.466 146.935 264.806 Z;
+                           M146.965 264.894 C147.929 257.673 151.943 250.488 158.947 246.395 C164.022 243.267 173.978 243.267 179.053 246.395 C186.057 250.488 190.071 257.673 191.035 264.894 C191.035 268.256 187.986 269.654 183.876 265.066 C176.872 259.514 161.128 259.514 154.124 265.066 C150.014 269.654 146.965 268.256 146.965 264.894 Z;
+                           M146.984 264.952 C147.968 257.852 151.974 250.768 158.976 246.726 C164.010 243.668 173.990 243.668 179.024 246.726 C186.026 250.768 190.032 257.852 191.016 264.952 C191.016 268.116 187.994 269.296 183.944 264.482 C176.942 258.685 161.058 258.685 154.056 264.482 C150.006 269.296 146.984 268.116 146.984 264.952 Z;
+                           M146.995 264.985 C147.990 257.953 151.992 250.927 158.992 246.913 C164.003 243.895 173.997 243.895 179.008 246.913 C186.008 250.927 190.010 257.953 191.005 264.985 C191.005 268.037 187.998 269.094 183.982 264.153 C176.982 258.217 161.018 258.217 154.018 264.153 C150.002 269.094 146.995 268.037 146.995 264.985 Z;
+                           M146.999 264.998 C147.999 257.994 151.999 250.990 158.999 246.988 C164.000 243.986 174.000 243.986 179.001 246.988 C186.001 250.990 190.001 257.994 191.001 264.998 C191.001 268.005 188.000 269.013 183.998 264.020 C176.998 258.029 161.002 258.029 154.002 264.020 C150.000 269.013 146.999 268.005 146.999 264.998 Z;
+                           M147.000 265.000 C148.000 258.000 152.000 251.000 159.000 247.000 C164.000 244.000 174.000 244.000 179.000 247.000 C186.000 251.000 190.000 258.000 191.000 265.000 C191.000 268.000 188.000 269.000 184.000 264.000 C177.000 258.000 161.000 258.000 154.000 264.000 C150.000 269.000 147.000 268.000 147.000 265.000 Z;
+                           M147.000 265.000 C148.000 258.000 152.000 251.000 159.000 247.000 C164.000 244.000 174.000 244.000 179.000 247.000 C186.000 251.000 190.000 258.000 191.000 265.000 C191.000 268.000 188.000 269.000 184.000 264.000 C177.000 258.000 161.000 258.000 154.000 264.000 C150.000 269.000 147.000 268.000 147.000 265.000 Z;
+                           M146.999 264.998 C147.999 257.994 151.999 250.990 158.999 246.988 C164.000 243.986 174.000 243.986 179.001 246.988 C186.001 250.990 190.001 257.994 191.001 264.998 C191.001 268.005 188.000 269.013 183.998 264.020 C176.998 258.029 161.002 258.029 154.002 264.020 C150.000 269.013 146.999 268.005 146.999 264.998 Z;
+                           M146.995 264.985 C147.990 257.953 151.992 250.927 158.992 246.913 C164.003 243.895 173.997 243.895 179.008 246.913 C186.008 250.927 190.010 257.953 191.005 264.985 C191.005 268.037 187.998 269.094 183.982 264.153 C176.982 258.217 161.018 258.217 154.018 264.153 C150.002 269.094 146.995 268.037 146.995 264.985 Z;
+                           M146.984 264.952 C147.968 257.852 151.974 250.768 158.976 246.726 C164.010 243.668 173.990 243.668 179.024 246.726 C186.026 250.768 190.032 257.852 191.016 264.952 C191.016 268.116 187.994 269.296 183.944 264.482 C176.942 258.685 161.058 258.685 154.056 264.482 C150.006 269.296 146.984 268.116 146.984 264.952 Z;
+                           M146.965 264.894 C147.929 257.673 151.943 250.488 158.947 246.395 C164.022 243.267 173.978 243.267 179.053 246.395 C186.057 250.488 190.071 257.673 191.035 264.894 C191.035 268.256 187.986 269.654 183.876 265.066 C176.872 259.514 161.128 259.514 154.124 265.066 C150.014 269.654 146.965 268.256 146.965 264.894 Z;
+                           M146.935 264.806 C147.871 257.405 151.896 250.069 158.903 245.900 C164.040 242.668 173.960 242.668 179.097 245.900 C186.104 250.069 190.129 257.405 191.065 264.806 C191.065 268.466 187.975 270.189 183.774 265.938 C176.767 260.752 161.233 260.752 154.226 265.938 C150.025 270.189 146.935 268.466 146.935 264.806 Z;
+                           M146.896 264.689 C147.793 257.046 151.833 249.506 158.845 245.236 C164.064 241.862 173.936 241.862 179.155 245.236 C186.167 249.506 190.207 257.046 191.104 264.689 C191.104 268.747 187.960 270.908 183.638 267.110 C176.626 262.415 161.374 262.415 154.362 267.110 C150.040 270.908 146.896 268.747 146.896 264.689 Z;
+                           M146.848 264.543 C147.696 256.597 151.754 248.803 158.772 244.406 C164.094 240.856 173.906 240.856 179.228 244.406 C186.246 248.803 190.304 256.597 191.152 264.543 C191.152 269.099 187.942 271.806 183.467 268.573 C176.449 264.493 161.551 264.493 154.533 268.573 C150.058 271.806 146.848 269.099 146.848 264.543 Z;
+                           M146.790 264.370 C147.580 256.065 151.661 247.971 158.685 243.423 C164.129 239.666 173.871 239.666 179.315 243.423 C186.339 247.971 190.420 256.065 191.210 264.370 C191.210 269.515 187.919 272.869 183.265 270.305 C176.241 266.952 161.759 266.952 154.735 270.305 C150.081 272.869 146.790 269.515 146.790 264.370 Z;
+                           M146.725 264.174 C147.450 255.463 151.555 247.028 158.587 242.310 C164.170 238.316 173.830 238.316 179.413 242.310 C186.445 247.028 190.550 255.463 191.275 264.174 C191.275 269.987 187.894 274.073 183.037 272.268 C176.005 269.738 161.995 269.738 154.963 272.268 C150.106 274.073 146.725 269.987 146.725 264.174 Z;
+                           M146.653 263.960 C147.307 254.805 151.440 245.997 158.480 241.093 C164.214 236.841 173.786 236.841 179.520 241.093 C186.560 245.997 190.693 254.805 191.347 263.960 C191.347 270.502 187.867 275.389 182.787 274.413 C175.747 272.784 162.253 272.784 155.213 274.413 C150.133 275.389 146.653 270.502 146.653 263.960 Z;
+                           M146.578 263.733 C147.156 254.107 151.318 244.906 158.367 239.804 C164.260 235.280 173.740 235.280 179.633 239.804 C186.682 244.906 190.844 254.107 191.422 263.733 C191.422 271.048 187.838 276.783 182.522 276.685 C175.473 276.009 162.527 276.009 155.478 276.685 C150.162 276.783 146.578 271.048 146.578 263.733 Z;
+                           M146.500 263.500 C147.000 253.391 151.192 243.783 158.250 238.479 C164.308 233.674 173.692 233.674 179.750 238.479 C186.808 243.783 191.000 253.391 191.500 263.500 C191.500 271.609 187.808 278.217 182.250 279.021 C175.192 279.326 162.808 279.326 155.750 279.021 C150.192 278.217 146.500 271.609 146.500 263.500 Z;
+                           M146.422 263.267 C146.844 252.674 151.066 242.661 158.133 237.153 C164.356 232.068 173.644 232.068 179.867 237.153 C186.934 242.661 191.156 252.674 191.578 263.267 C191.578 272.171 187.778 279.650 181.978 281.358 C174.911 282.643 163.089 282.643 156.022 281.358 C150.222 279.650 146.422 272.171 146.422 263.267 Z;
+                           M146.347 263.040 C146.693 251.977 150.944 241.569 158.020 235.864 C164.403 230.506 173.597 230.506 179.980 235.864 C187.056 241.569 191.307 251.977 191.653 263.040 C191.653 272.717 187.749 281.044 181.713 283.629 C174.637 285.868 163.363 285.868 156.287 283.629 C150.251 281.044 146.347 272.717 146.347 263.040 Z;
+                           M146.275 262.826 C146.550 251.318 150.829 240.539 157.913 234.647 C164.447 229.031 173.553 229.031 180.087 234.647 C187.171 240.539 191.450 251.318 191.725 262.826 C191.725 273.232 187.722 282.360 181.463 285.775 C174.379 288.914 163.621 288.914 156.537 285.775 C150.278 282.360 146.275 273.232 146.275 262.826 Z;
+                           M146.210 262.630 C146.420 250.716 150.723 239.596 157.815 233.534 C164.487 227.682 173.513 227.682 180.185 233.534 C187.277 239.596 191.580 250.716 191.790 262.630 C191.790 273.704 187.697 283.565 181.235 287.738 C174.143 291.701 163.857 291.701 156.765 287.738 C150.303 283.565 146.210 273.704 146.210 262.630 Z;
+                           M146.152 262.457 C146.304 250.185 150.630 238.764 157.728 232.552 C164.522 226.492 173.478 226.492 180.272 232.552 C187.370 238.764 191.696 250.185 191.848 262.457 C191.848 274.120 187.675 284.627 181.033 289.469 C173.934 294.159 164.066 294.159 156.967 289.469 C150.325 284.627 146.152 274.120 146.152 262.457 Z;
+                           M146.104 262.311 C146.207 249.735 150.551 238.061 157.655 231.721 C164.552 225.485 173.448 225.485 180.345 231.721 C187.449 238.061 191.793 249.735 191.896 262.311 C191.896 274.472 187.656 285.525 180.862 290.933 C173.758 296.237 164.242 296.237 157.138 290.933 C150.344 285.525 146.104 274.472 146.104 262.311 Z;
+                           M146.065 262.194 C146.129 249.376 150.488 237.498 157.597 231.057 C164.576 224.680 173.424 224.680 180.403 231.057 C187.512 237.498 191.871 249.376 191.935 262.194 C191.935 274.753 187.641 286.244 180.726 292.105 C173.617 297.900 164.383 297.900 157.274 292.105 C150.359 286.244 146.065 274.753 146.065 262.194 Z;
+                           M146.035 262.106 C146.071 249.108 150.441 237.079 157.553 230.562 C164.594 224.081 173.406 224.081 180.447 230.562 C187.559 237.079 191.929 249.108 191.965 262.106 C191.965 274.963 187.630 286.779 180.624 292.977 C173.512 299.138 164.488 299.138 157.376 292.977 C150.370 286.779 146.035 274.963 146.035 262.106 Z;
+                           M146.016 262.048 C146.032 248.929 150.410 236.798 157.524 230.231 C164.606 223.679 173.394 223.679 180.476 230.231 C187.590 236.798 191.968 248.929 191.984 262.048 C191.984 275.103 187.622 287.138 180.556 293.561 C173.442 299.968 164.558 299.968 157.444 293.561 C150.378 287.138 146.016 275.103 146.016 262.048 Z;
+                           M146.005 262.015 C146.010 248.828 150.392 236.640 157.508 230.044 C164.613 223.453 173.387 223.453 180.492 230.044 C187.608 236.640 191.990 248.828 191.995 262.015 C191.995 275.182 187.618 287.340 180.518 293.890 C173.402 300.435 164.598 300.435 157.482 293.890 C150.382 287.340 146.005 275.182 146.005 262.015 Z;
+                           M146.001 262.002 C146.001 248.787 150.385 236.576 157.501 229.969 C164.616 223.362 173.384 223.362 180.499 229.969 C187.615 236.576 191.999 248.787 191.999 262.002 C191.999 275.214 187.616 287.421 180.502 294.023 C173.386 300.623 164.614 300.623 157.498 294.023 C150.384 287.421 146.001 275.214 146.001 262.002 Z;
+                           M146.000 262.000 C146.000 248.781 150.384 236.566 157.500 229.957 C164.616 223.348 173.384 223.348 180.500 229.957 C187.616 236.566 192.000 248.781 192.000 262.000 C192.000 275.219 187.616 287.434 180.500 294.043 C173.384 300.652 164.616 300.652 157.500 294.043 C150.384 287.434 146.000 275.219 146.000 262.000 Z;
+                           M146.000 262.000 C146.000 248.781 150.384 236.566 157.500 229.957 C164.616 223.348 173.384 223.348 180.500 229.957 C187.616 236.566 192.000 248.781 192.000 262.000 C192.000 275.219 187.616 287.434 180.500 294.043 C173.384 300.652 164.616 300.652 157.500 294.043 C150.384 287.434 146.000 275.219 146.000 262.000 Z"/>
+        </path>
+
+        <path id="wave-eye-right" fill="#232323"
+              d="M228.000 262.000 C228.000 248.781 232.384 236.566 239.500 229.957 C246.616 223.348 255.384 223.348 262.500 229.957 C269.616 236.566 274.000 248.781 274.000 262.000 C274.000 275.219 269.616 287.434 262.500 294.043 C255.384 300.652 246.616 300.652 239.500 294.043 C232.384 287.434 228.000 275.219 228.000 262.000 Z">
+          <animate attributeName="d"
+                   begin="1.8s"
+                   dur="2.3s"
+                   repeatCount="1"
+                   fill="freeze"
+                   calcMode="linear"
+                   keyTimes="0;0.12;0.1275;0.135;0.1425;0.15;0.1575;0.165;0.1725;0.18;0.1875;0.195;0.2025;0.21;0.2175;0.225;0.2325;0.24;0.2475;0.255;0.2625;0.27;0.2775;0.285;0.2925;0.3;0.74;0.7475;0.755;0.7625;0.77;0.7775;0.785;0.7925;0.8;0.8075;0.815;0.8225;0.83;0.8375;0.845;0.8525;0.86;0.8675;0.875;0.8825;0.89;0.8975;0.905;0.9125;0.92;1"
+                   values="M228.000 262.000 C228.000 248.781 232.384 236.566 239.500 229.957 C246.616 223.348 255.384 223.348 262.500 229.957 C269.616 236.566 274.000 248.781 274.000 262.000 C274.000 275.219 269.616 287.434 262.500 294.043 C255.384 300.652 246.616 300.652 239.500 294.043 C232.384 287.434 228.000 275.219 228.000 262.000 Z;
+                           M228.000 262.000 C228.000 248.781 232.384 236.566 239.500 229.957 C246.616 223.348 255.384 223.348 262.500 229.957 C269.616 236.566 274.000 248.781 274.000 262.000 C274.000 275.219 269.616 287.434 262.500 294.043 C255.384 300.652 246.616 300.652 239.500 294.043 C232.384 287.434 228.000 275.219 228.000 262.000 Z;
+                           M228.001 262.002 C228.001 248.787 232.385 236.576 239.501 229.969 C246.616 223.362 255.384 223.362 262.499 229.969 C269.615 236.576 273.999 248.787 273.999 262.002 C273.999 275.214 269.616 287.421 262.502 294.023 C255.386 300.623 246.614 300.623 239.498 294.023 C232.384 287.421 228.001 275.214 228.001 262.002 Z;
+                           M228.005 262.015 C228.010 248.828 232.392 236.640 239.508 230.044 C246.613 223.453 255.387 223.453 262.492 230.044 C269.608 236.640 273.990 248.828 273.995 262.015 C273.995 275.182 269.618 287.340 262.518 293.890 C255.402 300.435 246.598 300.435 239.482 293.890 C232.382 287.340 228.005 275.182 228.005 262.015 Z;
+                           M228.016 262.048 C228.032 248.929 232.410 236.798 239.524 230.231 C246.606 223.679 255.394 223.679 262.476 230.231 C269.590 236.798 273.968 248.929 273.984 262.048 C273.984 275.103 269.622 287.138 262.556 293.561 C255.442 299.968 246.558 299.968 239.444 293.561 C232.378 287.138 228.016 275.103 228.016 262.048 Z;
+                           M228.035 262.106 C228.071 249.108 232.441 237.079 239.553 230.562 C246.594 224.081 255.406 224.081 262.447 230.562 C269.559 237.079 273.929 249.108 273.965 262.106 C273.965 274.963 269.630 286.779 262.624 292.977 C255.512 299.138 246.488 299.138 239.376 292.977 C232.370 286.779 228.035 274.963 228.035 262.106 Z;
+                           M228.065 262.194 C228.129 249.376 232.488 237.498 239.597 231.057 C246.576 224.680 255.424 224.680 262.403 231.057 C269.512 237.498 273.871 249.376 273.935 262.194 C273.935 274.753 269.641 286.244 262.726 292.105 C255.617 297.900 246.383 297.900 239.274 292.105 C232.359 286.244 228.065 274.753 228.065 262.194 Z;
+                           M228.104 262.311 C228.207 249.735 232.551 238.061 239.655 231.721 C246.552 225.485 255.448 225.485 262.345 231.721 C269.449 238.061 273.793 249.735 273.896 262.311 C273.896 274.472 269.656 285.525 262.862 290.933 C255.758 296.237 246.242 296.237 239.138 290.933 C232.344 285.525 228.104 274.472 228.104 262.311 Z;
+                           M228.152 262.457 C228.304 250.185 232.630 238.764 239.728 232.552 C246.522 226.492 255.478 226.492 262.272 232.552 C269.370 238.764 273.696 250.185 273.848 262.457 C273.848 274.120 269.675 284.627 263.033 289.469 C255.934 294.159 246.066 294.159 238.967 289.469 C232.325 284.627 228.152 274.120 228.152 262.457 Z;
+                           M228.210 262.630 C228.420 250.716 232.723 239.596 239.815 233.534 C246.487 227.682 255.513 227.682 262.185 233.534 C269.277 239.596 273.580 250.716 273.790 262.630 C273.790 273.704 269.697 283.565 263.235 287.738 C256.143 291.701 245.857 291.701 238.765 287.738 C232.303 283.565 228.210 273.704 228.210 262.630 Z;
+                           M228.275 262.826 C228.550 251.318 232.829 240.539 239.913 234.647 C246.447 229.031 255.553 229.031 262.087 234.647 C269.171 240.539 273.450 251.318 273.725 262.826 C273.725 273.232 269.722 282.360 263.463 285.775 C256.379 288.914 245.621 288.914 238.537 285.775 C232.278 282.360 228.275 273.232 228.275 262.826 Z;
+                           M228.347 263.040 C228.693 251.977 232.944 241.569 240.020 235.864 C246.403 230.506 255.597 230.506 261.980 235.864 C269.056 241.569 273.307 251.977 273.653 263.040 C273.653 272.717 269.749 281.044 263.713 283.629 C256.637 285.868 245.363 285.868 238.287 283.629 C232.251 281.044 228.347 272.717 228.347 263.040 Z;
+                           M228.422 263.267 C228.844 252.674 233.066 242.661 240.133 237.153 C246.356 232.068 255.644 232.068 261.867 237.153 C268.934 242.661 273.156 252.674 273.578 263.267 C273.578 272.171 269.778 279.650 263.978 281.358 C256.911 282.643 245.089 282.643 238.022 281.358 C232.222 279.650 228.422 272.171 228.422 263.267 Z;
+                           M228.500 263.500 C229.000 253.391 233.192 243.783 240.250 238.479 C246.308 233.674 255.692 233.674 261.750 238.479 C268.808 243.783 273.000 253.391 273.500 263.500 C273.500 271.609 269.808 278.217 264.250 279.021 C257.192 279.326 244.808 279.326 237.750 279.021 C232.192 278.217 228.500 271.609 228.500 263.500 Z;
+                           M228.578 263.733 C229.156 254.107 233.318 244.906 240.367 239.804 C246.260 235.280 255.740 235.280 261.633 239.804 C268.682 244.906 272.844 254.107 273.422 263.733 C273.422 271.048 269.838 276.783 264.522 276.685 C257.473 276.009 244.527 276.009 237.478 276.685 C232.162 276.783 228.578 271.048 228.578 263.733 Z;
+                           M228.653 263.960 C229.307 254.805 233.440 245.997 240.480 241.093 C246.214 236.841 255.786 236.841 261.520 241.093 C268.560 245.997 272.693 254.805 273.347 263.960 C273.347 270.502 269.867 275.389 264.787 274.413 C257.747 272.784 244.253 272.784 237.213 274.413 C232.133 275.389 228.653 270.502 228.653 263.960 Z;
+                           M228.725 264.174 C229.450 255.463 233.555 247.028 240.587 242.310 C246.170 238.316 255.830 238.316 261.413 242.310 C268.445 247.028 272.550 255.463 273.275 264.174 C273.275 269.987 269.894 274.073 265.037 272.268 C258.005 269.738 243.995 269.738 236.963 272.268 C232.106 274.073 228.725 269.987 228.725 264.174 Z;
+                           M228.790 264.370 C229.580 256.065 233.661 247.971 240.685 243.423 C246.129 239.666 255.871 239.666 261.315 243.423 C268.339 247.971 272.420 256.065 273.210 264.370 C273.210 269.515 269.919 272.869 265.265 270.305 C258.241 266.952 243.759 266.952 236.735 270.305 C232.081 272.869 228.790 269.515 228.790 264.370 Z;
+                           M228.848 264.543 C229.696 256.597 233.754 248.803 240.772 244.406 C246.094 240.856 255.906 240.856 261.228 244.406 C268.246 248.803 272.304 256.597 273.152 264.543 C273.152 269.099 269.942 271.806 265.467 268.573 C258.449 264.493 243.551 264.493 236.533 268.573 C232.058 271.806 228.848 269.099 228.848 264.543 Z;
+                           M228.896 264.689 C229.793 257.046 233.833 249.506 240.845 245.236 C246.064 241.862 255.936 241.862 261.155 245.236 C268.167 249.506 272.207 257.046 273.104 264.689 C273.104 268.747 269.960 270.908 265.638 267.110 C258.626 262.415 243.374 262.415 236.362 267.110 C232.040 270.908 228.896 268.747 228.896 264.689 Z;
+                           M228.935 264.806 C229.871 257.405 233.896 250.069 240.903 245.900 C246.040 242.668 255.960 242.668 261.097 245.900 C268.104 250.069 272.129 257.405 273.065 264.806 C273.065 268.466 269.975 270.189 265.774 265.938 C258.767 260.752 243.233 260.752 236.226 265.938 C232.025 270.189 228.935 268.466 228.935 264.806 Z;
+                           M228.965 264.894 C229.929 257.673 233.943 250.488 240.947 246.395 C246.022 243.267 255.978 243.267 261.053 246.395 C268.057 250.488 272.071 257.673 273.035 264.894 C273.035 268.256 269.986 269.654 265.876 265.066 C258.872 259.514 243.128 259.514 236.124 265.066 C232.014 269.654 228.965 268.256 228.965 264.894 Z;
+                           M228.984 264.952 C229.968 257.852 233.974 250.768 240.976 246.726 C246.010 243.668 255.990 243.668 261.024 246.726 C268.026 250.768 272.032 257.852 273.016 264.952 C273.016 268.116 269.994 269.296 265.944 264.482 C258.942 258.685 243.058 258.685 236.056 264.482 C232.006 269.296 228.984 268.116 228.984 264.952 Z;
+                           M228.995 264.985 C229.990 257.953 233.992 250.927 240.992 246.913 C246.003 243.895 255.997 243.895 261.008 246.913 C268.008 250.927 272.010 257.953 273.005 264.985 C273.005 268.037 269.998 269.094 265.982 264.153 C258.982 258.217 243.018 258.217 236.018 264.153 C232.002 269.094 228.995 268.037 228.995 264.985 Z;
+                           M228.999 264.998 C229.999 257.994 233.999 250.990 240.999 246.988 C246.000 243.986 256.000 243.986 261.001 246.988 C268.001 250.990 272.001 257.994 273.001 264.998 C273.001 268.005 270.000 269.013 265.998 264.020 C258.998 258.029 243.002 258.029 236.002 264.020 C232.000 269.013 228.999 268.005 228.999 264.998 Z;
+                           M229.000 265.000 C230.000 258.000 234.000 251.000 241.000 247.000 C246.000 244.000 256.000 244.000 261.000 247.000 C268.000 251.000 272.000 258.000 273.000 265.000 C273.000 268.000 270.000 269.000 266.000 264.000 C259.000 258.000 243.000 258.000 236.000 264.000 C232.000 269.000 229.000 268.000 229.000 265.000 Z;
+                           M229.000 265.000 C230.000 258.000 234.000 251.000 241.000 247.000 C246.000 244.000 256.000 244.000 261.000 247.000 C268.000 251.000 272.000 258.000 273.000 265.000 C273.000 268.000 270.000 269.000 266.000 264.000 C259.000 258.000 243.000 258.000 236.000 264.000 C232.000 269.000 229.000 268.000 229.000 265.000 Z;
+                           M228.999 264.998 C229.999 257.994 233.999 250.990 240.999 246.988 C246.000 243.986 256.000 243.986 261.001 246.988 C268.001 250.990 272.001 257.994 273.001 264.998 C273.001 268.005 270.000 269.013 265.998 264.020 C258.998 258.029 243.002 258.029 236.002 264.020 C232.000 269.013 228.999 268.005 228.999 264.998 Z;
+                           M228.995 264.985 C229.990 257.953 233.992 250.927 240.992 246.913 C246.003 243.895 255.997 243.895 261.008 246.913 C268.008 250.927 272.010 257.953 273.005 264.985 C273.005 268.037 269.998 269.094 265.982 264.153 C258.982 258.217 243.018 258.217 236.018 264.153 C232.002 269.094 228.995 268.037 228.995 264.985 Z;
+                           M228.984 264.952 C229.968 257.852 233.974 250.768 240.976 246.726 C246.010 243.668 255.990 243.668 261.024 246.726 C268.026 250.768 272.032 257.852 273.016 264.952 C273.016 268.116 269.994 269.296 265.944 264.482 C258.942 258.685 243.058 258.685 236.056 264.482 C232.006 269.296 228.984 268.116 228.984 264.952 Z;
+                           M228.965 264.894 C229.929 257.673 233.943 250.488 240.947 246.395 C246.022 243.267 255.978 243.267 261.053 246.395 C268.057 250.488 272.071 257.673 273.035 264.894 C273.035 268.256 269.986 269.654 265.876 265.066 C258.872 259.514 243.128 259.514 236.124 265.066 C232.014 269.654 228.965 268.256 228.965 264.894 Z;
+                           M228.935 264.806 C229.871 257.405 233.896 250.069 240.903 245.900 C246.040 242.668 255.960 242.668 261.097 245.900 C268.104 250.069 272.129 257.405 273.065 264.806 C273.065 268.466 269.975 270.189 265.774 265.938 C258.767 260.752 243.233 260.752 236.226 265.938 C232.025 270.189 228.935 268.466 228.935 264.806 Z;
+                           M228.896 264.689 C229.793 257.046 233.833 249.506 240.845 245.236 C246.064 241.862 255.936 241.862 261.155 245.236 C268.167 249.506 272.207 257.046 273.104 264.689 C273.104 268.747 269.960 270.908 265.638 267.110 C258.626 262.415 243.374 262.415 236.362 267.110 C232.040 270.908 228.896 268.747 228.896 264.689 Z;
+                           M228.848 264.543 C229.696 256.597 233.754 248.803 240.772 244.406 C246.094 240.856 255.906 240.856 261.228 244.406 C268.246 248.803 272.304 256.597 273.152 264.543 C273.152 269.099 269.942 271.806 265.467 268.573 C258.449 264.493 243.551 264.493 236.533 268.573 C232.058 271.806 228.848 269.099 228.848 264.543 Z;
+                           M228.790 264.370 C229.580 256.065 233.661 247.971 240.685 243.423 C246.129 239.666 255.871 239.666 261.315 243.423 C268.339 247.971 272.420 256.065 273.210 264.370 C273.210 269.515 269.919 272.869 265.265 270.305 C258.241 266.952 243.759 266.952 236.735 270.305 C232.081 272.869 228.790 269.515 228.790 264.370 Z;
+                           M228.725 264.174 C229.450 255.463 233.555 247.028 240.587 242.310 C246.170 238.316 255.830 238.316 261.413 242.310 C268.445 247.028 272.550 255.463 273.275 264.174 C273.275 269.987 269.894 274.073 265.037 272.268 C258.005 269.738 243.995 269.738 236.963 272.268 C232.106 274.073 228.725 269.987 228.725 264.174 Z;
+                           M228.653 263.960 C229.307 254.805 233.440 245.997 240.480 241.093 C246.214 236.841 255.786 236.841 261.520 241.093 C268.560 245.997 272.693 254.805 273.347 263.960 C273.347 270.502 269.867 275.389 264.787 274.413 C257.747 272.784 244.253 272.784 237.213 274.413 C232.133 275.389 228.653 270.502 228.653 263.960 Z;
+                           M228.578 263.733 C229.156 254.107 233.318 244.906 240.367 239.804 C246.260 235.280 255.740 235.280 261.633 239.804 C268.682 244.906 272.844 254.107 273.422 263.733 C273.422 271.048 269.838 276.783 264.522 276.685 C257.473 276.009 244.527 276.009 237.478 276.685 C232.162 276.783 228.578 271.048 228.578 263.733 Z;
+                           M228.500 263.500 C229.000 253.391 233.192 243.783 240.250 238.479 C246.308 233.674 255.692 233.674 261.750 238.479 C268.808 243.783 273.000 253.391 273.500 263.500 C273.500 271.609 269.808 278.217 264.250 279.021 C257.192 279.326 244.808 279.326 237.750 279.021 C232.192 278.217 228.500 271.609 228.500 263.500 Z;
+                           M228.422 263.267 C228.844 252.674 233.066 242.661 240.133 237.153 C246.356 232.068 255.644 232.068 261.867 237.153 C268.934 242.661 273.156 252.674 273.578 263.267 C273.578 272.171 269.778 279.650 263.978 281.358 C256.911 282.643 245.089 282.643 238.022 281.358 C232.222 279.650 228.422 272.171 228.422 263.267 Z;
+                           M228.347 263.040 C228.693 251.977 232.944 241.569 240.020 235.864 C246.403 230.506 255.597 230.506 261.980 235.864 C269.056 241.569 273.307 251.977 273.653 263.040 C273.653 272.717 269.749 281.044 263.713 283.629 C256.637 285.868 245.363 285.868 238.287 283.629 C232.251 281.044 228.347 272.717 228.347 263.040 Z;
+                           M228.275 262.826 C228.550 251.318 232.829 240.539 239.913 234.647 C246.447 229.031 255.553 229.031 262.087 234.647 C269.171 240.539 273.450 251.318 273.725 262.826 C273.725 273.232 269.722 282.360 263.463 285.775 C256.379 288.914 245.621 288.914 238.537 285.775 C232.278 282.360 228.275 273.232 228.275 262.826 Z;
+                           M228.210 262.630 C228.420 250.716 232.723 239.596 239.815 233.534 C246.487 227.682 255.513 227.682 262.185 233.534 C269.277 239.596 273.580 250.716 273.790 262.630 C273.790 273.704 269.697 283.565 263.235 287.738 C256.143 291.701 245.857 291.701 238.765 287.738 C232.303 283.565 228.210 273.704 228.210 262.630 Z;
+                           M228.152 262.457 C228.304 250.185 232.630 238.764 239.728 232.552 C246.522 226.492 255.478 226.492 262.272 232.552 C269.370 238.764 273.696 250.185 273.848 262.457 C273.848 274.120 269.675 284.627 263.033 289.469 C255.934 294.159 246.066 294.159 238.967 289.469 C232.325 284.627 228.152 274.120 228.152 262.457 Z;
+                           M228.104 262.311 C228.207 249.735 232.551 238.061 239.655 231.721 C246.552 225.485 255.448 225.485 262.345 231.721 C269.449 238.061 273.793 249.735 273.896 262.311 C273.896 274.472 269.656 285.525 262.862 290.933 C255.758 296.237 246.242 296.237 239.138 290.933 C232.344 285.525 228.104 274.472 228.104 262.311 Z;
+                           M228.065 262.194 C228.129 249.376 232.488 237.498 239.597 231.057 C246.576 224.680 255.424 224.680 262.403 231.057 C269.512 237.498 273.871 249.376 273.935 262.194 C273.935 274.753 269.641 286.244 262.726 292.105 C255.617 297.900 246.383 297.900 239.274 292.105 C232.359 286.244 228.065 274.753 228.065 262.194 Z;
+                           M228.035 262.106 C228.071 249.108 232.441 237.079 239.553 230.562 C246.594 224.081 255.406 224.081 262.447 230.562 C269.559 237.079 273.929 249.108 273.965 262.106 C273.965 274.963 269.630 286.779 262.624 292.977 C255.512 299.138 246.488 299.138 239.376 292.977 C232.370 286.779 228.035 274.963 228.035 262.106 Z;
+                           M228.016 262.048 C228.032 248.929 232.410 236.798 239.524 230.231 C246.606 223.679 255.394 223.679 262.476 230.231 C269.590 236.798 273.968 248.929 273.984 262.048 C273.984 275.103 269.622 287.138 262.556 293.561 C255.442 299.968 246.558 299.968 239.444 293.561 C232.378 287.138 228.016 275.103 228.016 262.048 Z;
+                           M228.005 262.015 C228.010 248.828 232.392 236.640 239.508 230.044 C246.613 223.453 255.387 223.453 262.492 230.044 C269.608 236.640 273.990 248.828 273.995 262.015 C273.995 275.182 269.618 287.340 262.518 293.890 C255.402 300.435 246.598 300.435 239.482 293.890 C232.382 287.340 228.005 275.182 228.005 262.015 Z;
+                           M228.001 262.002 C228.001 248.787 232.385 236.576 239.501 229.969 C246.616 223.362 255.384 223.362 262.499 229.969 C269.615 236.576 273.999 248.787 273.999 262.002 C273.999 275.214 269.616 287.421 262.502 294.023 C255.386 300.623 246.614 300.623 239.498 294.023 C232.384 287.421 228.001 275.214 228.001 262.002 Z;
+                           M228.000 262.000 C228.000 248.781 232.384 236.566 239.500 229.957 C246.616 223.348 255.384 223.348 262.500 229.957 C269.616 236.566 274.000 248.781 274.000 262.000 C274.000 275.219 269.616 287.434 262.500 294.043 C255.384 300.652 246.616 300.652 239.500 294.043 C232.384 287.434 228.000 275.219 228.000 262.000 Z;
+                           M228.000 262.000 C228.000 248.781 232.384 236.566 239.500 229.957 C246.616 223.348 255.384 223.348 262.500 229.957 C269.616 236.566 274.000 248.781 274.000 262.000 C274.000 275.219 269.616 287.434 262.500 294.043 C255.384 300.652 246.616 300.652 239.500 294.043 C232.384 287.434 228.000 275.219 228.000 262.000 Z"/>
+        </path>
+      </g>
+    
+          <g data-acc="bow"><use href="#acc-bow-art"/></g>
+          <g data-acc="flower"><use href="#acc-flower-art"/></g>
+          <g data-acc="fedora"><use href="#acc-fedora-art"/></g>
+          <g data-acc="tophat"><use href="#acc-tophat-art"/></g>
+        </g>
+  </g>
+    <set attributeName="display" to="inline" begin="1.8s" fill="freeze"/>
+    <set attributeName="display" to="none" begin="4.25s" fill="freeze"/>
+  </g>
+
+  <g id="phase-idle" display="none">
+    <ellipse id="idle-shadow" cx="210" cy="430" rx="104" ry="15" fill="#111111" filter="url(#softShadow)" opacity=".12"/>
+
+  <g id="idle-hover">
+    <g id="idle-jobi">
+    <!-- Sprout silhouette traced directly from the supplied reference.
+         The extra stem overlap is hidden behind the body for seamless animation. -->
+    <g id="idle-sprout">
+      <!-- Clean stem overlay. It deliberately extends deep behind the body,
+           so the visible root can never separate from the head while swaying. -->
+      <rect x="193" y="88" width="30" height="82" rx="0" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+      <path d="M 117.0,32.1 L 117.0,44.8 L 117.7,45.5 L 117.7,48.1 L 118.3,48.8 L 118.3,50.2 L 119.0,50.8 L 119.7,54.2 L 120.3,54.8 L 122.4,59.5 L 123.7,60.9 L 123.7,61.5 L 125.0,62.9 L 125.0,63.5 L 128.4,66.9 L 128.4,67.5 L 135.1,73.6 L 135.7,73.6 L 139.7,76.9 L 143.1,78.3 L 144.4,79.6 L 145.1,79.6 L 149.8,82.3 L 151.1,82.3 L 154.5,84.3 L 157.8,84.9 L 159.8,86.3 L 161.2,86.3 L 161.8,86.9 L 163.2,86.9 L 163.8,87.6 L 165.8,87.6 L 166.5,88.3 L 168.5,88.3 L 169.2,89.0 L 171.2,89.0 L 171.9,89.6 L 173.9,89.6 L 174.5,90.3 L 177.9,90.3 L 178.6,91.0 L 182.6,91.0 L 183.2,91.6 L 193.3,91.6 L 193.9,92.3 L 193.9,131.1 L 221.4,131.1 L 222.0,130.4 L 222.0,93.0 L 222.7,92.3 L 234.8,92.3 L 235.4,91.6 L 240.1,91.6 L 240.8,91.0 L 244.1,91.0 L 244.8,90.3 L 246.8,90.3 L 247.5,89.6 L 250.1,89.6 L 250.8,89.0 L 252.2,89.0 L 252.8,88.3 L 254.8,88.3 L 255.5,87.6 L 256.8,87.6 L 257.5,86.9 L 258.8,86.9 L 259.5,86.3 L 262.9,85.6 L 264.9,84.3 L 266.2,84.3 L 266.9,83.6 L 278.2,78.3 L 279.6,76.9 L 280.3,76.9 L 281.6,75.6 L 282.3,75.6 L 284.3,73.6 L 284.9,73.6 L 293.0,65.5 L 293.0,64.9 L 295.0,62.9 L 295.0,62.2 L 296.3,60.9 L 296.3,60.2 L 299.7,54.2 L 299.7,52.8 L 300.3,52.2 L 300.3,50.8 L 301.0,50.2 L 301.0,48.1 L 301.7,47.5 L 301.7,44.8 L 302.3,44.1 L 302.3,33.4 L 301.7,32.8 L 301.7,30.1 L 301.0,29.4 L 301.0,27.4 L 299.7,25.4 L 299.7,24.1 L 297.6,21.4 L 297.6,20.7 L 296.3,19.4 L 296.3,18.7 L 291.0,14.0 L 290.3,14.0 L 284.3,10.7 L 282.9,10.7 L 282.3,10.0 L 280.3,10.0 L 279.6,9.3 L 276.9,9.3 L 276.2,8.7 L 263.5,8.7 L 262.9,9.3 L 260.2,9.3 L 259.5,10.0 L 257.5,10.0 L 256.8,10.7 L 255.5,10.7 L 254.8,11.3 L 251.5,12.0 L 250.8,12.7 L 246.1,14.7 L 244.8,16.0 L 244.1,16.0 L 241.4,18.0 L 240.8,18.0 L 236.1,22.1 L 235.4,22.1 L 234.1,23.4 L 233.4,23.4 L 232.1,24.7 L 231.4,24.7 L 230.1,26.1 L 229.4,26.1 L 223.4,31.4 L 222.7,31.4 L 216.0,38.1 L 216.0,38.8 L 212.7,42.1 L 212.7,42.8 L 210.7,44.8 L 210.7,45.5 L 210.0,46.1 L 205.3,40.8 L 205.3,40.1 L 193.9,28.7 L 193.3,28.7 L 190.6,26.1 L 189.9,26.1 L 188.6,24.7 L 187.9,24.7 L 186.6,23.4 L 185.9,23.4 L 184.6,22.1 L 183.9,22.1 L 182.6,20.7 L 181.9,20.7 L 179.2,18.0 L 178.6,18.0 L 175.2,15.4 L 174.5,15.4 L 167.2,11.3 L 165.8,11.3 L 165.2,10.7 L 163.8,10.7 L 163.2,10.0 L 161.8,10.0 L 161.2,9.3 L 159.2,9.3 L 158.5,8.7 L 155.1,8.7 L 154.5,8.0 L 143.1,8.0 L 142.4,8.7 L 139.7,8.7 L 139.1,9.3 L 137.1,9.3 L 136.4,10.0 L 135.1,10.0 L 134.4,10.7 L 128.4,13.4 L 126.4,15.4 L 125.7,15.4 L 122.4,18.7 L 122.4,19.4 L 121.0,20.7 L 121.0,21.4 L 119.0,24.7 L 119.0,26.1 L 118.3,26.7 L 118.3,28.1 L 117.7,28.7 L 117.7,31.4 Z" fill="#0FB790" data-skin="leaf" data-plant="leaf"/>
+    <g data-plant="violets"><use href="#acc-violets-art"/></g></g>
+
+    <g id="idle-body-follow">
+      <path id="idle-arm-left"
+        d="M86 257
+           C54 269 32 300 25 330
+           C18 360 31 378 54 380
+           C74 382 92 367 108 345
+           C120 328 129 307 128 288
+           C127 269 110 249 86 257Z"
+        fill="#F7F6F3" data-skin="body"/>
+
+      <path id="idle-arm-right"
+        d="M334 257
+           C366 269 388 300 395 330
+           C402 360 389 378 366 380
+           C346 382 328 367 312 345
+           C300 328 291 307 292 288
+           C293 269 310 249 334 257Z"
+        fill="#F7F6F3" data-skin="body"/>
+
+      <g id="idle-body">
+        <path
+          d="M132 132
+             C98 132 74 156 74 190
+             L74 356
+             C74 392 96 414 132 414
+             L288 414
+             C324 414 346 392 346 356
+             L346 190
+             C346 156 322 132 288 132
+             Z"
+          fill="#F7F6F3" data-skin="body"/>
+
+        <g id="idle-eyes">
+          <ellipse class="idle-eye" cx="169" cy="262" rx="23" ry="37" fill="#232323"/>
+          <ellipse class="idle-eye" cx="251" cy="262" rx="23" ry="37" fill="#232323"/>
+        </g>
+        <!-- Accessories. Exactly ONE is worn at a time (the customiser offers
+             a single Accessories row), which is what lets the bow sit at the
+             stem base without a hat ever covering it.
+             They all live in #idle-body, NOT #idle-sprout: the sprout is
+             painted before the body, so anything mounted there that reaches
+             down to the head is painted over by it and vanishes entirely.
+             Being last in #idle-body also puts them over the eyes, which
+             anything sitting on the face would need. -->
+        <!-- Flower clip, tucked at the head's top right beside the sprout. Sits
+             high, straddling the head's top edge the way the bow does, rather
+             than lower on the face where it reads as a sticker on his cheek.
+             The barrette runs OUT to the side, toward the head's edge, not
+             down from the flower: a clip grips the side of the head, and one
+             hanging below the flower reads as a stalk (owner, 2026-09-03). -->
+        <!-- The hat is worn, not perched, and three things do that work.
+             The crown BASE is 272 wide because that is the head's own width at
+             the brim line (y=174, measured off the body cubic): any narrower
+             and white head shows either side of the crown, which reads at once
+             as a sticker sitting on him rather than a hat on his head.
+             The crown is painted after the sprout, so it hides the stem and
+             the leaves' bases and they read as growing up through it. Its
+             height is pinned at BOTH ends: the brim cannot pass the eyes at
+             y=225, and a crown top above y=90 shrinks the leaves to two green
+             nubs and loses the plant (owner, 2026-09-02).
+             And the brim casts a soft shadow on the face, which seats it. -->
+        <!-- Top hat, which replaced the earlier bucket (owner, 2026-09-03).
+             Tall on purpose, and allowed to cover the sprout entirely: the
+             crown top at y=0 hides the leaves (which reach y=8) while leaving
+             34 units of headroom before the viewBox ceiling at y=-34. That
+             ceiling is the real limit on how tall any hat here can be, and a
+             crown top above about y=10 starts letting the leaf tips out again.
+             Seated the way the fedora is, not perched: the brim starts at
+             y=134, two units below the head's top edge at y=132, so it sits ON
+             the head rather than above it; it is 348 wide against a head that
+             is at most 272, so no head can show beside it; and it casts a
+             shadow on the face.
+             Same palette as the fedora (owner, 2026-09-03): crown #4A4E52,
+             band #8C9297, brim #41454A. The two hats are told apart by
+             silhouette, not colour. -->
+            
+          <g data-acc="bow"><use href="#acc-bow-art"/></g>
+          <g data-acc="flower"><use href="#acc-flower-art"/></g>
+          <g data-acc="fedora"><use href="#acc-fedora-art"/></g>
+          <g data-acc="tophat"><use href="#acc-tophat-art"/></g>
+        </g>
+    </g>
+  </g>
+  </g>
+    <set attributeName="display" to="inline" begin="4.25s" fill="freeze"/>
+  </g>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="251.25" height="311.66" viewBox="218 336.33 251.25 311.66" fill="none"><!-- Split out of blank: the mascot group alone, in artboard units, with 5px above for the float. Positioned by the page (styles.css, .card__mascot) to the same place the artboard drew it, anchored to the card bottom. --><style>
+/* Added by hand after the Figma export (site work, 2026-08-25). Figma has
+   no way to express these, so re-exporting this node WILL drop them: the
+   mascot's float and the screen's drift both live here.
+   Declarative CSS only, because an SVG loaded as an image runs its own
+   animations but never its scripts. */
+.jbob   { animation: jbob 4.5s ease-in-out infinite alternate; }
+.jdrift { animation: jdrift 9s ease-in-out infinite alternate; }
+@keyframes jbob   { from { transform: translateY(0); }  to { transform: translateY(-5px); } }
+@keyframes jdrift { from { transform: translateY(0); }  to { transform: translateY(-9px); } }
+.jeye   { transform-box: fill-box; transform-origin: center; animation: jblink 5.4s ease-in-out infinite; }
+.jlook  { transform-box: fill-box; transform-origin: center; animation: jlook 7s ease-in-out infinite alternate; }
+.jglass { transform-box: fill-box; transform-origin: center; animation: jglass 3.8s ease-in-out infinite alternate; }
+@keyframes jblink { 0%, 91%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } 97% { transform: scaleY(1); } }
+@keyframes jlook  { from { transform: translateX(-3px); } to { transform: translateX(3px); } }
+@keyframes jglass { from { transform: rotate(-3.5deg) translateY(0); } to { transform: rotate(3.5deg) translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) {
+  .jbob, .jdrift, .jeye, .jlook, .jglass { animation: none; }
+}
+</style><defs><clipPath id="clip1_362_162">
+<rect width="183.748" height="183.748" rx="37.8307" transform="matrix(-0.999837 0.0180379 0.0180379 0.999837 465.932 421.23)" fill="white"/>
+</clipPath><filter id="filter0_f_362_162" x="229.288" y="500.768" width="113.64" height="119.352" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="0.607659" result="effect1_foregroundBlur_362_162"/>
+</filter></defs><g id="Group 1410084948" class="jbob" style="animation-delay:-3s">
+<g id="Group 1410084942">
+<g id="Group 37396">
+<g id="Group 37326">
+<path id="Vector 46" d="M247.667 565.328C238.333 554.432 260.534 513.165 288.965 499.403L284.982 567.025C266.016 578.212 257 576.223 247.667 565.328Z" fill="#F1F1F1"/>
+</g>
+<g id="Frame 1430105731">
+<g clip-path="url(#clip1_362_162)">
+<rect width="183.748" height="183.748" rx="37.8307" transform="matrix(-0.999837 0.0180379 0.0180379 0.999837 465.932 421.23)" fill="#F1F1F1"/>
+<g class="jlook"><path id="Vector" class="jeye" style="animation-delay:-4.1s" d="M320.14 487.433C316.575 491.397 313.486 496.359 312.164 502.679C311.71 511.204 311.858 518.009 315.52 524.989C318.944 530.461 322.478 533.563 327.494 534.537C332.945 534.692 336.641 533.849 340.919 528.804C344.68 523.138 346.658 517.286 346.787 509.28C346.306 500.933 344.112 495.061 339.802 489.555C333.644 482.778 326.829 481.75 320.14 487.433Z" fill="#222222"/></g>
+<g class="jlook"><path id="Vector_2" class="jeye" style="animation-delay:-4.1s" d="M375.134 486.44C371.572 490.404 368.487 495.365 367.169 501.686C366.721 510.211 366.874 517.016 370.54 523.995C373.968 529.467 377.504 532.569 382.522 533.543C387.973 533.698 391.668 532.856 395.942 527.811C399.699 522.144 401.673 516.292 401.797 508.286C401.31 499.94 399.112 494.068 394.798 488.562C388.635 481.785 381.819 480.757 375.134 486.44Z" fill="#222222"/></g>
+<path id="Vector 47" d="M428.893 560.757C419.56 549.862 440.31 508.566 468.741 494.803L468.672 560.477C449.706 571.664 438.227 571.653 428.893 560.757Z" fill="#E0DCDC"/>
+</g>
+</g>
+<g id="Group 37328">
+<rect id="Rectangle 39591" width="18.5701" height="37.1403" transform="matrix(-0.999837 0.0180379 0.0180379 0.999837 383.77 385.889)" fill="#0CB385"/>
+<path id="Ellipse 16" d="M314.674 352.311C309.397 361.844 311.323 379.259 329.269 389.193C347.215 399.127 373.368 400.997 378.645 391.463C383.922 381.929 373.236 361.512 355.29 351.578C338.792 337.945 319.951 342.777 314.674 352.311Z" fill="#0CB385"/>
+<path id="Ellipse 17" d="M430.877 349.846C436.495 359.184 435.198 376.657 417.622 387.232C400.046 397.806 373.977 400.618 368.36 391.281C362.742 381.943 372.685 361.154 390.261 350.579C406.256 336.361 425.259 340.509 430.877 349.846Z" fill="#0CB385"/>
+</g>
+</g>
+</g>
+<g id="Group 1410084947">
+<path id="Vector 4078" d="M246.302 538.766L389.525 543.054L353.505 555.918L344.071 555.918L344.071 569.64L332.922 569.64L326.061 553.345L242.013 550.772L237.725 563.637L228.291 563.637L228.291 550.772L218 550.772L246.302 538.766Z" fill="#21412C"/>
+<g id="Group 1410084946" filter="url(#filter0_f_362_162)">
+<g id="Group 1410084945">
+<rect id="Rectangle 39978" x="233.616" y="534.957" width="75.6796" height="92.077" rx="1.51915" transform="rotate(-26.2637 233.616 534.957)" fill="#D9D9D9"/>
+<rect id="Rectangle 39977" x="229.989" y="536.839" width="76.2416" height="92.0867" rx="1.51915" transform="rotate(-26.2637 229.989 536.839)" fill="white"/>
+</g>
+<rect id="Rectangle 39979" x="242.971" y="542.015" width="54.6893" height="7.59574" rx="1.51915" transform="rotate(-25.7962 242.971 542.015)" fill="#D9D9D9"/>
+<rect id="Rectangle 39980" x="248.808" y="553.335" width="54.6893" height="7.59574" rx="1.51915" transform="rotate(-25.7962 248.808 553.335)" fill="#D9D9D9"/>
+<rect id="Rectangle 39981" x="254.885" y="563.97" width="54.6893" height="7.59574" rx="1.51915" transform="rotate(-25.7962 254.885 563.97)" fill="#D9D9D9"/>
+<rect id="Rectangle 39982" x="260.721" y="575.292" width="54.6893" height="7.59574" rx="1.51915" transform="rotate(-25.7962 260.721 575.292)" fill="#D9D9D9"/>
+</g>
+<path id="Vector 4076" d="M218 636.938L218 549.422L228.305 549.422L228.305 559.84L237.751 559.84L242.045 549.422L326.201 551.506L333.071 564.702L344.234 564.702L344.234 553.589L353.87 553.589L353.87 646.662L218 636.938Z" fill="#345741"/>
+<path id="Vector 4077" d="M389.835 634.665L352.538 647.994L353.405 553.285L389.835 542.762L389.835 634.665Z" fill="#20402B"/>
+</g>
+</g></svg>

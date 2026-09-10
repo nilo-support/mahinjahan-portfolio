@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="239.52" height="285.89" viewBox="188 360.09 239.52 285.89" fill="none"><!-- Split out of blank: the mascot group alone, in artboard units, with 5px above for the float. Positioned by the page (styles.css, .card__mascot) to the same place the artboard drew it, anchored to the card bottom. --><style>
+/* Added by hand after the Figma export (site work, 2026-08-25). Figma has
+   no way to express these, so re-exporting this node WILL drop them: the
+   mascot's float and the screen's drift both live here.
+   Declarative CSS only, because an SVG loaded as an image runs its own
+   animations but never its scripts. */
+.jbob   { animation: jbob 4.5s ease-in-out infinite alternate; }
+.jdrift { animation: jdrift 9s ease-in-out infinite alternate; }
+@keyframes jbob   { from { transform: translateY(0); }  to { transform: translateY(-5px); } }
+@keyframes jdrift { from { transform: translateY(0); }  to { transform: translateY(-9px); } }
+.jeye   { transform-box: fill-box; transform-origin: center; animation: jblink 5.4s ease-in-out infinite; }
+.jlook  { transform-box: fill-box; transform-origin: center; animation: jlook 7s ease-in-out infinite alternate; }
+.jglass { transform-box: fill-box; transform-origin: center; animation: jglass 3.8s ease-in-out infinite alternate; }
+@keyframes jblink { 0%, 91%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } 97% { transform: scaleY(1); } }
+@keyframes jlook  { from { transform: translateX(-3px); } to { transform: translateX(3px); } }
+@keyframes jglass { from { transform: rotate(-3.5deg) translateY(0); } to { transform: rotate(3.5deg) translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) {
+  .jbob, .jdrift, .jeye, .jlook, .jglass { animation: none; }
+}
+</style><defs><clipPath id="clip1_362_162">
+<rect x="220.149" y="443.641" width="178.53" height="178.53" rx="36.7562" fill="white"/>
+</clipPath><clipPath id="clip2_362_162">
+<rect x="309.04" y="514.52" width="57.9062" height="57.9062" rx="28.9531" transform="rotate(-19.3176 309.04 514.52)" fill="white"/>
+</clipPath></defs><g id="Group 37410" class="jbob" style="animation-delay:-1.5s">
+<g id="Group 37350">
+<g id="Group 37326">
+<path id="Vector 47" d="M191.03 582.481C180.963 572.84 197.074 530.926 223.245 514.898L227.272 580.55C210.005 593.183 201.097 592.123 191.03 582.481Z" fill="#404040"/>
+</g>
+<g id="Frame 1430105731">
+<g clip-path="url(#clip1_362_162)">
+<rect x="220.149" y="443.641" width="178.53" height="178.53" rx="36.7562" fill="#F1F1F1"/>
+<path id="Vector" class="jeye" style="animation-delay:-2.6s" d="M352.505 511.073C356.037 514.861 359.125 519.627 360.52 525.744C361.111 534.017 361.086 540.631 357.651 547.475C354.421 552.851 351.042 555.926 346.186 556.96C340.894 557.207 337.289 556.453 333.045 551.627C329.292 546.188 327.268 540.538 327.002 532.763C327.323 524.646 329.351 518.904 333.442 513.479C339.306 506.788 345.908 505.67 352.505 511.073Z" fill="#222222"/>
+<path id="Rectangle 21" d="M258.749 532.87C258.749 529.339 261.611 526.477 265.142 526.477L286.026 526.477C289.556 526.477 292.418 529.339 292.418 532.87C292.418 536.401 289.556 539.263 286.026 539.263L265.142 539.263C261.611 539.263 258.749 536.401 258.749 532.87Z" fill="#222222"/>
+<path id="Vector 67" d="M209.3 584.505C209.355 591.632 209.41 606.597 209.195 609.429L306.893 636.277L388.843 612.342C388.923 603.442 389.109 585.288 389.216 583.871C389.323 582.455 269.317 583.703 209.3 584.505Z" fill="#E0DCDC"/>
+<g id="Group 37336">
+<path id="Vector 59" d="M295.563 634.858C296.636 623.803 298.46 604.596 298.951 597.99C299.043 596.763 300.072 595.745 301.302 595.704L314.347 595.269C315.523 595.23 316.527 596.113 316.639 597.284L320.154 634.126C320.219 634.803 319.97 635.473 319.479 635.945L309.667 645.361C308.846 646.148 307.563 646.191 306.692 645.46L296.348 636.779C295.785 636.307 295.492 635.59 295.563 634.858Z" fill="#F6F6F6"/>
+<path id="Vector 58" d="M321.714 581.782L293.032 582.005C291.406 582.017 290.34 583.711 291.033 585.182L297.307 598.502C297.677 599.288 298.471 599.787 299.34 599.78L315.683 599.653C316.552 599.646 317.338 599.135 317.696 598.343L323.762 584.928C324.432 583.446 323.34 581.769 321.714 581.782Z" fill="white"/>
+</g>
+<path id="Vector 68" d="M223.777 617.887L204.555 556.733C203.284 552.689 208.008 549.436 211.333 552.065L290.017 614.29L308.511 626.804C312.358 629.407 309.926 635.415 305.352 634.61L227.138 620.837C225.555 620.558 224.259 619.421 223.777 617.887Z" fill="#404040"/>
+<path id="Vector 69" d="M393.635 618.115L408.532 546.696C409.392 542.572 404.431 539.794 401.365 542.683L325.51 614.154C325.317 614.337 325.107 614.501 324.883 614.644L306.476 626.458C302.551 628.977 304.874 635.067 309.479 634.333L390.098 621.488C391.862 621.206 393.27 619.864 393.635 618.115Z" fill="#404040"/>
+</g>
+</g>
+<g id="Group 37328">
+<rect id="Rectangle 39591" x="299.345" y="407.873" width="18.0428" height="36.0856" fill="#0CB385"/>
+<path id="Ellipse 16" d="M365.878 374.042C371.172 383.211 369.606 400.162 352.346 410.127C335.087 420.092 309.714 422.366 304.42 413.197C299.126 404.028 309.15 384.007 326.41 374.042C342.197 360.51 360.584 364.873 365.878 374.042Z" fill="#0CB385"/>
+<path id="Ellipse 17" d="M252.949 373.683C247.655 382.853 249.221 399.804 266.481 409.769C283.74 419.734 309.113 422.008 314.407 412.839C319.7 403.67 309.677 383.648 292.417 373.683C276.63 360.151 258.242 364.514 252.949 373.683Z" fill="#0CB385"/>
+</g>
+</g>
+<g id="Group 37336_2">
+<rect id="Rectangle 39593" x="191.41" y="477.475" width="236.112" height="17.9996" rx="8.9998" fill="#4B4B4B"/>
+<path id="Rectangle 39595" d="M249.086 410.994C281.05 418.521 346.517 413.404 373.597 410.994C400.677 408.583 398.499 472.534 398.499 472.534H220.034C220.034 472.534 217.123 403.467 249.086 410.994Z" fill="#4B4B4B"/>
+<rect id="Rectangle 39594" x="219.965" y="465.525" width="178.576" height="13.31" fill="#9A9A9A"/>
+</g>
+<g id="Group 37335" class="jglass">
+<rect id="Rectangle 39591_2" x="349.462" y="558.225" width="10.5284" height="62.0906" rx="3.29013" transform="rotate(-19.3176 349.462 558.225)" fill="#D9D9D9"/>
+<g id="Frame 1430105733">
+<g clip-path="url(#clip2_362_162)">
+<rect id="Rectangle 39592" x="301.863" y="507.97" width="67.1186" height="74.3568" transform="rotate(-19.3176 301.863 507.97)" fill="white" fill-opacity="0.1"/>
+</g>
+<rect x="313.652" y="516.738" width="50.6679" height="50.6679" rx="25.334" transform="rotate(-19.3176 313.652 516.738)" stroke="#D9D9D9" stroke-width="7.23828"/>
+</g>
+</g>
+<path id="Vector 57" d="M405.998 567.179C406.44 593.224 399.196 595.728 399.079 594.245L398.596 536.052C398.596 536.052 405.557 541.133 405.998 567.179Z" fill="#4B4B4B"/>
+<path id="Vector 46" d="M358.486 590.015C363.668 607.858 384.213 610.492 399.42 594.444L398.753 536.066C381.219 538.384 353.304 572.171 358.486 590.015Z" fill="#4B4B4B"/>
+</g></svg>
