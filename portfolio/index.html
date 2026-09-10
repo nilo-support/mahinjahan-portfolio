@@ -5513,8 +5513,9 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   };
   if (document.body.dataset.page === 'jobi') window.jobiCompanionArrive();
 
-  /* the notes on the Jobi study: each mounts as it comes near, in the pose
-     its own note asks for */
+  /* The notes on the Jobi study: each mounts as it comes near, straight into
+     its idle. A note is a mark beside a paragraph, not an arrival, so the rig
+     skips the drop-in and the wave and is simply there. */
   var notes = document.querySelectorAll('.note-companion');
   if (notes.length) {
     if ('IntersectionObserver' in window) {
@@ -5522,12 +5523,12 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         es.forEach(function (en) {
           if (!en.isIntersecting) return;
           noteIO.unobserve(en.target);
-          mount(en.target, en.target.dataset.pose.indexOf('#') === 0 ? en.target.dataset.pose : '', false);
+          mount(en.target, '#phase-idle', false);
         });
       }, { rootMargin: '200px 0px' });
       notes.forEach(function (n) { noteIO.observe(n); });
     } else {
-      notes.forEach(function (n) { mount(n, '', false); });
+      notes.forEach(function (n) { mount(n, '#phase-idle', false); });
     }
     /* a note inside a closed drawer has no box to intersect, so it waits for
        the drawer to open instead */
@@ -5536,7 +5537,7 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         if (!dd.open) return;
         dd.querySelectorAll('.note-companion').forEach(function (n) {
           var o = n.querySelector('object');
-          if (o && !o.getAttribute('data')) mount(n, '', false);
+          if (o && !o.getAttribute('data')) mount(n, '#phase-idle', false);
         });
       });
     });
