@@ -1629,6 +1629,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   }
   .jr .jr-rail::-webkit-scrollbar { display: none; }
   .jr .jr-rail.is-drag { cursor: grabbing; scroll-behavior: auto; }
+  .jr .jr-ui { gap: 28px; }
   /* a touch narrower than the product site's, so a third card shows its edge
      and the rail reads as something that keeps going */
   /* the product's own ink, so a light card reads exactly as it does there;
@@ -4760,6 +4761,10 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <h3>Keep a streak going, one application at a time.</h3>
       </article>
       </div>
+        <div class="car-ui jr-ui">
+        <button type="button" class="car-arrow" data-dir="-1" aria-label="Previous card"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="car-arrow" data-dir="1" aria-label="Next card"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
       </div>
 
       <details class="deep-dive">
@@ -5623,7 +5628,8 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         return w;
       };
       var fill = function () {
-        if (!loops) return;
+        // A hidden rail measures nothing, so it would clone to the guard.
+        if (!loops || !rail.clientWidth) return;
         var seed = [].filter.call(rail.children, function (c) {
           return !c.hasAttribute('data-clone');
         });
@@ -5693,6 +5699,24 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         frame = requestAnimationFrame(tick);
         var dt = prev ? Math.min((t - prev) / 1000, 0.05) : 0;
         prev = t;
+        if (glide) {
+          if (dragging) {
+            glide = null;
+          } else {
+            var k = Math.min((t - glide.t0) / glide.dur, 1);
+            rail.scrollLeft = glide.from + (glide.to - glide.from) * (1 - Math.pow(1 - k, 3));
+            var was = rail.scrollLeft;
+            // Forwards only: going back has already brought a card round to
+            // the front, and the forward rotation would undo it at once.
+            if (glide.to > glide.from) wrap();
+            // a card rotated to the end moves the whole glide with it
+            glide.from += rail.scrollLeft - was;
+            glide.to += rail.scrollLeft - was;
+            pos = rail.scrollLeft;
+            if (k >= 1) glide = null;
+            return;
+          }
+        }
         if (dragging || held || !visible) {
           pos = rail.scrollLeft;
           return;
@@ -5710,26 +5734,32 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         wrap();
       };
   
-      if (loops && !still) {
+      /* The case study is hidden when the site loads unless it is the page
+         landed on, and a hidden rail has no width: it looked as if there was
+         nothing to loop, so it never drifted and never took a drag. It starts
+         the first time it is laid out instead. */
+      var started = false;
+      var start = function () {
+        if (started || !loops || still) return;
         /* Nothing to loop if the cards do not fill the track. */
-        if (rail.scrollWidth - rail.clientWidth > 8) {
-          rail.addEventListener('pointerenter', function () {
-            target = HOVER;
-          });
-          rail.addEventListener('pointerleave', function () {
-            target = DRIFT;
-          });
-          if ('IntersectionObserver' in window) {
-            new IntersectionObserver(function (es) {
-              es.forEach(function (e) {
-                visible = e.isIntersecting;
-                prev = 0;
-              });
-            }).observe(rail);
-          }
-          frame = requestAnimationFrame(tick);
+        if (rail.scrollWidth - rail.clientWidth <= 8) return;
+        started = true;
+        rail.addEventListener('pointerenter', function () {
+          target = HOVER;
+        });
+        rail.addEventListener('pointerleave', function () {
+          target = DRIFT;
+        });
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              visible = e.isIntersecting;
+              prev = 0;
+            });
+          }).observe(rail);
         }
-      }
+        frame = requestAnimationFrame(tick);
+      };
   
       /* ---- drag ----
          Touch and trackpads already scroll a rail natively, so this only
@@ -5738,7 +5768,46 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
         rail.classList.toggle('can-drag', rail.scrollWidth - rail.clientWidth > 4);
       };
       window.addEventListener('resize', canDrag);
-      canDrag();
+
+      /* ---- arrows ----
+         One card each way, eased, then the drift picks up from where it
+         lands. Going back from the start brings the last card round to the
+         front first, the same invisible rotation the loop uses. */
+      var glide = null;
+      var step = function (dir) {
+        if (!rail.clientWidth) return;
+        var w = widest() + gap;
+        if (dir < 0 && loops && rail.scrollLeft < w) {
+          var last = rail.lastElementChild;
+          var lw = last.getBoundingClientRect().width + gap;
+          rail.insertBefore(last, rail.firstElementChild);
+          rail.scrollLeft += lw;
+        }
+        var from = rail.scrollLeft;
+        speed = 0;
+        pos = from;
+        if (!started) {
+          rail.scrollLeft = from + dir * w;
+          wrap();
+          pos = rail.scrollLeft;
+          return;
+        }
+        glide = { from: from, to: from + dir * w, t0: performance.now(), dur: 560 };
+      };
+      var ui = rail.parentNode.querySelector('.jr-ui');
+      if (ui) {
+        ui.querySelector('[data-dir="-1"]').addEventListener('click', function () { step(-1); });
+        ui.querySelector('[data-dir="1"]').addEventListener('click', function () { step(1); });
+      }
+
+      var wake = function () {
+        metrics();
+        fill();
+        canDrag();
+        start();
+      };
+      if ('ResizeObserver' in window) new ResizeObserver(wake).observe(rail);
+      wake();
   
       // Touch included: the drift stands still while a hand is on the rail.
       rail.addEventListener('pointerdown', function (e) {
