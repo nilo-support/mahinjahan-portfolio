@@ -2664,7 +2664,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .dg-note  { fill: var(--case-body); font-size: 11px; }
   .dg-line  { stroke: var(--track); stroke-width: 1; fill: none; }
   .dg-flow  { stroke: var(--accent); stroke-width: 1.4; fill: none; }
-  .dg-lane  { stroke: var(--track); stroke-width: 1; stroke-dasharray: 3 4; }
+  .dg-lane  { stroke: var(--track); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
   .dg-actor { fill: var(--case-cap); font-size: 11px; font-weight: 600;
               letter-spacing: .08em; }
   .diagram figcaption {
@@ -3167,6 +3167,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   }
   /* "Success Metrics" labels the figures rather than opening a section */
   .metrics-head { margin-top: 40px !important; }
+  /* the line that keeps the figures honest: it says where they came from */
+  .metrics-note { margin-top: 8px; font-size: 16px; letter-spacing: .018em; line-height: 1.8; color: var(--case-cap); }
 
   /* .takeaway shares the .callout note treatment above */
   /* Two shots at the close, one portrait and one landscape. The columns are
@@ -3600,9 +3602,20 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       border-radius: 999px; background: var(--mascot-bg);
       box-shadow: 0 4px 14px rgba(20, 20, 45, .18);
     }
-    body.cursor-view #cursor-orb .cur-label { opacity: 1; }
+    /* the core is a flex box, so only the label the state calls for is in it */
+    #cursor-orb .cur-label { display: none; }
+    body.cursor-view #cursor-orb .cl-view,
+    body.cursor-drag #cursor-orb .cl-drag { display: block; opacity: 1; }
+    /* The carousel is pushed rather than opened, so it says so. Same pill the
+       cards wear, because it is the same kind of promise: this responds. */
+    body.cursor-drag #cursor-orb .cur-core {
+      width: 58px; height: 30px; margin: -15px 0 0 -29px;
+      border-radius: 999px; background: var(--mascot-bg);
+      box-shadow: 0 4px 14px rgba(20, 20, 45, .18);
+    }
     /* on the deep sky the pill is navy on near-navy, so it keeps an edge */
-    body.home-active.mascot-moon:has(.nightfall.on).cursor-view #cursor-orb .cur-core {
+    body.home-active.mascot-moon:has(.nightfall.on).cursor-view #cursor-orb .cur-core,
+    body.home-active.mascot-moon:has(.nightfall.on).cursor-drag #cursor-orb .cur-core {
       background: var(--mascot-bg);
       box-shadow: 0 0 0 1.5px rgba(232, 240, 255, .35), 0 4px 14px rgba(3, 7, 20, .4);
     }
@@ -3768,7 +3781,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   </nav>
 
 <div id="curtain"></div>
-<div id="cursor-orb" aria-hidden="true"><span class="cur-core"><span class="cur-label">View</span></span></div>
+<div id="cursor-orb" aria-hidden="true"><span class="cur-core"><span class="cur-label cl-view">View</span><span class="cur-label cl-drag">Drag</span></span></div>
 
 <!-- HOME -->
 <section id="home" class="page current">
@@ -4197,6 +4210,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h1>Pactto</h1>
       <p class="case-headline">Collaboration that doesn't end when the call does.</p>
       <p class="case-sub">Pactto is a canvas-based video production workspace/conferencing tool. I helped design a suite of commenting tools to bridge the gap between live meetings and async work.</p>
+      <p class="case-live"><a href="https://www.pactto.com/" target="_blank" rel="noopener">It is live &mdash; see the product site <span aria-hidden="true">&nearr;</span></a></p>
       </div>
 
       <div class="case-meta">
@@ -4481,7 +4495,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <div class="ci-text">
       <h1>Jobi</h1>
       <p class="case-headline">A companion for the job hunt, not an autopilot for it.</p>
-      <p class="case-sub">Jobi is a browser-extension companion for the job search, built around how people feel while applying rather than how many applications they send. I designed and built it, leading two designers and shipping every decision in code.</p>
+      <p class="case-sub">Jobi is a browser-extension companion for the job search, built around how people feel while applying rather than how many applications they send. I designed it with two other designers and built it myself, from the first screen to a private beta.</p>
       <p class="case-live"><a href="https://jobi.life" target="_blank" rel="noopener">It is live &mdash; see the product site <span aria-hidden="true">&nearr;</span></a></p>
       </div>
 
@@ -4490,6 +4504,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
           <h2>Team</h2>
           <p>1 Designer &amp; Developer (Me)</p>
           <p>2 Designers</p>
+          <p>1 Software Engineer</p>
         </div>
         <p class="cm-year">2026 &middot; Shipped</p>
       </div>
@@ -4503,6 +4518,14 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <div class="tag">Too long didn&rsquo;t read</div>
         <p>Most job-search tools try to bring you more postings or make each application faster. Jobi is built for the other half of the search: <em>keeping up the habit of applying every day, and bouncing back after a rejection</em>. It is a companion in your corner, running as a browser side-panel alongside the search.</p>
       </div>
+    </div>
+
+    <h3 class="metrics-head">Success Metrics</h3>
+    <p class="metrics-note">From the private beta. The numbers below are about behaviour and speed rather than scale, which is what an early build can honestly show.</p>
+    <div class="case-stats">
+      <div class="stat"><b>2&ndash;4 min</b><span>To a First Result</span><small>From finishing onboarding to a job analysis, a tailored CV or a cover letter in hand</small></div>
+      <div class="stat"><b>57%</b><span>Changed the Default Companion</span><small>Most looked at all four before deciding, so the choice earns its place at the start rather than buried in settings</small></div>
+      <div class="stat"><b>39%</b><span>Of Letters Rewritten</span><small>The check for machine-sounding wording caught them and rewrote them before they were sent</small></div>
     </div>
 
     </div>
@@ -4547,7 +4570,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h2>The Tools Organise the Work. None of Them Question It.</h2>
       <p>We interviewed five job seekers mid-search, applying to anywhere from four roles a week to thirty, then audited the two tools they kept mentioning. Teal and Simplify both autofill forms, track statuses and help you apply to more jobs. Not one of our interviewees said that applying to more jobs was their problem.</p>
       <img class="case-media" src="/assets/case-jobi/research-overview.jpg"
-           alt="Research overview: the affinity map; a participant quote, I copy-paste the same answers into every single form; 92% never finish a job application; 15 minutes to 3 days per application, with every one restarting the same work from scratch; mostly silence, since most applications get no reply; the user interview transcripts; competitor audits of Simplify and Teal; and the persona, Mark, 27, eight months in, applying to 10 to 30 roles a week across Excel, Notion and Google Docs."
+           alt="Research overview: the affinity map; a participant quote, I copy-paste the same answers into every single form; 92% experience unclear feedback or conflicting opinions; 15 minutes to 3 days per application, with every one restarting the same work from scratch; mostly silence, since most applications get no reply; the user interview transcripts; competitor audits of Simplify and Teal; and the persona, Mark, 27, eight months in, applying to 10 to 30 roles a week across Excel, Notion and Google Docs."
            data-nocaption loading="lazy">
     </section>
 
@@ -4557,7 +4580,6 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <p>We sorted every interview quote into an affinity map. The clusters that came out were <em>all about emotional fatigue</em>, not about a missing feature.</p>
       <img class="case-media" src="/assets/case-jobi/affinity-map.png" alt="Mapping out Insights: the interview affinity map, clustered into resume and CV management, repetitive forms and platforms, tracking and organisation, cover letters and research, and the emotional toll and feedback gap" data-nocaption loading="lazy">
       <img class="case-media" src="/assets/case-jobi/insights.svg" data-nocaption
-           alt="Five insights from the research, each paired with the design focus it led to"
         loading="lazy" width="1046" height="257"
         alt="Three insight cards: statuses are logged by hand and go stale; a participant quote, I usually take a week off after a rejection from a final round; research is paid upfront, before a word is written.">
       <p class="figure-note">The three insights a product could answer. The fourth cluster, silence from employers, is outside any product's control: no feature makes a company reply.</p>
@@ -4586,7 +4608,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         and habits build long before anyone says yes. So the brand is designed to calm
         you down, not to keep you hooked.</p>
       <img class="case-media" src="/assets/case-jobi/brand-sheet.png" loading="lazy"
-        alt="The identity on one sheet: the sprout wordmark, a three-colour palette, Inter, the icon set, and the mascot in its working poses.">
+        alt="The identity on one sheet: the sprout wordmark, a three-colour palette, Google Sans Flex, the icon set, and the mascot in its working poses.">
       <div class="case-cards">
         <div class="case-card">
           <h4>The metaphor lives in the system, not the logo</h4>
@@ -4624,7 +4646,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       </figure>
 
       <div class="callout">
-        <span class="jobi-companion note-companion" data-companion="lady" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-welcome.svg" aria-label="Lady Jobi" tabindex="-1"></object></span>
+        <span class="jobi-companion note-companion" data-companion="bloom" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/bloom-welcome.svg" aria-label="Bloom" tabindex="-1"></object></span>
         <div>
         <div class="tag">The trade-off</div>
         <p>Without a mouth there is far less expressive range, so the warmth has to come from motion, which is harder to get right and slower to build. Worth it: a companion you feel judged by is not a companion.</p>
@@ -4737,7 +4759,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         </div>
         <h3>Keep a streak going, one application at a time.</h3>
       </article>
-      </div
+      </div>
       </div>
 
       <details class="deep-dive">
@@ -4782,7 +4804,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
               <figcaption>Every feature is one tap from the home screen. There are no sub-menus.</figcaption>
               </figure>
           <div class="callout">
-            <span class="jobi-companion note-companion" data-companion="jobi" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-welcome.svg" aria-label="Jobi" tabindex="-1"></object></span>
+            <span class="jobi-companion note-companion" data-companion="coral" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/coral-welcome.svg" aria-label="Coral" tabindex="-1"></object></span>
             <div>
               <div class="tag">The trade-off</div>
               <p>Jobi loses any feature-by-feature comparison, and power users who want dashboards and bulk tooling are better served elsewhere. Accepted, because the person we designed for is not shopping for features. They are tired.</p>
@@ -4793,13 +4815,9 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h3>The Chat: Judgement on Tap</h3>
       <p class="answers">Answers the third insight: the research you have to do before you can write a word.</p>
       <p>The home screen is a chat. Paste a job posting and Jobi tells you whether it is worth applying for, tailors your CV and cover letter, and researches the company, so you stop juggling tabs.</p>
-      <div class="feature-frame no-carousel">
-        <video preload="none" src="/assets/case-jobi/jobi-jd.mp4" muted loop playsinline></video>
-        <div class="ff-caption">
-          <h4>Analyse a Job Description</h4>
-          <p>Scores how well you match the role out of 100 and lists the gaps, based on your actual CV rather than on keywords.</p>
-        </div>
-      </div>
+      <img class="case-media" src="/assets/case-jobi/jd-analysis.webp" data-nocaption
+        loading="lazy" width="2000" height="1125"
+        alt="Two steps, labelled in the graphic. One, Meet Jobi: the extension sits a tab away on any job page. Two, Analyse the job: open a posting and Jobi scores your fit, here 82 out of 100 on a Senior Product Designer role at Wise, with what is in your favour and what to watch.">
       <div class="feature-frame no-carousel feature-switch">
         <div class="fs-pane on">
           <video preload="none" src="/assets/case-jobi/jobi-tailor-cv.mp4" muted loop playsinline></video>
@@ -4828,7 +4846,7 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
         <div class="dd-wrap"><div class="dd-body"><div class="dd-inner">
           <p>Autofill was in the first build. To be useful it has to fill the details that repeat on every form: phone, email, address, place of birth. Storing those means holding sensitive personal data we would be liable for. We cut it entirely. Without those fields, what was left did not justify installing an extension.</p>
           <div class="callout">
-            <span class="jobi-companion note-companion" data-companion="miss" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-welcome.svg" aria-label="Miss Jobi" tabindex="-1"></object></span>
+            <span class="jobi-companion note-companion" data-companion="ember" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/ember-welcome.svg" aria-label="Ember" tabindex="-1"></object></span>
             <div>
               <div class="tag">The trade-off</div>
               <p>The most repetitive part of applying stays manual, and one research finding is left deliberately unanswered. A smaller tool is better than holding data we cannot promise to protect.</p>
@@ -4839,36 +4857,14 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
       <h3>Interview Practice</h3>
       <p class="answers">Answers the silence from employers: when replies are rare, the few interviews you get have to count.</p>
-      <div class="feature-frame">
-        <video preload="none" src="/assets/case-jobi/jobi-interview.mp4" muted loop playsinline></video>
-        <div class="ff-caption">
-          <h4>The first time you say it out loud isn't in the real room</h4>
-          <p>A voice-driven mock interview that role-plays the real thing: questions, follow-ups, and feedback in the moment.</p>
-        </div>
-      </div>
+      <img class="case-media" src="/assets/case-jobi/interview.webp" data-nocaption
+        loading="lazy" width="2000" height="1125"
+        alt="Step four, Practise the interview, labelled in the graphic: a mock interview out loud, with questions drawn from your CV and a debrief at the end. The interviewer, Lauren, speaks while a waveform moves beneath her, and the debrief scores the run 78, nearly interview ready, noting specific, well-paced answers and a conflict question that drifted before reaching its outcome.">
       <h3>The Tracker</h3>
       <p class="answers">Answers the first insight: statuses logged by hand go stale.</p>
-      <div class="feature-frame">
-        <video preload="none" src="/assets/case-jobi/jobi-tracker.mp4" muted loop playsinline></video>
-        <div class="ff-caption">
-          <h4>One pipeline, from saved through to offer</h4>
-          <p>Trackers fail because logging is manual, so we stopped asking people to log. One click captures the role, with reminders so nothing goes quiet because you forgot.</p>
-        </div>
-      </div>
-      <div class="case-cards">
-        <div class="case-card">
-          <h4>Captured, not typed</h4>
-          <p>A prompt appears on any posting. One click files it, which is the difference between a tracker that survives a heavy week and one that does not.</p>
-        </div>
-        <div class="case-card">
-          <h4>The posting outlives the listing</h4>
-          <p>The description is summarised and stored, so when a posting comes down and an interview lands weeks later, the role is still readable.</p>
-        </div>
-        <div class="case-card">
-          <h4>Your words, kept with it</h4>
-          <p>The cover letter is saved against the role, so you walk in knowing what you claimed.</p>
-        </div>
-      </div>
+      <img class="case-media" src="/assets/case-jobi/tracker.webp" data-nocaption
+        loading="lazy" width="2000" height="1125"
+        alt="Step three, Track every application, labelled in the graphic: every job you apply to lands in one place, sorted by stage, with the date you applied and the letter you sent. The tracker lists Wise, Octopus Energy, Starling Bank, Deliveroo and Monzo under Applied, with Interview and Offer one tap away.">
       <div class="callout">
         <span class="jobi-companion note-companion" data-companion="sir" data-pose="cheer"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-cheer.svg" aria-label="Sir Jobi" tabindex="-1"></object></span>
         <div>
@@ -4893,30 +4889,12 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
     <section id="j-process" data-nav>
       <div class="eyebrow"><svg viewBox="0 0 660 422" fill="none"><rect x="281.333" y="248.871" width="86.5638" height="173.128" fill="#0CB385"/><path d="M600.537 86.5617C625.935 130.552 618.42 211.881 535.614 259.688C452.809 307.496 331.077 318.408 305.679 274.417C280.281 230.427 328.373 134.369 411.178 86.5616C486.922 21.6382 575.139 42.5712 600.537 86.5617Z" fill="#0CB385"/><path d="M58.7352 84.841C33.3373 128.832 40.8521 210.16 123.658 257.968C206.463 305.776 328.195 316.687 353.593 272.697C378.991 228.706 330.899 132.649 248.094 84.8409C172.35 19.9175 84.1331 40.8505 58.7352 84.841Z" fill="#0CB385"/></svg>Design Process</div>
-      <h2>Design, Build, and Lead in One Loop</h2>
-      <p>The three of us ran research, ideation and design together in Figma. The build I took on alone: every screen went into Claude Code and came out as working software.</p>
-      <img class="case-media" src="/assets/case-jobi/jobi-ideation.png" alt="The Figma board, in five labelled sections: mascot ideation sketches, mascot designs and app-icon variants, mid-fi screen designs, lo-fi and reference layouts, and moodboards." loading="lazy">
-      <p>I am a designer, not an engineer, so the build had to be set up as a system
-        before any of it was written. Two things carried it.</p>
-      <div class="case-cards">
-        <div class="case-card">
-          <h4>One shared context</h4>
-          <p>Claude Code held every artefact and research piece: the interviews, the
-            affinity map, the reasoning behind each decision. The build never drifted
-            from the why, because design and code read from one source.</p>
-        </div>
-        <div class="case-card">
-          <h4>One job per agent</h4>
-          <p>Front end, back end, security and research each got their own agent, so
-            the work never tangled. Their rules were written once: <b>design.md</b> for
-            the design system, <b>architecture.md</b> for scale, <b>security.md</b> on
-            every new feature.</p>
-        </div>
-      </div>
-      <p>Whenever two options were both reasonable, the decision went back to a research
-        finding rather than to taste, and was written down with what it cost. Those
-        notes are the trade-off boxes in this study. They are also what let a designer
-        build something solid enough to carry an MVP.</p>
+      <h2>Designed Together, Built Solo, Debugged With an Engineer</h2>
+      <p>The three designers, me included, ran research, ideation and design together in Figma. I built the MVP alone and released it as a private beta, then worked with a software engineer to debug it.</p>
+      <img class="case-media" src="/assets/case-jobi/process.webp" data-nocaption
+        loading="lazy" width="2000" height="1125"
+        alt="How Jobi was made: four people, never all at once. Five steps in order. One, research: five interviews and two competitor audits, by three designers. Two, ideate and design: brand, mascot and flows in Figma, lo-fi to mid-fi, by three designers. Three, build the MVP: every screen built in Claude Code, by me alone, with one shared context for every screen and one agent per job so none drifted. Four, private beta: real users, measured on speed and behaviour, by me alone. Five, debug: tracked down what broke and fixed it, with a software engineer, the first time anyone else read the code. Every build decision traced back to a research finding.">
+      <p>I am a designer, not an engineer, so I set the build up as a system before any of it was written. Claude Code held every interview, map and decision as one shared context, and each agent had a single job, which kept the build tied to the research.</p>
     </section>
 
     <section id="j-takeaways" data-nav>
@@ -4924,15 +4902,15 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
       <h2>Key Takeaway</h2>
 
       <div class="takeaway">
-        <span class="jobi-companion note-companion" data-companion="lady" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-welcome.svg" aria-label="Lady Jobi" tabindex="-1"></object></span>
+        <span class="jobi-companion note-companion" data-companion="cocoa" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/cocoa-welcome.svg" aria-label="Cocoa" tabindex="-1"></object></span>
         <div>
           <h4>Building It Myself Was Fast, and Unchecked</h4>
-          <p>Designing and shipping alone meant a decision could be in the product the same day it was made. It also meant nobody pushed back. The panel reached 13,700 lines in one file before I noticed, and untangling it was work I had created by moving faster than I was reviewing.</p>
+          <p>Building and shipping alone up to the beta meant a decision could be in the product the same day it was made. It also meant nobody else read the code until an engineer joined to debug it. The panel reached 13,700 lines in one file before I noticed, and untangling it was work I had created by moving faster than I was reviewing.</p>
         </div>
       </div>
 
       <div class="takeaway">
-        <span class="jobi-companion note-companion" data-companion="jobi" data-pose="welcome"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/jobi-welcome.svg" aria-label="Jobi" tabindex="-1"></object></span>
+        <span class="jobi-companion note-companion" data-companion="miso" data-pose="cheer"><object type="image/svg+xml" data-src="/assets/case-jobi/companions/miso-cheer.svg" aria-label="Miso" tabindex="-1"></object></span>
         <div>
           <h4>The Privacy Call Was Right, and It Came Too Late</h4>
           <p>Autofill was built before we asked what storing phone numbers and addresses would oblige us to protect. Cutting it was the right call, but it came after the build instead of before it. Research told us re-typing was a real problem. It could not tell us we would need a different answer to it.</p>
@@ -5244,7 +5222,9 @@ const projects = [
   { title: 'Jobi', desc: 'A companion for the job hunt, not an autopilot for it.',
     meta: 'Founder \u00b7 Shipped 2026', when: '2026 \u00b7 Shipped', page: 'jobi',
     mark: '/assets/case-jobi/jobi-wordmark-night.svg',
-    video: '/assets/videos/jobi-jd-web.mp4' },
+    /* the same file the case study's JD feature plays, so a visitor who
+       opens the study does not fetch the footage twice */
+    video: '/assets/case-jobi/jobi-jd.mp4' },
   { title: 'Pactto', desc: 'Collaboration that doesn\u2019t end when the call does.',
     meta: 'Product design intern \u00b7 Shipped 2026', when: '2026 \u00b7 Shipped', page: 'pactto',
     mark: '/assets/case-pactto/pactto-wordmark-night.svg',
@@ -5455,6 +5435,10 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
     var s = SKINS[id] || SKINS.jobi, doc;
     try { doc = obj.contentDocument; } catch (e) { return null; }
     if (!doc || !doc.documentElement) return null;
+    /* The Bloomi characters (bloom, coral, ember, miso, cocoa) share Jobi's
+       rig but carry their own colours in the file. Only Jobi's own rigs are
+       skinned; painting the others would turn them white and green. */
+    if ((obj.getAttribute('data-src') || '').indexOf('/jobi-') < 0) return doc;
     var st = doc.documentElement.style;
     st.setProperty('--jobi-body', s.body);
     st.setProperty('--jobi-leaf', s.leaf);
@@ -5496,7 +5480,8 @@ document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
     bind(mark, gaze);
     /* only the welcome rig has phases; the other poses are whole files */
     var src = obj.getAttribute('data-src');
-    var phased = src.indexOf('jobi-welcome') >= 0;
+    /* any welcome rig, Jobi's or Bloomi's, has the entrance, wave and idle phases */
+    var phased = /-welcome\.svg$/.test(src);
     var url = src + (phased ? (reduce ? '#phase-idle' : fragment) : '');
     if (obj.getAttribute('data')) {
       obj.setAttribute('data', 'about:blank');
@@ -6128,14 +6113,18 @@ updateRail();
   const TEXT = 'p, h1, h2, h3, h4, li, blockquote, cite, dd, dt, figcaption, .case-sub';
 
   window.addEventListener('mouseover', e => {
+    /* the carousel is dragged, and its cards are full of prose the caret
+       would otherwise claim, so the rail speaks for everything inside it */
+    const rail = e.target.closest('.jr-rail');
     const tile = e.target.closest('.hp-card:not(.pg-card)');
     const link = e.target.closest(LINK);
     const text = e.target.closest(TEXT);
 
-    body.classList.toggle('cursor-link', !tile && !!link);
-    body.classList.toggle('cursor-view', !!tile);
+    body.classList.toggle('cursor-drag', !!rail && !link);
+    body.classList.toggle('cursor-link', !rail && !tile && !!link);
+    body.classList.toggle('cursor-view', !rail && !!tile);
     /* the caret only makes sense over prose, never over a control or a tile */
-    body.classList.toggle('cursor-text', !tile && !link && !!text);
+    body.classList.toggle('cursor-text', !rail && !tile && !link && !!text);
   }, { passive: true });
 
 })();
