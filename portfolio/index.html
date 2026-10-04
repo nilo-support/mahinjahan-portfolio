@@ -483,15 +483,17 @@ body.mascot-sun:has(.sunbeam.on) .hp-mode { color: var(--case-body); }
    picking the moon does not darken anything by itself, so turning the text
    over then would leave it changed against a ground that had not moved.
    Against the deep sky everything here clears 9:1. */
-body.mascot-moon:has(.nightfall.on) .hp-intro p { color: #E8EEFF; }
+body.home-active.mascot-moon:has(.nightfall.on) .hp-intro p { color: #E8EEFF; }
 /* on the dusk ramp, not the deep sky: the night text would be invisible */
-body.mascot-moon:has(.nightfall.on) .hp-mode { color: #16233F; }
+body.home-active.mascot-moon:has(.nightfall.on) .hp-mode { color: #16233F; }
 /* :not(.open) throughout, because these colour the nav as chrome sitting on
    the sky. Open, it is a full-page sheet with a ground of its own, and what is
-   inside it takes --mascot-ink instead. */
-body.mascot-moon:has(.nightfall.on) .hp-clock,
-body.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) a,
-body.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) .hp-burger { color: #D5E0F7; }
+   inside it takes --mascot-ink instead. The layer keeps .on when you leave
+   home (it is only hidden there), so these name the home page too: without
+   it the pale words followed you onto About's light ground and vanished. */
+body.home-active.mascot-moon:has(.nightfall.on) .hp-clock,
+body.home-active.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) a,
+body.home-active.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) .hp-burger { color: #D5E0F7; }
 /* the strip's own labels already sit on darkened footage, so they stay put */
 
 /* One sparkle sits exactly where the waving hand lands, so the two never show
@@ -1777,8 +1779,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .pg-item { order: var(--o); }
   }
   /* ---------- About ----------
-     rachelchen.tech/about's structure in the site's own pieces: the mascot
-     and a headline with moving tiles, the bio beside the Spotify tile, then
+     rachelchen.tech/about's structure in the site's own pieces: a headline
+     with moving tiles in the Playground's place, the bio beside the Spotify tile, then
      photo groups under numbered mono labels, two to a row and the dishes
      across the width. Square photos at their own proportions, like the home
      cards and the Playground. */
@@ -1790,8 +1792,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       [content-start] minmax(0, 1fr) [content-end]
       var(--edge) [full-end];
   }
-  .about-hero { display: flex; justify-content: flex-start; align-items: flex-end; margin-bottom: 30px; }
-  .about-hero .hello-wrap { margin: 0; }
   #about .hp-photo, #about .ab-tile { display: inline-block; }
   #about .ab-title {
     margin: 0; max-width: 24.5em;
@@ -1819,8 +1819,9 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   @keyframes abPop { 0%, 60% { transform: scale(0); opacity: 0; } 68% { transform: scale(1.25); opacity: 1; } 80% { transform: scale(1); opacity: 1; } 92%, 100% { transform: scale(.4); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { #about .ab-tile * { animation: none !important; } }
 
-  /* the bio under the headline, at a measure that does not feel squeezed */
-  .ab-intro { margin: 30px 0 110px; max-width: 56em; }
+  /* the bio under the headline, at a measure that does not feel squeezed,
+     and at the Playground's spacing, so the collage starts on the first screen */
+  .ab-intro { margin: 22px 0 96px; max-width: 56em; }
   .ab-bio p { margin: 0 0 14px; font-size: 17px; line-height: 1.65; color: var(--case-body); }
   .ab-bio p:last-child { margin-bottom: 0; }
   .ab-bio a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -1852,7 +1853,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       grid-template-columns: [full-start] 20px [content-start] minmax(0, 1fr) [content-end] 20px [full-end];
     }
     #about .ab-title { font-size: 30px; }
-    .ab-intro { margin-bottom: 64px; }
+    .ab-intro { margin-bottom: 48px; }
     #about { --ab-row: 120px; }
     .ab-gallery { gap: 8px; }
     .ab-tag { padding: 10px; font-size: 10.5px; }
@@ -4606,8 +4607,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   <div class="case about">
 
     <h1 class="sr-only">About Mahin Jahan</h1>
-    <!-- the weather mascot moves in here from the home page; see setActive -->
-    <div class="about-hero" id="about-hero"></div>
 
     <p class="ab-title">I&rsquo;m a designer, a <span class="ab-nw">cook <span class="ab-tile ab-tile-pan" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="27" y="22.4" width="10.5" height="3.2" rx="1.6" fill="#14141B"/><ellipse cx="17.5" cy="24" rx="12" ry="5.6" fill="#14141B"/><g class="egg"><ellipse cx="17.5" cy="20.6" rx="6.4" ry="3.2" fill="#fff"/><circle cx="17.5" cy="20.2" r="2.1" fill="#FFB020"/></g></svg></span></span> and a League player, hooked on progress you can <span class="ab-nw">see <span class="ab-tile ab-tile-bar" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="7" y="19" width="26" height="6" fill="#fff"/><rect class="fill" x="7" y="19" width="26" height="6" fill="#14141B"/><path class="pop" d="M30 8.5C30.5 11.2 31.3 12 34 12.5C31.3 13 30.5 13.8 30 16.5C29.5 13.8 28.7 13 26 12.5C28.7 12 29.5 11.2 30 8.5Z" fill="#14141B"/></svg></span>.</span></p>
 
@@ -5754,19 +5753,12 @@ function setActive(page) {
   /* Jobi's title companion waves as its page opens */
   if (page === 'jobi' && window.jobiCompanionArrive) window.jobiCompanionArrive();
 
-  /* The weather mascot is one element, on whichever page is open: the home
-     hero, or the About page's own. Moved rather than duplicated, so every
-     script that watches .hello-wrap keeps working wherever it is. */
+  /* The weather mascot lives on the home page alone now; About opens on its
+     headline, like the Playground. This puts him back in his slot should
+     anything have moved him. */
   var hello = document.querySelector('.hello-wrap');
-  if (hello) {
-    if (page === 'about') {
-      var hero = document.getElementById('about-hero');
-      if (hero && hello.parentElement !== hero) hero.appendChild(hello);
-    } else {
-      var mark = document.querySelector('.hp .hello-slot');
-      if (mark && hello.previousElementSibling !== mark) mark.parentElement.insertBefore(hello, mark.nextSibling);
-    }
-  }
+  var mark = document.querySelector('.hp .hello-slot');
+  if (hello && mark && hello.previousElementSibling !== mark) mark.parentElement.insertBefore(hello, mark.nextSibling);
 }
 
 function goTo(page, fromHistory) {
