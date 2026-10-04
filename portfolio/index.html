@@ -963,8 +963,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
        exactly. The night's sky is a page-long gradient, but the top of the
        window is always on its deep band (the dusk ramp only ever fills the
        last screen), so the bar's copy is that band alone. */
-    .top-bar .weather-layer { position: absolute; top: 0; left: 0; right: 0; bottom: auto; height: 100vh !important; }
-    .top-bar .nightfall { background: rgba(5, 11, 33, .96); }
     body:is([data-page="home"], [data-page="about"], [data-page="playground"]) .hp-clock { position: fixed; }
     body:is([data-page="home"], [data-page="about"], [data-page="playground"]) :is(.hp-clock, .hp-nav, .case-back) {
       transition: transform .38s var(--ease-out), color .2s ease;
@@ -973,6 +971,9 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       transform: translateY(-110px);
     }
   }
+
+  .top-bar .weather-layer { position: absolute; top: 0; left: 0; right: 0; bottom: auto; height: 100vh !important; }
+  .top-bar .nightfall { background: rgba(5, 11, 33, .96); }
 
   /* the top-left corner: London's clock on home, the way home everywhere else */
   body:not([data-page="home"]) .hp-clock { display: none; }
@@ -1116,6 +1117,53 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   }
   /* the desktop row is the site's pages only */
   @media (min-width: 901px) { .hp-nav .nav-out { display: none; } }
+
+  /* ---------- phones: the desktop's chrome ----------
+     The same corners as the wide layout rather than a menu: London's clock,
+     or the way home, on the left; About and the Playground on the right; a
+     case study has its way home in the corner instead, as on desktop. All
+     of it rides on the top bar, which clears off on the way down the page
+     and comes back on the way up, so text never runs under the words. */
+  @media (max-width: 700px) {
+    .hp-burger { display: none !important; }
+    .hp-nav-items {
+      position: static; inset: auto; z-index: auto;
+      flex-direction: row; align-items: center; gap: 20px; padding: 0;
+      background: none; clip-path: none; visibility: visible; transition: none;
+    }
+    .hp-nav-items > * { opacity: 1; transform: none; transition: none; }
+    .hp-nav .hp-nav-items a {
+      padding: 0; font-size: 16px; line-height: 1.8; letter-spacing: .018em; color: var(--ink);
+    }
+    .hp-nav .hp-nav-items a.nav-out, .hp-nav .hp-nav-items a[data-page="home"] { display: none; }
+    body:not([data-page="home"]):not([data-page="about"]):not([data-page="playground"]) .hp-nav { display: none; }
+    .case-back.show { display: inline-flex; }
+    .case-back .cb-text { display: inline; }
+    .hp-clock { position: fixed; }
+
+    .top-bar {
+      display: block; position: fixed; top: 0; left: 0; right: 0; height: 66px; z-index: 19;
+      overflow: hidden; contain: paint;
+      background: var(--bg); opacity: 0; transition: opacity .25s ease, transform .38s var(--ease-out);
+    }
+    body.chrome-solid .top-bar { opacity: 1; }
+    :is(.hp-clock, .hp-nav, .case-back) { transition: transform .38s var(--ease-out), color .2s ease; }
+    body.chrome-away :is(.top-bar, .hp-clock, .hp-nav, .case-back) { transform: translateY(-90px); }
+  }
+  /* You are here, at every size: the current page keeps its colour block.
+     Above 900px with a mouse this is also where the hover sweep ends up. */
+  .hp-nav-items a[data-page="about"] { --nav-c: #F5B83D; }
+  .hp-nav-items a[data-page="playground"] { --nav-c: #3DBEF0; }
+  body[data-page="about"] .hp-nav-items a[data-page="about"],
+  body[data-page="playground"] .hp-nav-items a[data-page="playground"] {
+    position: relative; isolation: isolate; padding: 1px 7px; margin: -1px -7px;
+  }
+  body[data-page="about"] .hp-nav-items a[data-page="about"]::before,
+  body[data-page="playground"] .hp-nav-items a[data-page="playground"]::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; background: var(--nav-c);
+  }
+  html body[data-page="about"] .hp-nav:not(.open) .hp-nav-items a[data-page="about"],
+  html body[data-page="playground"] .hp-nav:not(.open) .hp-nav-items a[data-page="playground"] { color: #14141B; }
   .hp-nav a {
     font-size: 16px; font-weight: 400; line-height: 1.8; letter-spacing: .018em;
     color: var(--ink); text-decoration: none; transition: color .2s ease;
@@ -1352,11 +1400,11 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      two by two as square cards with a hairline, each captioned underneath:
      the line about the project on the left, the name and status on the
      right. The caption carries the words, so hover only leans the footage
-     in. Phones keep their stacked list, so all of this is desktop only and
-     scoped to #home (the playground shares .hp-card). */
+     in. Phones take the same pieces, stacked (see the phone block further
+     down). Scoped to #home, since the playground shares .hp-card. */
   .hp-intro .hp-headline, .hp-keys { display: none; }
   .hp-cap { display: none; }
-  @media (min-width: 901px) {
+  @media all {
     #home {
       --hp-mono: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
       --hp-hair: color-mix(in srgb, var(--ink) 9%, transparent);
@@ -1500,8 +1548,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       color: var(--case-cap); transition: color 1.4s cubic-bezier(.4, 0, .2, 1);
     }
   }
-  /* a narrow desktop: the line and the tags stop sharing a row */
-  @media (min-width: 901px) and (max-width: 1180px) {
+  /* a narrow screen: the line and the tags stop sharing a row */
+  @media (max-width: 1180px) {
     #home .hp-cap { flex-direction: column; gap: 6px; }
   }
 
@@ -1547,6 +1595,26 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   @media (max-width: 640px) {
     .hp { padding: 96px 16px 56px; }
     :is(.hp, .about-hero) .hello-svg { height: 88px; }
+  }
+  /* Phones take the desktop's home, stacked: the mascot on the left edge,
+     the headline with its tiles, the two keys under it, then the studies one
+     to a row, each with its caption under it. 20px sides, the same as About
+     and the Playground and the chrome across the top. */
+  @media (max-width: 900px) {
+    #home .hp { padding: 112px 20px 72px; }
+    #home .hello-wrap { margin: 0 0 24px; }
+    #home .hp-intro {
+      grid-template-columns: minmax(0, 1fr); gap: 22px;
+      padding: 0; margin: 0 0 56px;
+    }
+    #home .hp-intro .hp-headline { font-size: 30px; line-height: 1.12; }
+    #home .hp-keys { grid-column: 1; grid-row: 2; justify-self: start; margin: 0; }
+    /* a key is pressed with a thumb here, so it is a thumb's size */
+    #home .hp-key { width: 40px; height: 40px; }
+    #home .hp-strip { gap: 48px; }
+    #home .hp-card .hp-title { display: none; }
+    #home .hp-cap { padding-top: 14px; gap: 4px; }
+    #home .hp-cap-line { font-size: 16px; }
   }
 
   /* ---------- Shared inner layout ---------- */
@@ -1665,8 +1733,6 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 52px; }
     .pg-col { display: contents; }
     .pg-item { order: var(--o); }
-    /* the home's phone cards keep a radius, so these do too */
-    .pg-item .pg-media { border-radius: 10px; }
   }
   /* ---------- About ----------
      rachelchen.tech/about's structure in the site's own pieces: the mascot
@@ -3553,12 +3619,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      the remaining side-by-side pairs into stacks before they get squeezed. */
   @media (max-width: 700px) {
     .case { padding-top: 96px; padding-bottom: 140px; }
-    /* The band that used to protect the back chevron from the text scrolling
-       under it is gone with the chevron. It was painted in --bg, which the
-       night never changes because the night is a layer rather than a palette,
-       so it read as a white strip across the top of every case page. Nothing
-       replaces it: the burger carries its own ground. */
-    .case-back.show { display: none; }
+    /* the way home stays in its corner, on the top bar like the rest of the
+       phone's chrome (see "phones: the desktop's chrome") */
     /* two 169px cards is not a grid, it is a squeeze */
     /* four tracks will not survive a phone — back to a 2x2 */
     .case-meta { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -5848,13 +5910,12 @@ strip.addEventListener('click', e => {
 
 /* the top bar steps away while you scroll down and comes back on the way up */
 (function () {
-  const PAGES = ['home', 'about', 'playground'];
   let last = scrollY, ticking = false;
   const update = () => {
     ticking = false;
     const y = scrollY, b = document.body;
     b.classList.toggle('chrome-solid', y > 4);
-    if (!PAGES.includes(b.dataset.page) || b.classList.contains('menu-open') || y < 80) {
+    if (b.classList.contains('menu-open') || y < 80) {
       b.classList.remove('chrome-away');
     } else if (y > last + 6) {
       b.classList.add('chrome-away');
