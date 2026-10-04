@@ -6857,7 +6857,50 @@ updateRail();
     if (t.closest('.hello-svg')) return 'Boop';
     return 'You';
   };
-  window.addEventListener('mouseover', e => say(action(e.target)), { passive: true });
+  /* Arriving on the home page, the tag types out what the mascot is, holds
+     it for a few seconds, and hands back to You. It waits for the loader to lift
+     and for the pointer to be on the page, and anything the pointer finds
+     on the way (a card, a link) cuts it short. Every arrival on home, not
+     just the first. */
+  const INTRO = 'Mascot = London’s weather';
+  let current = 'You', typing = null, armed = false;
+  const stopIntro = () => { clearTimeout(typing); typing = null; };
+  const intro = () => {
+    armed = false; stopIntro();
+    let n = 0;
+    said = '';
+    tag.classList.remove('pop'); void tag.offsetWidth; tag.classList.add('pop');
+    const step = () => {
+      tag.textContent = INTRO.slice(0, ++n);
+      typing = n < INTRO.length
+        ? setTimeout(step, 42)
+        : setTimeout(() => { typing = null; say(current); }, 3200);
+    };
+    step();
+  };
+  const loaded = () => { const l = document.getElementById('loader'); return !l || l.classList.contains('done'); };
+  const arrive = () => {
+    if (body.dataset.page !== 'home') return;
+    if (!loaded()) { setTimeout(arrive, 200); return; }
+    if (body.classList.contains('cursor-in')) intro(); else armed = true;
+  };
+  window.addEventListener('mousemove', () => { if (armed) intro(); }, { passive: true });
+  let page = body.dataset.page;
+  new MutationObserver(() => {
+    if (body.dataset.page === page) return;
+    page = body.dataset.page;
+    armed = false;
+    if (page === 'home') setTimeout(arrive, 450);      /* after the curtain lifts */
+    else if (typing) { stopIntro(); said = ''; say(current); }
+  }).observe(body, { attributes: true, attributeFilter: ['data-page'] });
+  arrive();
+
+  window.addEventListener('mouseover', e => {
+    current = action(e.target);
+    if (typing && current === 'You') return;
+    stopIntro();
+    say(current);
+  }, { passive: true });
 
 })();
 </script>
