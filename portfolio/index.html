@@ -942,19 +942,29 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      ground behind the corner item and the nav, so nothing that scrolls under
      them hurts their legibility. Scrolling down sends the bar, the corner
      item and the nav up out of view together; scrolling up brings them back.
-     The bar takes the page's ground, or the sky's navy once night has fallen
-     on home, so it never shows as a white strip across the dark. Phones keep
-     their own chrome, the burger already carries a ground. */
+     The bar is a window onto the sky rather than a strip laid over it: it
+     takes the page's ground and carries a copy of whatever weather is out
+     (the sun's light, the night and its stars, the rain), lined up with the
+     real thing, so only the content under it is hidden. Phones keep their
+     own chrome, the burger already carries a ground. */
   .top-bar { display: none; }
   @media (min-width: 701px) {
     body:is([data-page="home"], [data-page="about"], [data-page="playground"]) .top-bar {
       display: block; position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 19;
-      background: transparent; transition: background-color .25s ease, transform .38s var(--ease-out);
+      overflow: hidden; contain: paint;
+      background: var(--bg); opacity: 0; transition: opacity .25s ease, transform .38s var(--ease-out);
     }
-    /* at the top of the page the bar is clear; the ground only comes in once
-       there is something scrolled underneath it */
-    body.chrome-solid .top-bar { background: var(--bg); }
-    body.chrome-solid.home-active.mascot-moon:has(.nightfall.on) .top-bar { background: var(--mascot-bg); }
+    /* at the top of the page the bar is clear; it only comes in once there is
+       something scrolled underneath it. It fades as a whole, ground and sky
+       together, so where nothing is under it there is nothing to see change. */
+    body.chrome-solid .top-bar { opacity: 1; }
+    /* The copies sit where the originals do: the bar is flush with the top of
+       the window and as wide as it, so a window-sized layer inside it lines up
+       exactly. The night's sky is a page-long gradient, but the top of the
+       window is always on its deep band (the dusk ramp only ever fills the
+       last screen), so the bar's copy is that band alone. */
+    .top-bar .weather-layer { position: absolute; top: 0; left: 0; right: 0; bottom: auto; height: 100vh !important; }
+    .top-bar .nightfall { background: rgba(5, 11, 33, .96); }
     body:is([data-page="home"], [data-page="about"], [data-page="playground"]) .hp-clock { position: fixed; }
     body:is([data-page="home"], [data-page="about"], [data-page="playground"]) :is(.hp-clock, .hp-nav, .case-back) {
       transition: transform .38s var(--ease-out), color .2s ease;
@@ -1913,6 +1923,10 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .case-figure + .card-art,
   .card-art + .case-figure { margin-top: 8px; }
 
+  /* a clip holds a 16:9 box before its file has said how big it is, so the
+     text below does not jump when it loads; the file's own shape wins */
+  .case-figure > video.case-media,
+  .case-figure > video.case-video { aspect-ratio: auto 16 / 9; }
   .case-figure > .case-media,
   .case-figure > .case-video {
     display: block; width: 100%; height: auto;
@@ -4447,25 +4461,25 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
           </figcaption>
         </figure>
         <figure class="pg-item" style="--o: 1">
-          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/SYSdRjm9u489drfjUsimy8iDcrQ.mp4" width="1920" height="1032" muted loop playsinline></video>
+          <video class="pg-media" preload="none" src="/assets/playground/discord-reply.mp4" width="1280" height="688" muted loop playsinline></video>
           <figcaption class="pg-cap">
             <span class="pg-line">Discord&rsquo;s reply, rebuilt for its motion</span>
             <span class="pg-desc">The small motion in Discord&rsquo;s reply: the text field&rsquo;s corners morph, and the reply button spins in and changes colour.</span>
             <span class="pg-tags">Discord reply &bull; Motion study</span>
           </figcaption>
         </figure>
-        <figure class="pg-item" style="--o: 4">
-          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/cDmCG4Ev2NiriOtXY8y2GOITTog.mp4" width="1920" height="952" muted loop playsinline></video>
+        <figure class="pg-item" style="--o: 8">
+          <img class="pg-media" src="/assets/playground/productive.webp" width="2000" height="1440" alt="Productive, redesigned: the app icon, a sprout on a dark tile, beside three dark screens. Today shows a seven-day reading challenge shared with a friend above the day&rsquo;s habits and their streaks; a habit&rsquo;s page has its streak, a reading heatmap and a row of sprout faces for rating the day&rsquo;s difficulty; and a third screen celebrates unlocking 21 days of Pro. A large sprout character with a white body stands to the right." loading="lazy">
           <figcaption class="pg-cap">
-            <span class="pg-line">Terms of Service, read for you</span>
-            <span class="pg-desc">A Chrome extension that summarises Terms of Service the moment one appears, explains the confusing clauses, and checks contracts and subscriptions for hidden changes.</span>
-            <span class="pg-tags">Printl &bull; Shipped extension</span>
+            <span class="pg-line">A habit tracker, redesigned in 24 hours</span>
+            <span class="pg-desc">My final design from Bending Spoons&rsquo; design competition, where the brief was to redesign Productive in a day: challenges you take on with a friend, a heatmap of every day you showed up, and a sprout that rates how hard the day was.</span>
+            <span class="pg-tags">Productive &bull; Bending Spoons competition</span>
           </figcaption>
         </figure>
       </div>
       <div class="pg-col">
         <figure class="pg-item" style="--o: 2">
-          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/nwUOaipUWGOIGZT53W0wIKc.mp4" width="1024" height="1024" muted loop playsinline></video>
+          <video class="pg-media" preload="none" src="/assets/playground/sao-vr.mp4" width="1024" height="1024" muted loop playsinline></video>
           <figcaption class="pg-cap">
             <span class="pg-line">A Sword Art Online scene, rebuilt in VR</span>
             <span class="pg-desc">The anime&rsquo;s interface, its sound cues and its world, put together so the moment feels the way it does on screen.</span>
@@ -4478,6 +4492,14 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
             <span class="pg-line">Trafalgar Square at night, with nobody else in it</span>
             <span class="pg-desc">A VR mystery thriller made in a group for a university VR module: an immersive tour of Trafalgar Square with nobody else around.</span>
             <span class="pg-tags">Lost in Trafalgar &bull; VR game</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 4">
+          <video class="pg-media" preload="none" src="/assets/playground/printl.mp4" width="1280" height="634" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">Terms of Service, read for you</span>
+            <span class="pg-desc">A Chrome extension that summarises Terms of Service the moment one appears, explains the confusing clauses, and checks contracts and subscriptions for hidden changes.</span>
+            <span class="pg-tags">Printl &bull; Shipped extension</span>
           </figcaption>
         </figure>
       </div>
@@ -4502,7 +4524,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
           </figcaption>
         </figure>
         <figure class="pg-item" style="--o: 6">
-          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/kxpZV8Fh6WMEfWeFOuj7cxSQI.mp4" width="3840" height="2046" muted loop playsinline></video>
+          <video class="pg-media" preload="none" src="/assets/playground/deku-notebook.mp4" width="1280" height="682" muted loop playsinline></video>
           <figcaption class="pg-cap">
             <span class="pg-line">A battle pass drawn like a hero&rsquo;s notebook</span>
             <span class="pg-desc">Deku&rsquo;s Notebook as game UI: comic panels, halftones and bold type, with progression, purchases and rewards kept legible on a controller.</span>
@@ -5619,7 +5641,7 @@ const PAGE_META = {
   about:      { path: '/about',      title: 'About Mahin Jahan \u2014 Product Designer in London',
                 desc: 'How Mahin Jahan came to product design: a startup, an economics degree, a Master\u2019s in Human-Computer Interaction and an internship at Pactto. Off the clock: cooking, League of Legends and running.' },
   playground: { path: '/playground', title: 'Playground \u2014 Interaction and motion experiments by Mahin Jahan',
-                desc: 'Small experiments in motion and interaction by Mahin Jahan: a Discord reply interaction, a Sword Art Online VR scene, TripUp, the Printl Chrome extension, a Deku\u2019s Notebook battle pass and Lost in Trafalgar, a VR mystery game.' },
+                desc: 'Small experiments in motion and interaction by Mahin Jahan: a Discord reply interaction, a Sword Art Online VR scene, TripUp, the Printl Chrome extension, a 24-hour redesign of Productive, a Deku\u2019s Notebook battle pass and Lost in Trafalgar, a VR mystery game.' },
   jobi:       { path: '/jobi',       title: 'Jobi case study \u2014 Mahin Jahan, Product Designer',
                 desc: 'Jobi: a companion for the job hunt, not an autopilot for it. How Mahin Jahan researched, branded and shipped an AI job-search companion as founder and product designer.' },
   pactto:     { path: '/pactto',     title: 'Pactto case study \u2014 Mahin Jahan, Product Designer',
@@ -7155,6 +7177,38 @@ updateRail();
     document.querySelectorAll('.page').forEach(function (p) { ro.observe(p); });
   }
 
+  /* The top bar's sky: a copy of every layer, inside the bar. They keep the
+     weather-layer class, so whatever lights or darkens a layer does the same
+     to its copy. Their animations are set to the originals' clocks whenever
+     the copies could have fallen behind (the bar was hidden, or the weather
+     changed), so a shaft of light or a drop crosses the bar's edge unbroken. */
+  var bar = document.querySelector('.top-bar');
+  if (bar) {
+    var real = [].slice.call(document.querySelectorAll('body > .weather-layer'));
+    var copy = real.map(function (l) { return bar.appendChild(l.cloneNode(true)); });
+    var clocks = function (el) {
+      return el.getAnimations().filter(function (a) { return a.animationName; });
+    };
+    var syncSky = function () {
+      real.forEach(function (l, n) {
+        var a = l.querySelectorAll('i'), b = copy[n].querySelectorAll('i');
+        for (var k = 0; k < a.length && k < b.length; k++) {
+          var ra = clocks(a[k]), rb = clocks(b[k]);
+          for (var j = 0; j < ra.length && j < rb.length; j++) {
+            if (ra[j].currentTime != null) rb[j].currentTime = ra[j].currentTime;
+          }
+        }
+      });
+    };
+    var later = function () { requestAnimationFrame(function () { requestAnimationFrame(syncSky); }); };
+    if (window.ResizeObserver) new ResizeObserver(later).observe(bar);
+    var skyKey = '';
+    new MutationObserver(function () {
+      var k = (document.body.className.match(/\b(mascot|wx)-\S+/g) || []).join() + (document.body.dataset.nightWx || '');
+      if (k !== skyKey) { skyKey = k; later(); }
+    }).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-night-wx'] });
+  }
+
   var storming = false;
   function toggle() {
     storming = !storming;
@@ -7292,25 +7346,31 @@ updateRail();
 })();
 </script>
 <script>
-/* ---------- video: decode only what is on screen ----------
-   Every case study marks its clips autoplay+loop, so a browser decodes all of
-   them at once whether or not any is visible: ten simultaneous 1080p streams
-   on the Pactto page alone. That is what made playback stutter. Each clip now
-   starts as it comes into view and pauses as it leaves, so one or two decode
-   at a time. Every clip is preload="none", so one you never scroll to costs
-   nothing: the page was pulling 31MB of video up front, most of it for case
-   studies the visitor was not even looking at, which competed for bandwidth
-   with whatever was actually playing.
+/* ---------- video: decode only what is on screen, and keep it moving ----------
+   Every clip is muted, looped and preload="none" in the markup, with no
+   autoplay: autoplay overrides preload="none" in the spec, so the browser
+   would start fetching every clip on every page before this script ran.
 
-   The markup carries no autoplay attribute on purpose: autoplay overrides
-   preload="none" in the spec, so leaving it on meant the browser started
-   fetching every clip before this script could run. */
+   Three distances from the window, three jobs:
+   - within a screen of it, a clip is warmed: its poster (the first frame,
+     from /assets/posters/) goes up and it starts buffering, so it is ready
+     before it arrives instead of being fetched as it comes into view;
+   - on screen, it plays; off screen, it pauses, so only what you can see is
+     being decoded;
+   - hovering or pressing a link to another page warms that page's opening
+     clips, so they are already loading while the page changes.
+
+   A clip on screen should always be moving. A watchdog checks each one: one
+   the browser paused is started again, one frozen on data it already has is
+   nudged, and one stuck waiting on the network or that failed outright is
+   reloaded from where it was. A browser that refuses to play muted video at
+   all (iOS Low Power Mode, data savers) is left on its posters until the
+   next touch or key, which is allowed to start them. */
 (function () {
   var vids = document.querySelectorAll('video');
-  if (!vids.length) return;
   if (!('IntersectionObserver' in window)) {
-    /* no observer to gate on, so fall back to the old all-at-once behaviour
-       rather than leave a browser with stills */
+    /* no observer to gate on, so fall back to all at once rather than leave
+       a browser with stills */
     for (var n = 0; n < vids.length; n++) {
       vids[n].autoplay = true;
       var q = vids[n].play();
@@ -7319,59 +7379,155 @@ updateRail();
     return;
   }
 
-  for (var i = 0; i < vids.length; i++) vids[i].pause();
-
-  /* what is on screen right now, so it can be put back after the tab is */
   var onScreen = new Set();
+  var state = new WeakMap();   /* per clip: last time seen, since when, retries */
+  var refused = false;         /* the browser said no to muted autoplay */
+
+  var poster = function (v) {
+    if (v.poster || v.hasAttribute('data-no-poster')) return;
+    var src = v.getAttribute('src') || '';
+    if (src.indexOf('/assets/') === 0 && /\.mp4$/.test(src)) {
+      v.poster = src.replace('/assets/', '/assets/posters/').replace(/\.mp4$/, '.webp');
+    }
+  };
+  var warm = function (v) {
+    poster(v);
+    if (v.preload === 'auto') return;
+    v.preload = 'auto';
+    /* preload="none" left it parked before fetching anything; load() runs
+       the selection again with the new setting. Never while it is fetching. */
+    if (v.readyState === 0 && v.networkState !== 2) v.load();
+  };
   var play = function (v) {
+    if (refused) return;
+    v.muted = true; v.defaultMuted = true; v.playsInline = true;
     var p = v.play();
-    /* a browser that refuses to autoplay is not an error worth throwing */
-    if (p && p.catch) p.catch(function () {});
+    if (p && p.catch) p.catch(function (err) {
+      if (err && err.name === 'NotAllowedError') refused = true;
+    });
+  };
+  /* Load it again from where it was. The poster covers the gap. Retries back
+     off, and stop after a few, so a clip that is really gone is not fetched
+     forever. */
+  var reload = function (v, s) {
+    if (s.tries >= 5) return;
+    s.tries++;
+    s.hold = Date.now() + 1500 * s.tries;
+    var at = v.currentTime || 0;
+    v.preload = 'auto';
+    v.load();
+    if (at > 0.5) {
+      v.addEventListener('loadedmetadata', function seek() {
+        v.removeEventListener('loadedmetadata', seek);
+        if (at < v.duration) v.currentTime = at;
+      });
+    }
+    if (onScreen.has(v)) play(v);
+  };
+  var fresh = function (v) {
+    var s = state.get(v);
+    if (!s) { s = { t: -1, since: Date.now(), tries: 0, hold: 0, nudged: false }; state.set(v, s); }
+    return s;
   };
 
-  var io = new IntersectionObserver(function (entries) {
+  var warmer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) warm(e.target); });
+  }, { rootMargin: '100% 0px' });
+
+  var player = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       var v = e.target;
       if (e.isIntersecting) {
         onScreen.add(v);
+        warm(v);
+        var s = fresh(v); s.since = Date.now(); s.t = -1;
         play(v);
       } else {
         onScreen.delete(v);
         if (!v.paused) v.pause();
       }
     });
-  /* a little lead time, so a clip has started fetching by the time it
-     is actually on screen */
-  }, { rootMargin: '300px 0px', threshold: 0.01 });
+  /* a little lead, so a clip is already moving as it comes into view */
+  }, { rootMargin: '120px 0px', threshold: 0 });
 
-  for (var j = 0; j < vids.length; j++) io.observe(vids[j]);
+  var seen = new WeakSet();
+  var track = function (v) {
+    if (seen.has(v)) return;
+    seen.add(v);
+    v.pause();
+    v.addEventListener('error', function () {
+      if (onScreen.has(v)) setTimeout(function () { reload(v, fresh(v)); }, 800);
+    });
+    warmer.observe(v);
+    player.observe(v);
+  };
+  for (var i = 0; i < vids.length; i++) track(vids[i]);
+  /* clips built later (cards, carousels) are picked up as they arrive */
+  new MutationObserver(function (records) {
+    records.forEach(function (r) {
+      r.addedNodes.forEach(function (node) {
+        if (node.nodeType !== 1) return;
+        if (node.tagName === 'VIDEO') track(node);
+        else if (node.querySelectorAll) node.querySelectorAll('video').forEach(track);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
 
-  /* A hidden tab should not hold decoders open either. Coming back, the
-     observer has nothing new to report, so the clips on screen are started
-     here; before this they stayed paused until scrolled away and back. */
+  /* A hidden tab should not hold decoders open. Coming back, the observer has
+     nothing new to report, so the clips on screen are started here. */
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden') {
-      for (var k = 0; k < vids.length; k++) vids[k].pause();
+      onScreen.forEach(function (v) { v.pause(); });
       return;
     }
-    onScreen.forEach(play);
+    onScreen.forEach(function (v) { fresh(v).since = Date.now(); play(v); });
   });
 
-  /* A clip on screen should always be moving. One that the browser paused
-     on its own, or that froze mid-loop waiting on data it already has, is
-     started again. A tab switch, a hidden pane or a scroll away takes it out
-     of onScreen first, so this never fights those. */
-  var last = new Map();
+  /* where a browser refused, the next touch or key is a gesture it accepts */
+  var retry = function () {
+    if (!refused) return;
+    refused = false;
+    onScreen.forEach(play);
+  };
+  ['touchend', 'pointerup', 'keydown'].forEach(function (t) {
+    document.addEventListener(t, retry, { capture: true, passive: true });
+  });
+
+  /* the page behind a link starts loading while the pointer is on its way */
+  var ahead = function (e) {
+    var a = e.target.closest && e.target.closest('.hp-card[data-page], .case-next [data-page], .hp-nav [data-page]');
+    if (!a) return;
+    var page = document.getElementById(a.getAttribute('data-page'));
+    if (!page) return;
+    page.querySelectorAll('.case-video, .pg-col > .pg-item:first-child video').forEach(warm);
+  };
+  document.addEventListener('pointerover', ahead, { passive: true });
+  document.addEventListener('touchstart', ahead, { passive: true });
+  document.addEventListener('focusin', ahead);
+
   setInterval(function () {
-    if (document.visibilityState === 'hidden') return;
+    if (document.visibilityState === 'hidden' || refused) return;
+    var now = Date.now();
     onScreen.forEach(function (v) {
+      /* a page or pane that was hidden takes its clips with it */
       if (!v.isConnected || !v.offsetParent) { onScreen.delete(v); return; }
+      var s = fresh(v);
+      if (now < s.hold) return;
+      if (v.error) { reload(v, s); return; }
+      if (v.paused) { play(v); return; }
       var t = v.currentTime;
-      if (v.paused) play(v);
-      else if (t === last.get(v) && v.readyState >= 3) { v.pause(); play(v); }
-      last.set(v, t);
+      if (t !== s.t) { s.t = t; s.since = now; s.nudged = false; s.tries = 0; return; }
+      /* not moving: give a clip with data a nudge first, then reload; one
+         still waiting on the network gets longer before it is reloaded */
+      var stuck = now - s.since;
+      if (v.readyState >= 3) {
+        if (stuck > 2000 && !s.nudged) { s.nudged = true; v.pause(); play(v); }
+        else if (stuck > 5000) { s.since = now; s.nudged = false; reload(v, s); }
+      } else if (stuck > 7000) {
+        s.since = now; reload(v, s);
+      }
     });
-  }, 2500);
+  }, 1000);
 })();
 </script>
 </body>
