@@ -149,7 +149,7 @@
        spacing as before, shifted into the blue. */
     --bg: #ffffff;          /* page ground      — L* 100  */
     /* the reference rounds every panel to 12px; see CORNER LANGUAGE above */
-    --panel-radius: 12px;
+    --panel-radius: 0;   /* square, like the home page's cards and tiles */
     --panel: #F4F8F9;       /* card surface — L* 97.3 */
     --card:  #DDE8F4;       /* card on panel    — L* 91.5 */
     --track: #C3D5E8;       /* ring track / hairlines — L* 84 */
@@ -231,7 +231,16 @@
      full-height Framer wrapper that does not exist in this page. */
 @media (prefers-reduced-motion: no-preference) {
   .hello-svg { animation: mascotIn .8s cubic-bezier(.22,1,.36,1) both, mascotBob 4.5s ease-in-out 1s infinite; transform-origin: 50% 100%; }
+  /* "alive" in the home headline: one full turn about his middle. The spin
+     joins the list rather than replacing it, so the entrance does not play
+     again when it ends and the bob carries on underneath. */
+  .hello-wrap.is-spin .hello-svg {
+    animation: mascotIn .8s cubic-bezier(.22,1,.36,1) both, mascotBob 4.5s ease-in-out 1s infinite,
+               mascotSpin .9s cubic-bezier(.55, 0, .25, 1);
+    transform-origin: 50% 55%;
+  }
 }
+@keyframes mascotSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 /* mascot can bob without the hero wrapper clipping its top */
 .cloud-mascot { overflow: visible; }
 .cloud-mascot .pupil { will-change: transform; }
@@ -544,6 +553,12 @@ body.mascot-moon[data-night-wx="drizzle"] .rain i:not(:nth-child(3n)) { display:
   animation-play-state: paused;
 }
 .rain.on i { animation-play-state: running; }
+/* London in the home headline: for as long as the pointer is on the word it
+   rains, whichever mascot is on duty, and the sky goes back to what it was
+   doing the moment the pointer leaves. A class of its own rather than the
+   rain's .on, so the cloud's idle rain and the weathers are never touched. */
+body.london-rain .rain { display: block !important; opacity: 1; }
+body.london-rain .rain i { animation-play-state: running; }
 /* the rain engine at three intensities: a third of the drops, slowly, for
    drizzle; every drop, fast, for thunder */
 body.wx-drizzle .rain i { animation-duration: 1.5s !important; }
@@ -988,13 +1003,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   body[data-page="about"] .case-back, body[data-page="playground"] .case-back { color: var(--ink); gap: 0; }
   body[data-page="about"] .case-back .cb-text, body[data-page="playground"] .case-back .cb-text { display: inline; }
   @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
-    body[data-page="about"] .case-back, body[data-page="playground"] .case-back { isolation: isolate; padding: 1px 7px; margin-left: -7px; }
-    body[data-page="about"] .case-back::before, body[data-page="playground"] .case-back::before {
+    body .case-back { isolation: isolate; padding: 1px 7px; margin-left: -7px; }
+    body .case-back::before {
       content: ''; position: absolute; inset: 0; z-index: -1; background: #EF476F;
       transform: scaleX(0); transform-origin: left center; transition: transform .3s var(--ease-out);
     }
-    body[data-page="about"] .case-back:hover::before, body[data-page="playground"] .case-back:hover::before { transform: scaleX(1); }
-    body[data-page="about"] .case-back:hover, body[data-page="playground"] .case-back:hover { color: #14141B; transform: none; }
+    body .case-back:hover::before { transform: scaleX(1); }
+    html body .case-back:hover { color: #14141B; transform: none; }
   }
   /* over everything, including the fixed weather layers, once it is a sheet */
   .hp-nav.open { z-index: 60; }
@@ -1453,8 +1468,14 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       font-size: clamp(32px, 3.1vw, 54px); font-weight: 400; line-height: 1.1;
       letter-spacing: -.025em; color: var(--ink); text-wrap: balance;
     }
-    /* the one coloured word, in the colour of whichever mascot is on */
+    /* the coloured words: each one does something under the pointer. alive
+       (it spins him) is in the colour of whichever mascot is on; London (it
+       rains) is in a rain teal of its own, 5:1 on white, so the two never
+       match whatever the weather. On the night sky it goes to the pale blue
+       the night's rain falls in. */
     #home .hp-headline em { font-style: normal; color: var(--accent); }
+    #home .hp-headline .hp-london { color: #1F7A8C; transition: color 1.4s cubic-bezier(.4, 0, .2, 1); }
+    body.home-active.mascot-moon:has(.nightfall.on) #home .hp-headline .hp-london { color: #9FD3EA; }
     #home .hp-intro .hp-links {
       margin: 0 0 6px; justify-content: flex-end; gap: 6px 26px;
       font-family: var(--hp-mono); font-size: 12px; font-weight: 400;
@@ -2034,7 +2055,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .jr {
     --c-coral: #f4a9aa; --c-cream: #fbf3e6; --c-ink: #2a2430;
     --c-moss: #2f4a38; --c-peach: #f9ddd2; --accent-ink: #23181a;
-    --radius-card: 24px;
+    --radius-card: 0;
     --m-width: 57.08%; --m-right: -0.886%; --m-drop: 18.14%;
     margin-top: 32px;
   }
@@ -2111,7 +2132,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     /* Room for the mascot to stand above the card, as in the app (24px). */
     margin-top: 24px;
     padding: 20px;
-    border-radius: 18px;
+    border-radius: 0;
     height: 372px;
     display: flex;
     flex-direction: column;
@@ -3492,19 +3513,19 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     position: relative;
     width: fit-content; margin: 16px auto 0;
     display: flex; gap: 4px;
-    padding: 4px; border-radius: 999px; background: var(--card);
+    padding: 4px; border-radius: 0; background: var(--card);
   }
   /* the fill, behind the labels, so it can travel between them */
   .fs-thumb {
     position: absolute; top: 4px; bottom: 4px; left: 0; width: 0;
-    border-radius: 999px; background: var(--ink); pointer-events: none;
+    border-radius: 0; background: var(--ink); pointer-events: none;
     transition: transform .34s cubic-bezier(.4, 0, .2, 1),
                 width     .34s cubic-bezier(.4, 0, .2, 1);
   }
   .fs-tabs button {
     position: relative; z-index: 1;
     font: inherit; font-size: 16px; letter-spacing: .018em; line-height: 1.4;
-    padding: 8px 18px; border: 0; border-radius: 999px; cursor: pointer;
+    padding: 8px 18px; border: 0; border-radius: 0; cursor: pointer;
     background: none; color: var(--case-cap);
     transition: color .2s ease;
   }
@@ -3733,7 +3754,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .car-dots { display: flex; align-items: center; gap: 9px; }
   .car-dot {
     width: 6px; height: 6px; padding: 0; border: 0;
-    border-radius: 50%;            /* a dot is a dot — not a rounded corner */
+    border-radius: 0;              /* square, like the tiles */
     background: var(--track);
     transition: background .25s ease, transform .25s var(--ease-out);
   }
@@ -3840,6 +3861,31 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   /* the reference marks the current section by colour alone, at the same
      weight — nothing moves as you scroll past it */
   .case-nav a.on { opacity: 1; font-weight: 400; color: var(--ink); }
+  /* Under the pointer, the home nav's gesture: a block of colour sweeps in
+     behind the word, square like the tiles, and the word goes dark on it.
+     The colours run through the tiles' own, one line after another. The
+     block wraps the word, not the rail, so each link is only as wide as
+     its label, and an indented step's block starts at its indent. */
+  .case-nav a {
+    align-self: flex-start; position: relative; isolation: isolate;
+    padding: 0 7px; margin: 0 -7px;
+  }
+  .case-nav .nav-group a { --indent: 12px; padding-left: 19px; }
+  .case-nav a::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: var(--indent, 0px); right: 0; z-index: -1;
+    background: var(--nav-c, #F5B83D);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform .3s var(--ease-out);
+  }
+  .case-nav a:nth-of-type(4n+1) { --nav-c: #EF476F; }
+  .case-nav a:nth-of-type(4n+2) { --nav-c: #F5B83D; }
+  .case-nav a:nth-of-type(4n+3) { --nav-c: #3DBEF0; }
+  .case-nav a:nth-of-type(4n+4) { --nav-c: #2FBF85; }
+  @media (hover: hover) and (pointer: fine) {
+    .case-nav a:hover { color: #14141B; }
+    .case-nav a:hover::before { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) { .case-nav a::before { transition: none; } }
 
   /* The rail is not there at the top of a study and fades in once the page
      leaves it, on the reference's own curve and duration. */
@@ -3929,143 +3975,71 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   #contact .socials a { color: var(--ink-soft); font-weight: 500; text-decoration: none; font-size: 17.6px; letter-spacing: .014em; line-height: 1.4; }
   #contact .socials a:hover { color: var(--accent); }
 
-  /* --- custom cursor, after azumbrunnen.me ---
-     A frosted disc that morphs: it becomes a caret over text and locks onto
-     interactive elements, wrapping them rather than floating over them.
-     Mouse-and-trackpad only; touch and reduced-motion keep the native cursor. */
+  /* --- custom cursor: a collaborator's pointer ---
+     The arrow and name tag of a multiplayer canvas, in the colour of the
+     mascot on duty. At rest the tag says You; over something that does
+     something it says what: View on a project, Next on the next study, Go
+     on a link within the site, Open on one that leaves it, Drag on the
+     carousel, Click on a control, Boop on the mascot. Square, like
+     everything else. Mouse-and-trackpad only; touch and reduced-motion keep
+     the native cursor. */
   /* Outside the media query on purpose: where the rules below do not apply,
-     the orb is an ordinary block at the top of the body, and the View label
-     inside it rendered as a word above the clock on phones. */
+     the carrier would otherwise be an ordinary block at the top of the body. */
   #cursor-orb { display: none; }
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    /* blanket rather than a list: anything setting its own cursor (the flip
-       cards use pointer, the carousel used grab) would otherwise punch a
-       native cursor back through the custom one */
+    /* blanket rather than a list: anything setting its own cursor would
+       otherwise punch a native cursor back through this one */
     body.has-cursor, body.has-cursor * { cursor: none; }
     /* #mascot sets cursor:pointer from an ID selector, which outranks the
-       blanket rule above — it needs an ID-weighted override of its own */
+       blanket rule above, so it needs an override of its own */
     body.has-cursor .cloud-mascot { cursor: none; }
 
-    /* carrier: JS owns its transform (translate only) — every visual state
-       lives on the core inside, so the two never fight over one property */
+    /* carrier: JS owns its transform (translate only), and the pointer's
+       tip is its origin; everything visual hangs off it */
     #cursor-orb {
       display: block;
       position: fixed; top: 0; left: 0; z-index: 99999;
       pointer-events: none;
       opacity: 0;                       /* hidden until the pointer first moves */
       will-change: transform;
-      /* The position is transitioned so the compositor interpolates it, but
-         .14s put the disc a sixth of a second behind the pointer: on a quick
-         flick that is a couple of hundred pixels of daylight, which reads as
-         lag rather than as smoothing. .05s still absorbs jitter between
-         events while staying attached to the hand. */
+      /* a twentieth of a second absorbs jitter between events without
+         leaving the arrow behind the hand */
       transition: transform .05s linear, opacity .2s;
+      --cur-c: #3558D4; --cur-ink: #FFFFFF;     /* the cloud's blue */
     }
+    body.mascot-sun #cursor-orb { --cur-c: #F2A71B; --cur-ink: #14141B; }
+    body.mascot-moon #cursor-orb { --cur-c: #4A56B8; --cur-ink: #FFFFFF; }
+    /* the night's own stars, on the deep sky */
+    body.home-active.mascot-moon:has(.nightfall.on) #cursor-orb { --cur-c: #FDD989; --cur-ink: #16233F; }
+    /* while London is raining, the pointer is in London's teal */
+    body.london-rain #cursor-orb { --cur-c: #1F7A8C; --cur-ink: #FFFFFF; }
+    body.home-active.mascot-moon.london-rain:has(.nightfall.on) #cursor-orb { --cur-c: #9FD3EA; --cur-ink: #16233F; }
     body.cursor-in #cursor-orb { opacity: 1; }
 
-    #cursor-orb .cur-core {
-      display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; margin: -18px 0 0 -18px;
-      border-radius: 50%;   /* a disc — exempt from the square-corner rule */
-      background: var(--cursor-soft);
-      /* their timing: quick and mechanical, 100ms, so the morph feels like a
-         state change rather than an animation */
-      transition: width .1s ease-out, height .1s ease-out, margin .1s ease-out,
-                  border-radius .1s ease-out, background-color .1s ease-out,
-                  box-shadow .1s ease-out, transform .12s ease-out;
+    /* the arrow's tip sits exactly on the pointer; a white edge and a soft
+       shadow keep it readable on any ground, the sky and the footage too */
+    #cursor-orb .cur-arrow {
+      position: absolute; left: -2px; top: -2px; width: 22px; height: 22px; overflow: visible;
+      fill: var(--cur-c); stroke: #FFFFFF; stroke-width: 1.5px; stroke-linejoin: round;
+      paint-order: stroke;
+      filter: drop-shadow(0 1px 2px rgba(10, 12, 30, .28));
+      transform-origin: 2px 2px;
+      transition: fill .4s ease, transform .12s ease-out;
     }
-
-    /* over running text the disc collapses into a caret — their one morph */
-    body.cursor-text #cursor-orb .cur-core {
-      width: 3px; height: 28px; margin: -14px 0 0 -1.5px;
-      border-radius: 2px; background: var(--accent);
+    #cursor-orb .cur-tag {
+      position: absolute; left: 17px; top: 22px;
+      display: block; padding: 5px 8px 6px;
+      font: 500 13px/1 var(--font); letter-spacing: .01em; white-space: nowrap;
+      color: var(--cur-ink); background: var(--cur-c);
+      box-shadow: 0 2px 8px rgba(10, 12, 30, .18);
+      transform-origin: 0 0;
+      transition: background-color .4s ease, color .4s ease;
     }
-
-    /* The one hover state. Everything clickable gets it — links, buttons, the
-       back chevron, carousel controls, drawer headers, the flip cards. The disc
-       tightens and brightens; nothing wraps, nothing snaps, nothing is special. */
-    body.cursor-link #cursor-orb .cur-core {
-      width: 20px; height: 20px; margin: -10px 0 0 -10px;
-      background: var(--cursor-mid);
-    }
-
-    /* Under nightfall the ground goes to a deep navy and a dark translucent
-       disc vanishes into it, so the cursor turns over with the page. */
-    body.home-active.mascot-moon:has(.nightfall.on) #cursor-orb .cur-core {
-      background: var(--cursor-soft-night);
-      box-shadow: var(--cursor-ring-night);
-    }
-    body.home-active.mascot-moon:has(.nightfall.on).cursor-link #cursor-orb .cur-core {
-      background: var(--cursor-mid-night);
-      box-shadow: var(--cursor-ring-night);
-    }
-    body.home-active.mascot-moon:has(.nightfall.on).cursor-text #cursor-orb .cur-core {
-      background: #E8EEFF;
-    }
-
-    /* Over a project card the disc becomes a pill that says View, in the
-       mascot's own ground and ink: the same pair the menu and the curtain
-       wear, so it reads as the site's rather than as a widget's. The width
-       is fixed so the pill can be centred on the pointer with a margin, since
-       transform belongs to the press below. */
-    #cursor-orb .cur-label {
-      font: 500 13px/1 var(--font); letter-spacing: .02em;
-      color: var(--mascot-ink); white-space: nowrap;
-      opacity: 0; transition: opacity .1s ease-out;
-    }
-    body.cursor-view #cursor-orb .cur-core {
-      width: 58px; height: 30px; margin: -15px 0 0 -29px;
-      border-radius: 999px; background: var(--mascot-bg);
-      box-shadow: 0 4px 14px rgba(20, 20, 45, .18);
-    }
-    /* the core is a flex box, so only the label the state calls for is in it */
-    #cursor-orb .cur-label { display: none; }
-    body.cursor-view #cursor-orb .cl-view,
-    body.cursor-drag #cursor-orb .cl-drag { display: block; opacity: 1; }
-    /* The carousel is pushed rather than opened, so it says so. Same pill the
-       cards wear, because it is the same kind of promise: this responds. */
-    body.cursor-drag #cursor-orb .cur-core {
-      width: 58px; height: 30px; margin: -15px 0 0 -29px;
-      border-radius: 999px; background: var(--mascot-bg);
-      box-shadow: 0 4px 14px rgba(20, 20, 45, .18);
-    }
-    /* on the deep sky the pill is navy on near-navy, so it keeps an edge */
-    body.home-active.mascot-moon:has(.nightfall.on).cursor-view #cursor-orb .cur-core,
-    body.home-active.mascot-moon:has(.nightfall.on).cursor-drag #cursor-orb .cur-core {
-      background: var(--mascot-bg);
-      box-shadow: 0 0 0 1.5px rgba(232, 240, 255, .35), 0 4px 14px rgba(3, 7, 20, .4);
-    }
-
-    /* Over a case study the View cursor takes the shape of whichever mascot is
-       on duty: the cloud's puff (in every weather), the sun with its rays, and
-       for the moon, whose crescent leaves no room for a word, a full disc.
-       Same ground and ink as the pill it replaces. */
-    #cursor-orb .cur-core { position: relative; }
-    #cursor-orb .cur-label { position: relative; }
-    #cursor-orb .cur-shape {
-      display: none; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
-      color: var(--mascot-bg); fill: currentColor; stroke: currentColor;
-      filter: drop-shadow(0 4px 10px rgba(20, 20, 45, .18));
-    }
-    #cursor-orb .cs-cloud { stroke: none; }
-    #cursor-orb .cs-sun circle { stroke: none; }
-    body.cursor-view:not(.mascot-sun):not(.mascot-moon) #cursor-orb .cur-core {
-      width: 80px; height: 51px; margin: -28px 0 0 -40px; padding-top: 9px; box-sizing: border-box;
-      border-radius: 0; background: transparent; box-shadow: none;
-    }
-    body.cursor-view:not(.mascot-sun):not(.mascot-moon) #cursor-orb .cs-cloud,
-    body.cursor-view.mascot-sun #cursor-orb .cs-sun { display: block; animation: curShape .16s ease-out; }
-    body.cursor-view.mascot-sun #cursor-orb .cur-core {
-      width: 74px; height: 74px; margin: -37px 0 0 -37px;
-      border-radius: 0; background: transparent; box-shadow: none;
-    }
-    body.cursor-view.mascot-moon #cursor-orb .cur-core {
-      width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%;
-    }
-    @keyframes curShape { from { transform: scale(.55); opacity: 0; } }
-
-    /* pressing squashes it */
-    body.cursor-down #cursor-orb .cur-core { transform: scale(.85); }
+    /* a new word arrives with a small pop, so the change is noticed */
+    #cursor-orb .cur-tag.pop { animation: curPop .16s ease-out; }
+    @keyframes curPop { from { transform: scale(.82); } }
+    /* pressing squashes the arrow towards its tip */
+    body.cursor-down #cursor-orb .cur-arrow { transform: scale(.86); }
   }
 </style>
 </head>
@@ -4241,7 +4215,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   </nav>
 
 <div id="curtain"></div>
-<div id="cursor-orb" aria-hidden="true"><span class="cur-core"><svg class="cur-shape cs-cloud" viewBox="0 0 49 31"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg><svg class="cur-shape cs-sun" viewBox="0 0 64 64"><g stroke-width="4.5" stroke-linecap="round"><path d="M32 3v6M32 55v6M3 32h6M55 32h6M11.5 11.5l4.2 4.2M48.3 48.3l4.2 4.2M11.5 52.5l4.2-4.2M48.3 15.7l4.2-4.2"/></g><circle cx="32" cy="32" r="20"/></svg><span class="cur-label cl-view">View</span><span class="cur-label cl-drag">Drag</span></span></div>
+<div id="cursor-orb" aria-hidden="true"><svg class="cur-arrow" viewBox="0 0 22 22"><path d="M2 2 L20 8.6 L12 11.6 L8.8 19.8 Z"/></svg><span class="cur-tag">You</span></div>
 
 <!-- HOME -->
 <section id="home" class="page current">
@@ -4480,7 +4454,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <div class="hp-intro">
       <!-- the desktop's headline, set large above the work; the phone keeps
            the sentence under it -->
-      <p class="hp-headline">I&rsquo;m <span class="hp-nw">Mahin <img class="hp-photo" src="/assets/mahin.webp" alt="" width="200" height="200"></span> a product designer in London building AI <span class="hp-nw">products <span class="hp-tile hp-tile-spark" aria-hidden="true"><svg viewBox="0 0 40 40"><path class="star" d="M20 7C21.4 15 25 18.6 33 20C25 21.4 21.4 25 20 33C18.6 25 15 21.4 7 20C15 18.6 18.6 15 20 7Z" fill="#14141B"/><circle class="dot" cx="31.5" cy="9" r="2.3" fill="#14141B"/></svg></span></span> that feel a little bit <span class="hp-nw"><em>alive</em> <span class="hp-tile hp-tile-eyes" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="eyes"><ellipse cx="13.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><ellipse cx="26.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><g class="pupils"><circle cx="13.5" cy="20" r="3.1" fill="#14141B"/><circle cx="26.5" cy="20" r="3.1" fill="#14141B"/></g></g></svg></span>.</span></p>
+      <p class="hp-headline">I&rsquo;m <span class="hp-nw">Mahin <img class="hp-photo" src="/assets/mahin.webp" alt="" width="200" height="200"></span> a product designer in <span class="hp-london" data-cursor="Rainy London">London</span> building AI <span class="hp-nw">products <span class="hp-tile hp-tile-spark" aria-hidden="true"><svg viewBox="0 0 40 40"><path class="star" d="M20 7C21.4 15 25 18.6 33 20C25 21.4 21.4 25 20 33C18.6 25 15 21.4 7 20C15 18.6 18.6 15 20 7Z" fill="#14141B"/><circle class="dot" cx="31.5" cy="9" r="2.3" fill="#14141B"/></svg></span></span> that feel a little bit <span class="hp-nw"><em class="hp-alive" data-cursor="Weeeee!">alive</em> <span class="hp-tile hp-tile-eyes" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="eyes"><ellipse cx="13.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><ellipse cx="26.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><g class="pupils"><circle cx="13.5" cy="20" r="3.1" fill="#14141B"/><circle cx="26.5" cy="20" r="3.1" fill="#14141B"/></g></g></svg></span>.</span></p>
       <p class="hp-lede">I&rsquo;m a product designer in London, shipping AI products people actually
         use and building tools that feel a little bit alive.</p>
       <!-- desktop: the person's links as two keys opposite the headline -->
@@ -6854,30 +6828,36 @@ updateRail();
   window.addEventListener('mousedown', () => body.classList.add('cursor-down'));
   window.addEventListener('mouseup', () => body.classList.remove('cursor-down'));
 
-  /* What the cursor reacts to. Everything clickable takes the same state;
-     summary is listed because it is interactive without being an <a> or a
-     <button>. Project tiles take a state of their own: the disc becomes a
-     pill that says View, since the tile shows footage and nothing else at
-     rest, and the pointer is the one place a visitor is already looking. */
-  /* [data-page] excludes body, which carries the current page's name and
-     was making every hover on the site count as a link */
+  /* What the tag says. [data-page] excludes body, which carries the current
+     page's name and would make every hover on the site count as a link. An
+     element can name its own action with data-cursor. */
   const LINK = 'a, button, summary, [data-page]:not(body)';
-  const TEXT = 'p, h1, h2, h3, h4, li, blockquote, cite, dd, dt, figcaption, .case-sub';
-
-  window.addEventListener('mouseover', e => {
-    /* the carousel is dragged, and its cards are full of prose the caret
-       would otherwise claim, so the rail speaks for everything inside it */
-    const rail = e.target.closest('.jr-rail');
-    const tile = e.target.closest('.hp-card');
-    const link = e.target.closest(LINK);
-    const text = e.target.closest(TEXT);
-
-    body.classList.toggle('cursor-drag', !!rail && !link);
-    body.classList.toggle('cursor-link', !rail && !tile && !!link);
-    body.classList.toggle('cursor-view', !rail && !!tile);
-    /* the caret only makes sense over prose, never over a control or a tile */
-    body.classList.toggle('cursor-text', !rail && !tile && !link && !!text);
-  }, { passive: true });
+  const tag = orb.querySelector('.cur-tag');
+  let said = 'You';
+  const say = word => {
+    if (word === said) return;
+    said = word;
+    tag.textContent = word;
+    tag.classList.remove('pop'); void tag.offsetWidth; tag.classList.add('pop');
+  };
+  const action = t => {
+    const own = t.closest('[data-cursor]');
+    if (own) return own.dataset.cursor;
+    const link = t.closest(LINK);
+    /* the carousel is dragged, and its cards are full of controls that
+       would otherwise claim it, so the rail speaks for what is inside it */
+    if (t.closest('.jr-rail') && !link) return 'Drag';
+    if (t.closest('.hp-card')) return 'View';
+    if (t.closest('.case-next a')) return 'Next';
+    if (link) {
+      if (link.matches('a[target="_blank"]')) return 'Open';
+      if (link.matches('a, [data-page]')) return 'Go';
+      return 'Click';
+    }
+    if (t.closest('.hello-svg')) return 'Boop';
+    return 'You';
+  };
+  window.addEventListener('mouseover', e => say(action(e.target)), { passive: true });
 
 })();
 </script>
@@ -7299,6 +7279,31 @@ updateRail();
       var k = (document.body.className.match(/\b(mascot|wx)-\S+/g) || []).join() + (document.body.dataset.nightWx || '');
       if (k !== skyKey) { skyKey = k; later(); }
     }).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-night-wx'] });
+  }
+
+  /* alive: one happy spin each time the pointer arrives on the word (or a
+     finger lands on it), never on a loop; a visit mid-spin changes nothing */
+  var alive = document.querySelector('.hp-alive');
+  if (alive) {
+    var spin = function () {
+      var w = document.querySelector('.hello-wrap');
+      if (!w || w.classList.contains('is-spin')) return;
+      w.classList.add('is-spin', 'is-happy');
+      setTimeout(function () { w.classList.remove('is-spin', 'is-happy'); }, 950);
+    };
+    alive.addEventListener('mouseenter', spin);
+    alive.addEventListener('touchstart', spin, { passive: true });
+  }
+
+  /* London: rain on the word, by hover, or by holding a finger on it */
+  var london = document.querySelector('.hp-london');
+  if (london) {
+    var wet = function (on) { document.body.classList.toggle('london-rain', on); };
+    london.addEventListener('mouseenter', function () { wet(true); });
+    london.addEventListener('mouseleave', function () { wet(false); });
+    london.addEventListener('touchstart', function () { wet(true); }, { passive: true });
+    london.addEventListener('touchend', function () { wet(false); }, { passive: true });
+    london.addEventListener('touchcancel', function () { wet(false); }, { passive: true });
   }
 
   var storming = false;
