@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mahin Jahan — Product Designer in London</title>
-<meta name="description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta name="description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto, Quest Up and Nothing, plus a playground of interaction experiments.">
 <meta name="author" content="Mahin Jahan">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="https://mahinjahan.com/" id="canonical">
@@ -16,14 +16,14 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://mahinjahan.com/">
 <meta property="og:title" content="Mahin Jahan — Product Designer in London">
-<meta property="og:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta property="og:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto, Quest Up and Nothing, plus a playground of interaction experiments.">
 <meta property="og:image" content="https://mahinjahan.com/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Mahin Jahan, product designer in London, with the cloud mascot from his portfolio">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mahin Jahan — Product Designer in London">
-<meta name="twitter:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.">
+<meta name="twitter:description" content="Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto, Quest Up and Nothing, plus a playground of interaction experiments.">
 <meta name="twitter:image" content="https://mahinjahan.com/assets/og.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.png" type="image/png" sizes="512x512">
@@ -50,7 +50,7 @@
       "@id": "https://mahinjahan.com/#website",
       "url": "https://mahinjahan.com/",
       "name": "Mahin Jahan",
-      "description": "Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.",
+      "description": "Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto, Quest Up and Nothing, plus a playground of interaction experiments.",
       "inLanguage": "en-GB",
       "author": { "@id": "https://mahinjahan.com/#person" }
     },
@@ -60,6 +60,7 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "item": { "@type": "CreativeWork", "name": "Jobi", "url": "https://mahinjahan.com/jobi", "description": "A companion for the job hunt, not an autopilot for it. Founder and product designer; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
         { "@type": "ListItem", "position": 2, "item": { "@type": "CreativeWork", "name": "Pactto", "url": "https://mahinjahan.com/pactto", "description": "Collaboration that doesn’t end when the call does. Product design internship; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
+        { "@type": "ListItem", "position": 4, "item": { "@type": "CreativeWork", "name": "Quest Up", "url": "https://mahinjahan.com/quest-up", "description": "Turning a chore into a quest: a gamified fitness app for sedentary gamers. Founder and product designer; winner of the City Ventures Grand Spark startup competition.", "author": { "@id": "https://mahinjahan.com/#person" } } },
         { "@type": "ListItem", "position": 3, "item": { "@type": "CreativeWork", "name": "Nothing: Essential Context", "url": "https://mahinjahan.com/nothing", "description": "A shape-shifting home screen concept for Nothing OS, made in 48 hours.", "author": { "@id": "https://mahinjahan.com/#person" } } }
       ]
     }
@@ -202,6 +203,9 @@
             BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    /* the site's side margin: the clock, the nav, the home's work and the
+       playground all stand on it, so the content lines up with the chrome */
+    --edge: clamp(40px, 4vw, 72px);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
 
@@ -876,16 +880,18 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      away and promotes the next one. The stack is 960x480 cards, each one back
      scaled by .1 and pushed 54.84px down, with the same .7s curve the
      reference uses. Square corners, per the site's corner language. */
+  /* Four studies now, two by two and larger, so the home is no longer one
+     screen: it starts under the clock and nav and scrolls to the second row. */
   .hp {
     position: relative;
-    height: 100dvh; overflow: clip;
+    min-height: 100dvh; overflow-x: clip;
     /* No ground of its own: body.home-active already paints the white,
        and an opaque background here would bury the mascot's rain layer,
        which is a fixed sibling sitting earlier in the document. */
     /* the mascot and the stack centre together as one group */
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 20px 0;
+    align-items: center; justify-content: flex-start;
+    padding: 112px 0 120px;
   }
 
   /* The mascot's own colour, used by anything that covers the page: the
@@ -919,13 +925,60 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      below 700px stops being a row and becomes the full-page sheet. */
   /* fixed rather than absolute now that it is a sibling of the pages instead
      of a child of the home one. On home it lands where it always did. */
-  .hp-nav { position: fixed; top: 26px; right: 30px; z-index: 20; }
-  /* the page you are on is not somewhere to go */
-  body[data-page="home"] .hp-nav-items a[data-page="home"],
-  body[data-page="about"] .hp-nav-items a[data-page="about"] { display: none; }
-  /* on a wide screen the row is part of the home page and nothing else */
+  .hp-nav { position: fixed; top: 26px; right: var(--edge); z-index: 20; }
+  /* About and Playground stay in the row on every page, the current one
+     marked rather than removed. Home is the top-left corner on a wide screen
+     (the clock's corner on home itself), so it only joins the phone's sheet. */
+  body[data-page="home"] .hp-nav-items a[data-page="home"] { display: none; }
+  @media (min-width: 701px) { .hp-nav-items a[data-page="home"] { display: none; } }
+  /* Home, About and the Playground share the same chrome: the clock in the
+     top-left corner and the nav in the top-right. A case study has its way
+     back and its section list instead, so on a wide screen the row is not
+     there. */
   @media (min-width: 701px) {
-    body:not([data-page="home"]) .hp-nav { display: none; }
+    body:not([data-page="home"]):not([data-page="about"]):not([data-page="playground"]) .hp-nav { display: none; }
+  }
+  /* The top bar, on a wide screen on home, About and the Playground: a solid
+     ground behind the corner item and the nav, so nothing that scrolls under
+     them hurts their legibility. Scrolling down sends the bar, the corner
+     item and the nav up out of view together; scrolling up brings them back.
+     The bar takes the page's ground, or the sky's navy once night has fallen
+     on home, so it never shows as a white strip across the dark. Phones keep
+     their own chrome, the burger already carries a ground. */
+  .top-bar { display: none; }
+  @media (min-width: 701px) {
+    body:is([data-page="home"], [data-page="about"], [data-page="playground"]) .top-bar {
+      display: block; position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 19;
+      background: transparent; transition: background-color .25s ease, transform .38s var(--ease-out);
+    }
+    /* at the top of the page the bar is clear; the ground only comes in once
+       there is something scrolled underneath it */
+    body.chrome-solid .top-bar { background: var(--bg); }
+    body.chrome-solid.home-active.mascot-moon:has(.nightfall.on) .top-bar { background: var(--mascot-bg); }
+    body:is([data-page="home"], [data-page="about"], [data-page="playground"]) .hp-clock { position: fixed; }
+    body:is([data-page="home"], [data-page="about"], [data-page="playground"]) :is(.hp-clock, .hp-nav, .case-back) {
+      transition: transform .38s var(--ease-out), color .2s ease;
+    }
+    body.chrome-away:is([data-page="home"], [data-page="about"], [data-page="playground"]) :is(.top-bar, .hp-clock, .hp-nav, .case-back) {
+      transform: translateY(-110px);
+    }
+  }
+
+  /* the top-left corner: London's clock on home, the way home everywhere else */
+  body:not([data-page="home"]) .hp-clock { display: none; }
+  /* On About and the Playground, Home is part of the nav: a plain word in the
+     nav's ink, with no back arrow. The case studies keep theirs. */
+  body[data-page="about"] .case-back svg, body[data-page="playground"] .case-back svg { display: none; }
+  body[data-page="about"] .case-back, body[data-page="playground"] .case-back { color: var(--ink); gap: 0; }
+  body[data-page="about"] .case-back .cb-text, body[data-page="playground"] .case-back .cb-text { display: inline; }
+  @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+    body[data-page="about"] .case-back, body[data-page="playground"] .case-back { isolation: isolate; padding: 1px 7px; margin-left: -7px; }
+    body[data-page="about"] .case-back::before, body[data-page="playground"] .case-back::before {
+      content: ''; position: absolute; inset: 0; z-index: -1; background: #EF476F;
+      transform: scaleX(0); transform-origin: left center; transition: transform .3s var(--ease-out);
+    }
+    body[data-page="about"] .case-back:hover::before, body[data-page="playground"] .case-back:hover::before { transform: scaleX(1); }
+    body[data-page="about"] .case-back:hover, body[data-page="playground"] .case-back:hover { color: #14141B; transform: none; }
   }
   /* over everything, including the fixed weather layers, once it is a sheet */
   .hp-nav.open { z-index: 60; }
@@ -934,7 +987,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .hp-burger { display: none; }
   /* the opposite corner to the nav, so the two sit as a pair across the top */
   .hp-clock {
-    position: absolute; top: 26px; left: 30px; z-index: 20;
+    position: absolute; top: 26px; left: var(--edge); z-index: 20;
     display: flex; align-items: center; gap: 9px;
     font-size: 16px; font-weight: 400; line-height: 1.8; letter-spacing: .018em;
     color: var(--case-cap);
@@ -1058,6 +1111,31 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     color: var(--ink); text-decoration: none; transition: color .2s ease;
   }
   @media (hover: hover) and (pointer: fine) { .hp-nav a:hover { color: var(--accent); } }
+  /* Desktop: the links take the tiles' colours. At rest they are plain words;
+     under the pointer a block of colour sweeps in behind the word, square
+     like the tiles, and the word goes dark on it. Phones keep the sheet. */
+  @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+    .hp-nav-items a:not(.nav-out) {
+      position: relative; isolation: isolate; padding: 1px 7px; margin: -1px -7px;
+    }
+    .hp-nav-items a:not(.nav-out)::before {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: var(--nav-c, #F5B83D);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform .3s var(--ease-out);
+    }
+    .hp-nav-items a[data-page="home"] { --nav-c: #EF476F; }
+    .hp-nav-items a[data-page="about"] { --nav-c: #F5B83D; }
+    .hp-nav-items a[data-page="playground"] { --nav-c: #3DBEF0; }
+    /* outranks the night sky's pale nav colour, so the word is always dark on the block */
+    html body .hp-nav:not(.open) .hp-nav-items a:not(.nav-out):hover { color: #14141B; }
+    .hp-nav-items a:not(.nav-out):hover::before { transform: scaleX(1); }
+    /* you are here: the current page keeps its block */
+    body[data-page="about"] .hp-nav-items a[data-page="about"]::before,
+    body[data-page="playground"] .hp-nav-items a[data-page="playground"]::before { transform: scaleX(1); }
+    html body[data-page="about"] .hp-nav:not(.open) .hp-nav-items a[data-page="about"],
+    html body[data-page="playground"] .hp-nav:not(.open) .hp-nav-items a[data-page="playground"] { color: #14141B; }
+  }
 
   /* the mascot stands above the stack, and the pair centre together */
   :is(.hp, .about-hero) .hello-wrap { flex: 0 0 auto; margin: 0 0 26px; }
@@ -1114,7 +1192,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   /* the credit the licence asks for, at the smallest size that is still a credit */
   .hp-mode .hp-src { opacity: .62; font-size: .92em; white-space: nowrap; }
   .hp-mode {
-    position: absolute; right: 30px; bottom: 26px; z-index: 20;
+    position: absolute; right: var(--edge); bottom: 26px; z-index: 20;
     /* wide enough for two lines, balanced so they come out even rather than
        long-then-orphan */
     max-width: 58ch; margin: 0; text-align: right; text-wrap: balance;
@@ -1138,14 +1216,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      in the middle of the frame. The row sits on the 30px inset the clock, the
      nav and the corner note already share. */
   .hp-strip {
-    width: 100%; max-width: 1600px; padding: 0 30px; box-sizing: border-box;
-    display: flex; gap: 24px; align-items: flex-start;
+    width: 100%; padding: 0 var(--edge); box-sizing: border-box;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+    align-items: start;
   }
-  /* A 768px laptop: the last caption was 5px from the corner note. A lower
-     cap takes ~35px out of the footage, and the two margins above the row
-     give up another 16, without touching the mascot. */
+  /* A 768px laptop: the two margins above the work give up 16px, so the
+     first row of cards starts higher on the screen. */
   @media (min-width: 901px) and (max-height: 820px) {
-    .hp-strip { max-width: 1400px; }
     :is(.hp, .about-hero) .hello-wrap { margin-bottom: 18px; }
     .hp-intro { margin-bottom: 26px; }
   }
@@ -1181,6 +1258,8 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .hp-card .hp-mark { display: block; width: auto; margin-bottom: 6px; }
   .hp-card .hp-mark-jobi   { height: 43px; }
   .hp-card .hp-mark-pactto { height: 30px; }
+  /* a badge rather than letters: its capitals are about half its height */
+  .hp-card .hp-mark-quest-up { height: 58px; }
   .hp-card .hp-mark-type {
     font-family: 'Ndot', var(--font);
     font-size: 30px; line-height: 1.05; letter-spacing: .01em;
@@ -1257,6 +1336,165 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .hp-card:hover .shot > img, .hp-card:focus-visible .shot > img { transform: none; }
   }
 
+  /* ---------- home, desktop: the reference's form factor ----------
+     The mascot, then a headline set large and left-aligned above the work,
+     with CV and LinkedIn opposite it in small mono capitals. The studies sit
+     two by two as square cards with a hairline, each captioned underneath:
+     the line about the project on the left, the name and status on the
+     right. The caption carries the words, so hover only leans the footage
+     in. Phones keep their stacked list, so all of this is desktop only and
+     scoped to #home (the playground shares .hp-card). */
+  .hp-intro .hp-headline, .hp-keys { display: none; }
+  .hp-cap { display: none; }
+  @media (min-width: 901px) {
+    #home {
+      --hp-mono: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+      --hp-hair: color-mix(in srgb, var(--ink) 9%, transparent);
+    }
+    /* the mascot stands on the same left edge as the headline and the grid */
+    #home .hello-wrap { align-self: flex-start; margin: 0 0 30px var(--edge); }
+    /* the reference's air between the chrome and the work: the first row may
+       run past the fold */
+    #home .hp { padding-top: clamp(150px, 24vh, 280px); }
+    #home .hp .hello-svg.cloud-mascot:not(.sun-mascot):not(.moon-mascot) { height: 88px; }
+    #home .hp .hello-svg.sun-mascot { height: 140px; }
+    #home .hp .hello-svg.moon-mascot { height: 103px; }
+
+    #home .hp-intro {
+      width: 100%; max-width: none; box-sizing: border-box; padding: 0 var(--edge);
+      margin: 0 auto 96px; text-align: left;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 34px 40px;
+    }
+    #home .hp-intro .hp-headline { grid-column: 1; grid-row: 1; }
+    #home .hp-intro .hp-links { display: none; }
+    #home .hp-keys { grid-column: 2; grid-row: 1; align-self: end; }
+    #home .hp-intro .hp-lede { display: none; }
+    #home .hp-intro .hp-headline {
+      display: block; margin: 0; max-width: 24.5em;
+      font-size: clamp(32px, 3.1vw, 54px); font-weight: 400; line-height: 1.1;
+      letter-spacing: -.025em; color: var(--ink); text-wrap: balance;
+    }
+    /* the one coloured word, in the colour of whichever mascot is on */
+    #home .hp-headline em { font-style: normal; color: var(--accent); }
+    #home .hp-intro .hp-links {
+      margin: 0 0 6px; justify-content: flex-end; gap: 6px 26px;
+      font-family: var(--hp-mono); font-size: 12px; font-weight: 400;
+      letter-spacing: .08em; text-transform: uppercase; line-height: 1.4;
+    }
+    #home .hp-intro .hp-links a { color: var(--case-cap); }
+    #home .hp-intro .hp-links a:hover { color: var(--ink); text-decoration: none; }
+
+    #home .hp-strip { gap: 84px 32px; }
+    /* ---- the headline's tiles: the photo, a spark, a pair of eyes ----
+       Square like the cards, sized to the type and sat on its baseline. The
+       colours are the chips' own, the one place the page is multicoloured;
+       the coloured word keeps the mascot's. */
+    #home .hp-nw { white-space: nowrap; }
+    #home .hp-photo, #home .hp-tile {
+      display: inline-block; width: .84em; height: .84em; margin: 0 .04em;
+      vertical-align: -.1em; box-sizing: border-box;
+    }
+    #home .hp-photo { object-fit: cover; background: var(--card); }
+    #home .hp-tile svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    #home .hp-tile-spark { background: #F5B83D; }
+    #home .hp-tile-eyes { background: #EF476F; }
+    #home .hp-tile-spark .star { transform-box: fill-box; transform-origin: center; animation: hpSpark 3.2s cubic-bezier(.65, 0, .25, 1) infinite; }
+    #home .hp-tile-spark .dot { transform-box: fill-box; transform-origin: center; animation: hpTwinkle 1.7s ease-in-out infinite; }
+    #home .hp-tile-spark:hover .star { animation-duration: .8s; }
+    #home .hp-tile-eyes .eyes { transform-box: fill-box; transform-origin: center; animation: hpBlink 4.6s infinite; }
+    #home .hp-tile-eyes .pupils { transition: transform .18s ease-out; }
+    @keyframes hpSpark { 0%, 62% { transform: rotate(0) scale(1); } 80% { transform: rotate(90deg) scale(.78); } 100% { transform: rotate(90deg) scale(1); } }
+    @keyframes hpTwinkle { 0%, 100% { opacity: .15; transform: scale(.55); } 50% { opacity: 1; transform: scale(1); } }
+    @keyframes hpBlink { 0%, 90%, 100% { transform: scaleY(1); } 93% { transform: scaleY(.1); } 96% { transform: scaleY(1); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      #home .hp-tile * { animation: none !important; }
+    }
+
+    /* ---- CV and LinkedIn: two keys ----
+       The headline's tiles are flat and square because they only decorate.
+       These press, so they are drawn as keys: a rounded cap on an edge of its
+       own colour, which rises under the pointer and goes down when pressed.
+       Each has a small animation of its own, and names itself on hover. */
+    /* Square, and the tagline tiles' size, so the two read as one family.
+       What marks them as buttons keeps the square: a darker edge along the
+       bottom, and on hover (or keyboard focus) the whole key turns into an
+       arrow, the sign for a link that opens elsewhere. */
+    #home .hp-keys { display: flex; gap: 10px; margin-bottom: .14em; }
+    #home .hp-key {
+      position: relative; display: block; text-decoration: none;
+      width: calc(clamp(32px, 3.1vw, 54px) * .84); height: calc(clamp(32px, 3.1vw, 54px) * .84);
+    }
+    #home .key-cv { --k-bg: #2FBF85; }
+    #home .key-in { --k-bg: #0A66C2; }
+    #home .hp-key-face {
+      position: relative; display: block; width: 100%; height: 100%; overflow: hidden;
+      background: var(--k-bg);
+    }
+    /* the darker edge is drawn over the face, so it also runs across the CV's sheet */
+    #home .hp-key-face::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background: rgba(0, 0, 0, .2);
+    }
+    /* on hover the key becomes the arrow: an ink square grows out of the
+       top-right corner until it covers the face, and the arrow settles in */
+    #home .hp-key-tab {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      background: #14141B;
+      transform: scale(0); transform-origin: 100% 0;
+      transition: transform .28s var(--ease-out);
+    }
+    #home .hp-key-face .hp-key-tab svg {
+      width: 48%; height: 48%;
+      transform: translate(-22%, 22%); transition: transform .34s var(--ease-out) .05s;
+    }
+    #home .hp-key:hover .hp-key-tab, #home .hp-key:focus-visible .hp-key-tab { transform: scale(1); }
+    #home .hp-key:hover .hp-key-tab svg, #home .hp-key:focus-visible .hp-key-tab svg { transform: none; }
+    #home .hp-key-face svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    #home .hp-key:focus-visible { outline: none; }
+    #home .hp-key:focus-visible .hp-key-face { outline: 2px solid var(--accent); outline-offset: 3px; }
+    /* the CV writes itself out, line by line, and tilts up under the pointer */
+    #home .key-cv .ln { transform-box: fill-box; transform-origin: left center; animation: kWrite 4.2s cubic-bezier(.4, 0, .2, 1) infinite; }
+    #home .key-cv .l2 { animation-delay: .18s; } #home .key-cv .l3 { animation-delay: .36s; } #home .key-cv .l4 { animation-delay: .54s; }
+    #home .key-cv .cv-sheet { animation: kPrint 4.2s cubic-bezier(.4, 0, .2, 1) infinite; }
+    @keyframes kPrint { 0% { transform: translateY(6px); } 24%, 84% { transform: translateY(0); } 100% { transform: translateY(6px); } }
+    @keyframes kWrite { 0%, 8% { transform: scaleX(0); } 26%, 82% { transform: scaleX(1); } 96%, 100% { transform: scaleX(0); } }
+    /* LinkedIn: the dot of the i gives a small hop now and then */
+    #home .key-in .idot { transform-box: fill-box; transform-origin: center; animation: kHop 3.6s cubic-bezier(.3, 0, .3, 1) infinite; }
+    #home .key-in .logo { transform-box: fill-box; transform-origin: center; transition: transform .3s var(--ease-out); }
+    @keyframes kHop { 0%, 70%, 100% { transform: translateY(0); } 78% { transform: translateY(-3.5px); } 86% { transform: translateY(0) scale(1.1, .9); } 92% { transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      #home .hp-key * { animation: none !important; }
+    }
+
+    #home .hp-card .shot { border-radius: 0; background: var(--panel); }
+    #home .hp-card .hp-reveal { display: none; }
+    #home .hp-card video, #home .hp-card .shot > img { transition: transform .9s var(--ease-out); }
+    #home .hp-card:hover video, #home .hp-card:focus-visible video { filter: none; transform: scale(1.018); }
+    #home .hp-card:focus-visible { outline-offset: 6px; border-radius: 0; }
+
+    /* one row: the line about the project, and its name and status opposite */
+    #home .hp-cap {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 32px;
+      padding-top: 18px;
+    }
+    #home .hp-cap-line {
+      min-width: 0; font-size: 17px; font-weight: 400; line-height: 1.45; letter-spacing: -.005em;
+      text-wrap: pretty; color: var(--ink); transition: color 1.4s cubic-bezier(.4, 0, .2, 1);
+    }
+    #home .hp-cap-tags {
+      flex: 0 0 auto; white-space: nowrap;
+      font-family: var(--hp-mono); font-size: 11.5px; line-height: 1.45;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--case-cap); transition: color 1.4s cubic-bezier(.4, 0, .2, 1);
+    }
+  }
+  /* a narrow desktop: the line and the tags stop sharing a row */
+  @media (min-width: 901px) and (max-width: 1180px) {
+    #home .hp-cap { flex-direction: column; gap: 6px; }
+  }
+
   /* Below this the projects stack and the page scrolls normally. The card
      itself is unchanged: it was always footage with its name under it, and
      the desktop row now uses the same one. */
@@ -1269,7 +1507,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     :is(.hp, .about-hero) .hello-svg { height: 88px; }
 
     /* .hp carries the side padding here */
-    .hp-strip { flex-direction: column; gap: 30px; padding: 0; }
+    .hp-strip { flex-direction: column; grid-template-columns: minmax(0, 1fr); gap: 30px; padding: 0; }
     .hp-card { flex: 0 0 auto; width: 100%; }
     /* No hover here, and no room for words: under the footage there is one
        row, the name and an arrow, and the arrow is the whole affordance. The
@@ -1337,100 +1575,178 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      The weather mascot's own page: him, two boxes of bio, and a player. The
      mascot is the same element as the home hero, moved here by setActive. */
   /* ---------- Playground ----------
-     A grid of footage, three across, on the home strip's own width and inset.
-     The cards are the home cards' footage-and-reveal, minus the button, since
-     there is no page behind an experiment. */
+     rachelchen.tech/fun's structure in the home's own pieces: a headline
+     with tiles and a line under it, then the experiments in three columns at
+     their own proportions, square like the home's cards, each captioned with
+     what it is, a sentence about it, and its name and type in mono. */
   #playground .case {
-    /* the grid sits in the middle of the screen when it fits; the way back
-       takes the clock's corner */
-    min-height: 100vh; box-sizing: border-box; align-content: center;
-    padding-top: 72px; padding-bottom: 72px;
+    min-height: 100vh; box-sizing: border-box; align-content: start;
+    padding-top: clamp(150px, 24vh, 280px); padding-bottom: 120px;
     grid-template-columns:
-      [full-start] minmax(30px, 1fr)
-      [content-start] minmax(0, 1540px) [content-end]
-      minmax(30px, 1fr) [full-end];
+      [full-start] var(--edge)
+      [content-start] minmax(0, 1fr) [content-end]
+      var(--edge) [full-end];
   }
-  .pg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .pg-card { cursor: default; }
-  /* the tapped-open state: the same treatment the hover gives */
-  .pg-card.is-open video, .pg-card.is-open .shot > img {
-    filter: blur(9px) brightness(.42) saturate(.9); transform: scale(1.04);
+  body[data-page="playground"] .case-back { top: 26px; left: var(--edge); }
+
+  #playground .pg-title {
+    margin: 0; max-width: 24.5em;
+    font-size: clamp(32px, 3.1vw, 54px); font-weight: 400; line-height: 1.1;
+    letter-spacing: -.025em; color: var(--ink); text-wrap: balance;
   }
-  .pg-card .pg-mark { font-family: var(--font); font-size: 24px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
-  body[data-page="playground"] .hp-nav-items a[data-page="playground"] { display: none; }
-  body[data-page="playground"] .case-back { top: 26px; left: 30px; }
+  #playground .pg-nw { white-space: nowrap; }
+  #playground .pg-tile {
+    display: inline-block; width: .84em; height: .84em; margin: 0 .04em; vertical-align: -.1em;
+  }
+  #playground .pg-tile svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  #playground .pg-tile-dpad { background: #2FBF85; }
+  #playground .pg-tile-ball { background: #3DBEF0; }
+  /* the d-pad's arms press in turn */
+  #playground .pg-tile-dpad .dp { transform-box: fill-box; transform-origin: center; animation: pgPress 2.8s ease-in-out infinite; }
+  #playground .pg-tile-dpad .dp2 { animation-delay: .35s; } #playground .pg-tile-dpad .dp3 { animation-delay: .7s; }
+  #playground .pg-tile-dpad .dp4 { animation-delay: 1.05s; }
+  @keyframes pgPress { 0%, 20%, 100% { transform: scale(1); opacity: 1; } 9% { transform: scale(.74); opacity: .5; } }
+  /* the ball bounces with squash and stretch */
+  #playground .pg-tile-ball .ball { transform-box: fill-box; transform-origin: 50% 100%; animation: pgBounce 1.1s infinite; }
+  #playground .pg-tile-ball .shadow { transform-box: fill-box; transform-origin: center; animation: pgShadow 1.1s infinite; }
+  @keyframes pgBounce {
+    0% { transform: translateY(0) scale(1); animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
+    46% { transform: translateY(14.5px) scale(1); }
+    52% { transform: translateY(14.8px) scale(1.28, .72); animation-timing-function: cubic-bezier(0, .45, .5, 1); }
+    60% { transform: translateY(12px) scale(.9, 1.12); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  @keyframes pgShadow { 0%, 100% { transform: scale(.5); opacity: .12; } 50% { transform: scale(1); opacity: .3; } }
+  @media (prefers-reduced-motion: reduce) { #playground .pg-tile * { animation: none !important; } }
+
+  #playground .pg-lede {
+    margin: 22px 0 96px; max-width: 36em;
+    font-size: 17px; line-height: 1.5; color: var(--case-body);
+  }
+  .pg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; align-items: start; }
+  .pg-col { display: flex; flex-direction: column; gap: 76px; min-width: 0; }
+  .pg-item { margin: 0; }
+  /* square, like the home's cards, and no outline */
+  .pg-item .pg-media { display: block; width: 100%; height: auto; border-radius: 0; background: var(--panel); }
+  /* two pieces of one thing, side by side in one item */
+  .pg-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start; }
+  .pg-cap { display: flex; flex-direction: column; gap: 6px; padding-top: 18px; }
+  .pg-line { font-size: 17px; line-height: 1.4; letter-spacing: -.005em; color: var(--ink); }
+  .pg-desc { font-size: 15px; line-height: 1.55; color: var(--case-body); text-wrap: pretty; }
+  .pg-tags {
+    margin-top: 6px; font-family: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+    font-size: 11.5px; line-height: 1.45; letter-spacing: .08em; text-transform: uppercase; color: var(--case-cap);
+  }
+  @media (max-width: 1180px) and (min-width: 901px) {
+    .pg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pg-col { display: contents; }
+    .pg-grid { gap: 64px 28px; }
+    .pg-item { order: var(--o); }
+  }
   @media (max-width: 900px) {
-    #playground .case { grid-template-columns: [full-start] minmax(20px, 1fr) [content-start] minmax(0, 1540px) [content-end] minmax(20px, 1fr) [full-end]; }
+    #playground .case {
+      padding-top: 104px; padding-bottom: 72px;
+      grid-template-columns: [full-start] minmax(20px, 1fr) [content-start] minmax(0, 1540px) [content-end] minmax(20px, 1fr) [full-end];
+    }
     body[data-page="playground"] .case-back { top: 20px; left: 20px; }
-    .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-    /* Nothing to open, so the row ends in a plus instead, and a tap brings the
-       desktop's frosted reveal over the footage: the line about it, and the
-       meta, white on the blurred clip. Tap again and it goes. */
-    .pg-card .hp-title::after {
-      content: '+'; color: var(--case-cap); font-size: 22px; font-weight: 400;
-      transition: transform .25s var(--ease-out);
-    }
-    .pg-card.is-open .hp-title::after { transform: rotate(45deg); }
-    .pg-card .hp-reveal {
-      display: flex; position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 16 / 9;
-      opacity: 0; padding: 20px; gap: 8px;
-    }
-    .pg-card.is-open .hp-reveal { opacity: 1; }
-    .pg-card .hp-desc { font-size: 16px; }
+    #playground .pg-title { font-size: 30px; }
+    #playground .pg-lede { margin-bottom: 48px; font-size: 16px; }
+    /* one column, back in the order the experiments were made public */
+    .pg-grid { grid-template-columns: minmax(0, 1fr); gap: 52px; }
+    .pg-col { display: contents; }
+    .pg-item { order: var(--o); }
+    /* the home's phone cards keep a radius, so these do too */
+    .pg-item .pg-media { border-radius: 10px; }
   }
+  /* ---------- About ----------
+     rachelchen.tech/about's structure in the site's own pieces: the mascot
+     and a headline with moving tiles, the bio beside the Spotify tile, then
+     photo groups under numbered mono labels, two to a row and the dishes
+     across the width. Square photos at their own proportions, like the home
+     cards and the Playground. */
   #about .case {
-    /* the page's content sits in the middle of the screen when it fits, and
-       flows on when it does not; the way back is in the corner the clock
-       holds on home */
-    min-height: 100vh; box-sizing: border-box; align-content: center;
-    padding-top: 72px; padding-bottom: 72px;
-    /* a wider column than the case studies, so two boxes have room */
+    min-height: 100vh; box-sizing: border-box; align-content: start;
+    padding-top: clamp(150px, 24vh, 280px); padding-bottom: 120px;
     grid-template-columns:
-      [full-start] minmax(20px, 1fr)
-      [content-start] minmax(0, 1180px) [content-end]
-      minmax(20px, 1fr) [full-end];
+      [full-start] var(--edge)
+      [content-start] minmax(0, 1fr) [content-end]
+      var(--edge) [full-end];
   }
-  .about-hero { display: flex; justify-content: center; margin-bottom: 24px; min-height: 172px; align-items: flex-end; }
+  .about-hero { display: flex; justify-content: flex-start; align-items: flex-end; margin-bottom: 30px; }
   .about-hero .hello-wrap { margin: 0; }
-  /* the bio takes the larger share; the boxes stretch to one height */
-  .about-grid { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
-  .about-listen { display: flex; flex-direction: column; }
-  .about-box, .about-listen {
-    background: var(--panel); border-radius: var(--panel-radius);
-    padding: 26px 30px 30px;
+  #about .hp-photo, #about .ab-tile { display: inline-block; }
+  #about .ab-title {
+    margin: 0; max-width: 24.5em;
+    font-size: clamp(32px, 3.1vw, 54px); font-weight: 400; line-height: 1.1;
+    letter-spacing: -.025em; color: var(--ink); text-wrap: balance;
   }
-  .about-box .tag, .about-listen .tag {
-    font-size: 17.6px; font-weight: 500; line-height: 1.4; letter-spacing: .014em;
-    color: var(--ink); margin-bottom: 10px;
+  #about .ab-nw { white-space: nowrap; }
+  #about .ab-tile { width: .84em; height: .84em; margin: 0 .04em; vertical-align: -.1em; }
+  #about .ab-tile svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  #about .ab-tile-pan { background: #F5B83D; }
+  #about .ab-tile-bar { background: #2FBF85; }
+  /* the egg goes up, turns over, and lands */
+  #about .ab-tile-pan .egg { transform-box: fill-box; transform-origin: center; animation: abFlip 2.6s cubic-bezier(.45, 0, .3, 1) infinite; }
+  @keyframes abFlip {
+    0%, 40% { transform: translateY(0) rotate(0); }
+    58% { transform: translateY(-9px) rotate(180deg); }
+    74% { transform: translateY(0) rotate(360deg); }
+    80% { transform: translateY(0) scale(1.08, .9) rotate(360deg); }
+    86%, 100% { transform: translateY(0) rotate(360deg); }
   }
-  .about-bio .lead {
-    font-size: 22px; line-height: 1.35; font-weight: 600; letter-spacing: -.012em;
-    color: var(--ink); margin: 0 0 14px; text-wrap: balance;
-  }
-  .about-box p { font-size: 17px; line-height: 1.65; color: var(--case-body); margin: 0 0 13px; }
-  .about-bio p:last-child { margin-bottom: 0; }
+  /* the bar fills, levels up with a spark, and starts again */
+  #about .ab-tile-bar .fill { transform-box: fill-box; transform-origin: left center; animation: abFill 3.2s cubic-bezier(.4, 0, .2, 1) infinite; }
+  #about .ab-tile-bar .pop { transform-box: fill-box; transform-origin: center; animation: abPop 3.2s ease-out infinite; }
+  @keyframes abFill { 0%, 6% { transform: scaleX(0); } 62%, 88% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+  @keyframes abPop { 0%, 60% { transform: scale(0); opacity: 0; } 68% { transform: scale(1.25); opacity: 1; } 80% { transform: scale(1); opacity: 1; } 92%, 100% { transform: scale(.4); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { #about .ab-tile * { animation: none !important; } }
+
+  /* the bio under the headline, at a measure that does not feel squeezed */
+  .ab-intro { margin: 30px 0 110px; max-width: 56em; }
+  .ab-bio p { margin: 0 0 14px; font-size: 17px; line-height: 1.65; color: var(--case-body); }
+  .ab-bio p:last-child { margin-bottom: 0; }
+  .ab-bio a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   #about b { color: var(--ink); font-weight: 600; }
   #about .mk { color: var(--accent); font-weight: 500; }
-  .about-listen p { margin: 0 0 16px; color: var(--case-cap); line-height: 1.545; }
-  /* the embed fills the box to the bio's height; Spotify lays its track
-     list out to the iframe, so a taller box simply shows more of the list */
-  /* Spotify's API replaces the placeholder with the iframe itself, so the
-     iframe is what fills the box */
-  #spotify-embed, .about-listen iframe { flex: 1 1 auto; min-height: 152px; display: block; border-radius: 12px; }
-  @media (max-width: 760px) {
-    .about-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-    #spotify-embed, .about-listen iframe { flex: none; height: 352px; }
-    .about-box, .about-listen { padding: 22px 20px 24px; }
-    .about-hero { min-height: 120px; margin-bottom: 26px; }
+
+  /* One gallery: justified rows of one height, every piece at its own
+     proportions, so no photo outsizes another. Each section opens on a
+     coloured label tile, square-cornered like the tagline's tiles. */
+  #about { --ab-row: 230px; }
+  .ab-gallery { display: flex; flex-wrap: wrap; gap: 12px; }
+  /* the last row keeps its natural sizes instead of stretching to fill */
+  .ab-gallery::after { content: ''; flex: 100000 1 0; }
+  .ab-g, .ab-tag {
+    flex: calc(var(--ar) * 100) 1 calc(var(--ar) * var(--ab-row));
+    aspect-ratio: var(--ar); min-width: 0; margin: 0; box-sizing: border-box;
+  }
+  .ab-g img, .ab-g video { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--panel); }
+  .ab-tag {
+    display: flex; align-items: flex-end; padding: 14px 14px 12px; background: var(--c); color: #14141B;
+    font-family: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+    font-size: 12px; line-height: 1.35; letter-spacing: .08em; text-transform: uppercase;
+  }
+  .ab-tag-amber { --c: #F5B83D; } .ab-tag-pink { --c: #EF476F; } .ab-tag-green { --c: #2FBF85; }
+
+  @media (max-width: 900px) {
+    #about .case {
+      padding-top: 104px; padding-bottom: 72px;
+      grid-template-columns: [full-start] 20px [content-start] minmax(0, 1fr) [content-end] 20px [full-end];
+    }
+    #about .ab-title { font-size: 30px; }
+    .ab-intro { margin-bottom: 64px; }
+    #about { --ab-row: 120px; }
+    .ab-gallery { gap: 8px; }
+    .ab-tag { padding: 10px; font-size: 10.5px; }
   }
 
   /* On About and the Playground the way back takes the corner the London
      clock has on home, so the page reads as the same frame. */
-  body[data-page="about"] .case-back { top: 26px; left: 30px; }
+  body[data-page="about"] .case-back { top: 26px; left: var(--edge); }
   @media (max-width: 900px) { body[data-page="about"] .case-back { top: 20px; left: 20px; } }
   /* 'Home' opens the rail: same left edge, 64px of air to the list below */
   .case-back {
-    position: fixed; top: 73px; left: max(28px, calc(50% - 720px));
+    position: fixed; top: 73px; left: max(var(--edge), calc(50% - 720px));
     z-index: 41;
     display: none; align-items: center; gap: 8px;
     font-size: 16px; letter-spacing: .018em; line-height: 1.8; font-weight: 400;
@@ -1522,6 +1838,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      70% of the artwork, so matching Pactto's 38px would set them at ~27px.
      Scaled so the letters land on the same optical size. */
   #jobi .case-wordmark { height: 40px; }
+  #quest-up .case-wordmark { height: 72px; }
   /* Jobi's title: the app's own rig standing beside the letterforms, in the
      place the flat mascot of the lockup had. The rig's box is the letters'
      height and a little more; the object inside is oversized and inset the
@@ -3239,6 +3556,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .case h2 { font-size: 20.8px; letter-spacing: 0; line-height: 1.4; font-weight: 500; }
     .case-wordmark { height: 30px; }
     #jobi .case-wordmark { height: 32px; }
+    #quest-up .case-wordmark { height: 56px; }
     .jobi-companion { width: 48px; height: 48px; }
     .jobi-lockup { gap: 9px; }
     .case-logo { width: 44px; height: 44px; }
@@ -3399,7 +3717,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
      against the window, which is what puts it at 94px on a 1565px page:
      half the window, back to the container's edge, plus its 32px gutter. */
   .case-nav {
-    position: fixed; top: 166px; left: max(28px, calc(50% - 720px));
+    position: fixed; top: 166px; left: max(var(--edge), calc(50% - 720px));
     width: 168px; padding: 0;
     background: none;
     display: none; flex-direction: column; gap: 0;
@@ -3621,6 +3939,34 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       box-shadow: 0 0 0 1.5px rgba(232, 240, 255, .35), 0 4px 14px rgba(3, 7, 20, .4);
     }
 
+    /* Over a case study the View cursor takes the shape of whichever mascot is
+       on duty: the cloud's puff (in every weather), the sun with its rays, and
+       for the moon, whose crescent leaves no room for a word, a full disc.
+       Same ground and ink as the pill it replaces. */
+    #cursor-orb .cur-core { position: relative; }
+    #cursor-orb .cur-label { position: relative; }
+    #cursor-orb .cur-shape {
+      display: none; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
+      color: var(--mascot-bg); fill: currentColor; stroke: currentColor;
+      filter: drop-shadow(0 4px 10px rgba(20, 20, 45, .18));
+    }
+    #cursor-orb .cs-cloud { stroke: none; }
+    #cursor-orb .cs-sun circle { stroke: none; }
+    body.cursor-view:not(.mascot-sun):not(.mascot-moon) #cursor-orb .cur-core {
+      width: 80px; height: 51px; margin: -28px 0 0 -40px; padding-top: 9px; box-sizing: border-box;
+      border-radius: 0; background: transparent; box-shadow: none;
+    }
+    body.cursor-view:not(.mascot-sun):not(.mascot-moon) #cursor-orb .cs-cloud,
+    body.cursor-view.mascot-sun #cursor-orb .cs-sun { display: block; animation: curShape .16s ease-out; }
+    body.cursor-view.mascot-sun #cursor-orb .cur-core {
+      width: 74px; height: 74px; margin: -37px 0 0 -37px;
+      border-radius: 0; background: transparent; box-shadow: none;
+    }
+    body.cursor-view.mascot-moon #cursor-orb .cur-core {
+      width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%;
+    }
+    @keyframes curShape { from { transform: scale(.55); opacity: 0; } }
+
     /* pressing squashes it */
     body.cursor-down #cursor-orb .cur-core { transform: scale(.85); }
   }
@@ -3765,6 +4111,12 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 </defs></svg>
 
 <div id="loader" aria-label="Loading" role="status"><div class="trio" aria-hidden="true"></div></div>
+  <!-- the site's own chrome, shared by home, About and the Playground: the
+       clock in one corner, the nav in the other -->
+  <div class="top-bar" aria-hidden="true"></div>
+  <div class="hp-clock">
+    London <span id="clock"></span>
+  </div>
   <nav class="hp-nav">
     <button class="hp-burger" type="button" aria-expanded="false"
             aria-controls="hp-menu" aria-label="Menu">
@@ -3782,15 +4134,12 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   </nav>
 
 <div id="curtain"></div>
-<div id="cursor-orb" aria-hidden="true"><span class="cur-core"><span class="cur-label cl-view">View</span><span class="cur-label cl-drag">Drag</span></span></div>
+<div id="cursor-orb" aria-hidden="true"><span class="cur-core"><svg class="cur-shape cs-cloud" viewBox="0 0 49 31"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg><svg class="cur-shape cs-sun" viewBox="0 0 64 64"><g stroke-width="4.5" stroke-linecap="round"><path d="M32 3v6M32 55v6M3 32h6M55 32h6M11.5 11.5l4.2 4.2M48.3 48.3l4.2 4.2M11.5 52.5l4.2-4.2M48.3 15.7l4.2-4.2"/></g><circle cx="32" cy="32" r="20"/></svg><span class="cur-label cl-view">View</span><span class="cur-label cl-drag">Drag</span></span></div>
 
 <!-- HOME -->
 <section id="home" class="page current">
   <div class="hp">
 
-    <div class="hp-clock">
-      London <span id="clock"></span>
-    </div>
 
 
     <div class="hello-slot" hidden></div>
@@ -4022,8 +4371,16 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
 
     <h1 class="sr-only">Mahin Jahan, product designer in London</h1>
     <div class="hp-intro">
-      <p>I&rsquo;m a product designer in London, shipping AI products people actually
+      <!-- the desktop's headline, set large above the work; the phone keeps
+           the sentence under it -->
+      <p class="hp-headline">I&rsquo;m <span class="hp-nw">Mahin <img class="hp-photo" src="/assets/mahin.webp" alt="" width="200" height="200"></span> a product designer in London building AI <span class="hp-nw">products <span class="hp-tile hp-tile-spark" aria-hidden="true"><svg viewBox="0 0 40 40"><path class="star" d="M20 7C21.4 15 25 18.6 33 20C25 21.4 21.4 25 20 33C18.6 25 15 21.4 7 20C15 18.6 18.6 15 20 7Z" fill="#14141B"/><circle class="dot" cx="31.5" cy="9" r="2.3" fill="#14141B"/></svg></span></span> that feel a little bit <span class="hp-nw"><em>alive</em> <span class="hp-tile hp-tile-eyes" aria-hidden="true"><svg viewBox="0 0 40 40"><g class="eyes"><ellipse cx="13.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><ellipse cx="26.5" cy="20" rx="6.2" ry="7.6" fill="#fff"/><g class="pupils"><circle cx="13.5" cy="20" r="3.1" fill="#14141B"/><circle cx="26.5" cy="20" r="3.1" fill="#14141B"/></g></g></svg></span>.</span></p>
+      <p class="hp-lede">I&rsquo;m a product designer in London, shipping AI products people actually
         use and building tools that feel a little bit alive.</p>
+      <!-- desktop: the person's links as two keys opposite the headline -->
+      <div class="hp-keys">
+        <a class="hp-key key-cv" href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener" aria-label="CV (opens in a new tab)"><span class="hp-key-face"><svg viewBox="0 0 40 40" aria-hidden="true"><g class="cv-sheet"><rect x="7.5" y="10" width="25" height="36" fill="#fff"/><text x="11" y="20.4" font-size="8.6" font-weight="700" fill="#14141B" font-family="inherit">CV</text><g fill="#14141B" opacity=".38"><rect class="ln l1" x="11" y="24.4" width="18" height="2"/><rect class="ln l2" x="11" y="28.6" width="14" height="2"/><rect class="ln l3" x="11" y="32.8" width="18" height="2"/><rect class="ln l4" x="11" y="37" width="11" height="2"/></g></g></svg><span class="hp-key-tab" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.6 8.4l4.6-4.6M4.4 3.6h3.9v3.9" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
+        <a class="hp-key key-in" href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)"><span class="hp-key-face"><svg viewBox="0 0 40 40" aria-hidden="true"><g class="logo" fill="#fff" transform="translate(-.5 .45)"><circle class="idot" cx="13.4" cy="12.4" r="2.3"/><rect x="11.4" y="16" width="4" height="13"/><path d="M17.6 16h3.7v1.7c.6-1.1 2-2 3.9-2c3.4 0 4.4 2.2 4.4 5.3V29h-4v-6.2c0-1.4-.3-2.6-1.8-2.6c-1.6 0-2.5 1.1-2.5 2.7V29h-3.7z"/></g></svg><span class="hp-key-tab" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.6 8.4l4.6-4.6M4.4 3.6h3.9v3.9" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
+      </div>
       <!-- the person's links, under the sentence about the person -->
       <p class="hp-links"><a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a><a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&nearr;</span></a></p>
     </div>
@@ -4062,68 +4419,96 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   <a href="#n-decisions">Decisions</a>
   <a href="#n-future">Future</a>
 </nav>
+<nav class="case-nav" data-page="quest-up" aria-label="Case study sections">
+  <a href="#q-tldr"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>TLDR</a>
+  <a href="#q-context"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Context</a>
+  <a href="#q-problem"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Problem</a>
+  <a href="#q-user"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>User</a>
+  <a href="#q-solution"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Solution</a>
+  <a href="#q-testing"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Testing</a>
+  <a href="#q-outcome"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Outcome</a>
+</nav>
 <a class="case-back" href="/" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Home</span></a>
 
 <section id="playground" class="page">
   <div class="case playground">
-    <!-- no title, no lede: the work is the page. The five experiments from
-         the Framer page, in its order; the media is still served from Framer. -->
     <h1 class="sr-only">Playground: interaction and motion experiments by Mahin Jahan</h1>
+    <!-- the home's headline, with its own tiles: a d-pad and a ball -->
+    <p class="pg-title">Side quests <span class="pg-tile pg-tile-dpad" aria-hidden="true"><svg viewBox="0 0 40 40"><g fill="#14141B"><rect x="16" y="16" width="8" height="8"/><rect class="dp dp1" x="16" y="7" width="8" height="8.5"/><rect class="dp dp2" x="24.5" y="16" width="8.5" height="8"/><rect class="dp dp3" x="16" y="24.5" width="8" height="8.5"/><rect class="dp dp4" x="7" y="16" width="8.5" height="8"/></g></svg></span> I make to learn something new, or just for the fun of <span class="pg-nw">it <span class="pg-tile pg-tile-ball" aria-hidden="true"><svg viewBox="0 0 40 40"><ellipse class="shadow" cx="20" cy="32.5" rx="7" ry="1.7" fill="#14141B"/><circle class="ball" cx="20" cy="12.5" r="5.2" fill="#EF476F"/></svg></span>.</span></p>
+    <p class="pg-lede">A product site, motion studies, two worlds in VR, game UI, and one extension that shipped.</p>
     <div class="pg-grid">
-      <div class="hp-card pg-card" tabindex="0">
-        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/SYSdRjm9u489drfjUsimy8iDcrQ.mp4" poster="https://framerusercontent.com/images/5ILRvlYXf72kHSVHqpa3snGzjU.jpg" muted loop playsinline></video></span>
-        <span class="hp-text">
-          <span class="hp-title">Discord reply</span>
-          <span class="hp-reveal">
-            <span class="hp-mark hp-mark-type pg-mark" aria-label="Discord reply">Discord reply</span>
-            <span class="hp-desc">Discord&rsquo;s reply interaction, rebuilt for the small motion in it: the text field&rsquo;s corners morph, and the reply button spins in and changes colour.</span>
-            <span class="hp-meta-line">Experiment &middot; Motion</span>
-          </span>
-        </span>
+      <div class="pg-col">
+        <figure class="pg-item" style="--o: 0">
+          <video class="pg-media" preload="none" src="/assets/playground/bloomi-site.mp4" width="1920" height="1080" muted loop playsinline aria-label="A scroll through the Bloomi site from top to bottom"></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">Bloomi&rsquo;s site, scrolled from top to bottom</span>
+            <span class="pg-desc">The product site I designed for Bloomi, Jobi&rsquo;s sister app: scroll-driven transitions build a month of habits from a single square, then open it into Chrome&rsquo;s side panel.</span>
+            <span class="pg-tags">Bloomi &bull; Website on jobi.life</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 1">
+          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/SYSdRjm9u489drfjUsimy8iDcrQ.mp4" width="1920" height="1032" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">Discord&rsquo;s reply, rebuilt for its motion</span>
+            <span class="pg-desc">The small motion in Discord&rsquo;s reply: the text field&rsquo;s corners morph, and the reply button spins in and changes colour.</span>
+            <span class="pg-tags">Discord reply &bull; Motion study</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 4">
+          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/cDmCG4Ev2NiriOtXY8y2GOITTog.mp4" width="1920" height="952" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">Terms of Service, read for you</span>
+            <span class="pg-desc">A Chrome extension that summarises Terms of Service the moment one appears, explains the confusing clauses, and checks contracts and subscriptions for hidden changes.</span>
+            <span class="pg-tags">Printl &bull; Shipped extension</span>
+          </figcaption>
+        </figure>
       </div>
-      <div class="hp-card pg-card" tabindex="0">
-        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/nwUOaipUWGOIGZT53W0wIKc.mp4" muted loop playsinline></video></span>
-        <span class="hp-text">
-          <span class="hp-title">Sword Art Online VR</span>
-          <span class="hp-reveal">
-            <span class="hp-mark hp-mark-type pg-mark" aria-label="Sword Art Online VR">Sword Art Online VR</span>
-            <span class="hp-desc">One scene from Sword Art Online rebuilt in VR: the anime&rsquo;s interface, its sound cues and its world, so the moment feels the way it does on screen.</span>
-            <span class="hp-meta-line">Experiment &middot; VR</span>
-          </span>
-        </span>
+      <div class="pg-col">
+        <figure class="pg-item" style="--o: 2">
+          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/nwUOaipUWGOIGZT53W0wIKc.mp4" width="1024" height="1024" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">A Sword Art Online scene, rebuilt in VR</span>
+            <span class="pg-desc">The anime&rsquo;s interface, its sound cues and its world, put together so the moment feels the way it does on screen.</span>
+            <span class="pg-tags">Sword Art Online &bull; VR</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 5">
+          <video class="pg-media" preload="none" src="/assets/playground/lost-in-trafalgar.mp4" width="640" height="332" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">Trafalgar Square at night, with nobody else in it</span>
+            <span class="pg-desc">A VR mystery thriller made in a group for a university VR module: an immersive tour of Trafalgar Square with nobody else around.</span>
+            <span class="pg-tags">Lost in Trafalgar &bull; VR game</span>
+          </figcaption>
+        </figure>
       </div>
-      <div class="hp-card pg-card" tabindex="0">
-        <span class="shot"><img src="https://framerusercontent.com/images/MMNpjApWUwJzT4QQhuXCuQbrMuo.png" alt="" loading="lazy"></span>
-        <span class="hp-text">
-          <span class="hp-title">TripUp</span>
-          <span class="hp-reveal">
-            <span class="hp-mark hp-mark-type pg-mark" aria-label="TripUp">TripUp</span>
-            <span class="hp-desc">A travel companion that merges group expenses with shared photos, so one app carries what a scattered set of tools did.</span>
-            <span class="hp-meta-line">Concept &middot; App</span>
-          </span>
-        </span>
-      </div>
-      <div class="hp-card pg-card" tabindex="0">
-        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/cDmCG4Ev2NiriOtXY8y2GOITTog.mp4" muted loop playsinline></video></span>
-        <span class="hp-text">
-          <span class="hp-title">Printl</span>
-          <span class="hp-reveal">
-            <span class="hp-mark hp-mark-type pg-mark" aria-label="Printl">Printl</span>
-            <span class="hp-desc">A Chrome extension that summarises Terms of Service the moment one appears, explains the confusing clauses, and checks contracts and subscriptions for hidden changes.</span>
-            <span class="hp-meta-line">Chrome extension &middot; Shipped</span>
-          </span>
-        </span>
-      </div>
-      <div class="hp-card pg-card" tabindex="0">
-        <span class="shot"><video preload="none" src="https://framerusercontent.com/assets/kxpZV8Fh6WMEfWeFOuj7cxSQI.mp4" muted loop playsinline></video></span>
-        <span class="hp-text">
-          <span class="hp-title">Deku&rsquo;s Notebook battle pass</span>
-          <span class="hp-reveal">
-            <span class="hp-mark hp-mark-type pg-mark" aria-label="Deku's Notebook battle pass">Deku&rsquo;s Notebook battle pass</span>
-            <span class="hp-desc">A battle pass themed on Deku&rsquo;s Notebook: comic panels, halftones and bold type, with progression, purchases and rewards kept legible on a controller.</span>
-            <span class="hp-meta-line">Concept &middot; Game UI</span>
-          </span>
-        </span>
+      <div class="pg-col">
+        <figure class="pg-item" style="--o: 3">
+          <img class="pg-media" src="https://framerusercontent.com/images/MMNpjApWUwJzT4QQhuXCuQbrMuo.png" width="2000" height="1440" alt="TripUp screens: group expenses and shared trip photos in one app" loading="lazy">
+          <figcaption class="pg-cap">
+            <span class="pg-line">Group trips without the spreadsheet</span>
+            <span class="pg-desc">A travel companion that merges group expenses with shared photos, so one app carries what a scattered set of tools did.</span>
+            <span class="pg-tags">TripUp &bull; App concept</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 7">
+          <div class="pg-pair">
+            <img class="pg-media" src="/assets/playground/quest-up-storyboard.webp" width="1100" height="1525" alt="The Quest Up advert's storyboard in five cuts: a close-up of the pink-haired lead looking at her phone, the Quest Up app opening on screen, a burst of digital effects, the screen becoming a neon cyberpunk city she runs through, and her sprinting up skyscraper steps, with the lines Embark on your fitness journey and Conquer epic challenges." loading="lazy">
+            <img class="pg-media" src="/assets/playground/quest-up-character.webp" width="1100" height="1139" alt="The advert's character sheet: the pink-haired lead in twin tails, a black and pink hooded track jacket, shorts and pink high-top trainers, from the front, side and back." loading="lazy">
+          </div>
+          <figcaption class="pg-cap">
+            <span class="pg-line">The Quest Up advert, before it moved</span>
+            <span class="pg-desc">The storyboard and character sheet behind Quest Up&rsquo;s anime advert: she opens the app, the screen bursts into a neon city, and she runs it.</span>
+            <span class="pg-tags">Quest Up &bull; Advert storyboard</span>
+          </figcaption>
+        </figure>
+        <figure class="pg-item" style="--o: 6">
+          <video class="pg-media" preload="none" src="https://framerusercontent.com/assets/kxpZV8Fh6WMEfWeFOuj7cxSQI.mp4" width="3840" height="2046" muted loop playsinline></video>
+          <figcaption class="pg-cap">
+            <span class="pg-line">A battle pass drawn like a hero&rsquo;s notebook</span>
+            <span class="pg-desc">Deku&rsquo;s Notebook as game UI: comic panels, halftones and bold type, with progression, purchases and rewards kept legible on a controller.</span>
+            <span class="pg-tags">Deku&rsquo;s Notebook &bull; Game UI</span>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </div>
@@ -4135,73 +4520,36 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <!-- the weather mascot moves in here from the home page; see setActive -->
     <div class="about-hero" id="about-hero"></div>
 
-    <div class="about-grid">
-      <div class="about-box about-bio">
-        <p class="lead">Product designer, by way of a startup, an economics degree and one very good summer.</p>
+    <p class="ab-title">I&rsquo;m a designer, a <span class="ab-nw">cook <span class="ab-tile ab-tile-pan" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="27" y="22.4" width="10.5" height="3.2" rx="1.6" fill="#14141B"/><ellipse cx="17.5" cy="24" rx="12" ry="5.6" fill="#14141B"/><g class="egg"><ellipse cx="17.5" cy="20.6" rx="6.4" ry="3.2" fill="#fff"/><circle cx="17.5" cy="20.2" r="2.1" fill="#FFB020"/></g></svg></span></span> and a League player, hooked on progress you can <span class="ab-nw">see <span class="ab-tile ab-tile-bar" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="7" y="19" width="26" height="6" fill="#fff"/><rect class="fill" x="7" y="19" width="26" height="6" fill="#14141B"/><path class="pop" d="M30 8.5C30.5 11.2 31.3 12 34 12.5C31.3 13 30.5 13.8 30 16.5C29.5 13.8 28.7 13 26 12.5C28.7 12 29.5 11.2 30 8.5Z" fill="#14141B"/></svg></span>.</span></p>
+
+    <div class="ab-intro">
+      <div class="ab-bio">
         <p>In my second year reading economics I was running a startup, <span class="mk">Quest Up</span>, and wanted to design it properly. A summer at <span class="mk">BrainStation</span> gave me the same kick the startup did: <b>you make something, people use it, and the progress is right there in front of you.</b> A Master&rsquo;s in <span class="mk">Human-Computer Interaction</span> added the theory, and an internship at <span class="mk">Pactto</span> put my first feature into a public beta.</p>
         <p>Off the clock I cook, play <span class="mk">League of Legends</span> and run. Cooking is the one that maps onto the work: <b>UI is the plating and UX is the food.</b> One attracts, the other keeps them.</p>
-        <p class="hp-links about-links"><a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a><a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&nearr;</span></a></p>
+        <p>Say hi on <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>, or <a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">read my CV</a>.</p>
       </div>
-      <div class="about-box about-listen">
-        <div class="tag">Today&rsquo;s mood</div>
-        <p>Press play and he listens with you.</p>
-        <div id="spotify-embed"></div>
-      </div>
+    </div>
+
+    <div class="ab-gallery">
+      <div class="ab-tag ab-tag-amber" style="--ar: .56"><span>01. Designer</span></div>
+      <figure class="ab-g" style="--ar: 1.000"><img src="/assets/about/mahin-pitch.webp" width="900" height="900" alt="Mahin pitching Quest Up at the CitySpark Grand Final, in front of the slide showing the app&rsquo;s solution" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.016"><img src="/assets/about/mahin-demo.webp" width="900" height="886" alt="Mahin showing something on his phone to a visitor at a showcase, both wearing yellow lanyards" loading="lazy"></figure>
+      <div class="ab-tag ab-tag-pink" style="--ar: .56"><span>02. League player</span></div>
+      <figure class="ab-g" style="--ar: 0.648"><img src="/assets/about/mahin-worlds.webp" width="900" height="1388" alt="Mahin at League of Legends Worlds, in a brown puffer jacket in front of the Make Them Believe stage screen" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.778"><video src="/assets/about/zeri-elder.mp4" width="960" height="540" preload="none" muted loop playsinline aria-label="A League of Legends clip: an Elder Dragon fight as Zeri, ending in a double kill"></video></figure>
+      <div class="ab-tag ab-tag-green" style="--ar: .56"><span>03. Cook</span></div>
+      <figure class="ab-g" style="--ar: 1.055"><img src="/assets/about/dishes/dish1.webp" width="520" height="493" alt="Spiced fried rice served in a halved pineapple" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.055"><img src="/assets/about/dishes/dish2.webp" width="520" height="493" alt="Charred flatbread beside chicken and pepper skewers" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.061"><img src="/assets/about/dishes/dish3.webp" width="520" height="490" alt="Roast potatoes and greens, finished with basil and a flower" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.016"><img src="/assets/about/dishes/dish4.webp" width="520" height="512" alt="Spiced chicken over yoghurt with grilled lemon, beside saffron rice" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 0.994"><img src="/assets/about/dishes/dish5.webp" width="520" height="523" alt="Glazed bites with a spicy drizzle, in a long white dish" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 1.212"><img src="/assets/about/dishes/dish6.webp" width="520" height="429" alt="A glazed fillet with a herb purée and a dark sauce" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 0.837"><img src="/assets/about/dishes/dish7.webp" width="520" height="621" alt="A pink cocktail with lemon and mint" loading="lazy"></figure>
+      <figure class="ab-g" style="--ar: 0.998"><img src="/assets/about/dishes/dish8.webp" width="520" height="521" alt="Brownies with a strawberry and blueberries" loading="lazy"></figure>
     </div>
 
   </div>
 </section>
-<script>
-/* Spotify's Embed: no key, no visitor login. Its iFrame API reports play and
-   pause, which is all the mascot needs to know. The callback must exist before
-   the loader runs, so it is defined here and the loader follows. */
-window.onSpotifyIframeApiReady = function (IFrameAPI) {
-  var el = document.getElementById('spotify-embed');
-  if (!el) return;
-  IFrameAPI.createController(el, {
-    /* one song, Mahin's pick for the day. A track URI here; a playlist URI
-       works the same way. */
-    uri: 'spotify:track:6wLqvGnCfnyq5R9gI5NABt',
-    width: '100%', height: 152,
-  }, function (controller) {
-    /* kept on window so the state can be driven from the console */
-    window.spotifyController = controller;
-    /* Two guards, because the player's reports are not the whole story.
-       1. Nothing counts as playing until the visitor has touched the page or
-          the player. Spotify's iframe can resume a session of its own at
-          load, and browsers block that audio anyway, so the headphones would
-          go on in silence. A click or tap inside the iframe takes focus off
-          this document, which is how it shows up here.
-       2. A preview that reaches its end just stops reporting; there is no
-          pause event. So a report of playing expires unless another follows
-          (they arrive about once a second while the music runs). */
-    var touched = false, readyAt = 0, expiry = 0;
-    controller.addListener('ready', function () { readyAt = performance.now(); });
-    /* a phone that never hands focus to the iframe must not be locked out,
-       so a report that comes well after the player is ready is trusted too */
-    var trusted = function () { return touched || (readyAt && performance.now() - readyAt > 2000); };
-    var listening = function (on) {
-      document.querySelectorAll('.hello-wrap').forEach(function (w) { w.classList.toggle('is-listening', on); });
-    };
-    var touch = function () { touched = true; };
-    ['pointerdown', 'pointermove', 'touchstart', 'keydown', 'wheel'].forEach(function (t) {
-      document.addEventListener(t, touch, { passive: true, capture: true });
-    });
-    window.addEventListener('blur', function () {
-      var f = document.activeElement;
-      if (f && f.tagName === 'IFRAME') touched = true;
-    });
-    controller.addListener('playback_update', function (e) {
-      var playing = !!(e && e.data && e.data.isPaused === false);
-      if (playing && !trusted()) { controller.pause(); playing = false; }
-      clearTimeout(expiry);
-      if (playing) expiry = setTimeout(function () { listening(false); }, 3000);
-      listening(playing);
-    });
-  });
-};
-</script>
-<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 
 <section id="pactto" class="page">
   <div class="case">
@@ -5053,6 +5401,177 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
     <div class="case-next">
       <div class="eyebrow">Next</div>
+      <a href="/quest-up" data-page="quest-up">
+        <video preload="none" src="/assets/videos/quest-up.mp4" muted loop playsinline></video>
+        <span class="cn-text">
+          <span class="cn-title">Quest Up</span>
+          <span class="cn-sub">Turning a chore into a quest.</span>
+        </span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="quest-up" class="page">
+  <div class="case">
+
+    <div id="q-tldr" data-nav>
+    <div class="case-intro">
+      <div class="ci-text">
+      <h1>Quest Up</h1>
+      <p class="case-headline">Turning a chore into a quest.</p>
+      <p class="case-sub">Quest Up is a gamified health companion for sedentary gamers. I founded this startup to bridge the gap between high motivation and low consistency, adapting the &ldquo;Quest Loop&rdquo; mechanic to turn physical activity into a game.</p>
+      </div>
+
+      <div class="case-meta">
+        <div class="cm-group">
+          <h2>Team</h2>
+          <p>1 Founder &amp; Product Designer (Me)</p>
+        </div>
+        <p class="cm-year">2023&ndash;24 &middot; Startup</p>
+      </div>
+    </div>
+
+    <video preload="none" class="case-video" src="/assets/videos/quest-up.mp4" muted loop playsinline></video>
+
+    <div class="callout">
+      <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
+      <div>
+        <div class="tag">Too long didn&rsquo;t read</div>
+        <p>Gamers want to be healthier, but the motivation rarely becomes a habit: next to the instant rewards of a game, fitness feels like a chore. Quest Up borrows the game&rsquo;s own loop, <em>short, structured quests with instant rewards</em>, to lower the barrier for sedentary players. It won the City Ventures Grand Spark startup competition.</p>
+      </div>
+    </div>
+    </div>
+
+    <section id="q-context" data-nav>
+      <div class="eyebrow">Context</div>
+      <h2>Gaming Is Rewarding by Design, Movement Is Not</h2>
+      <p>Games are built to hold attention through clear goals, instant feedback, and visible progress. Fitness, by contrast, feels effortful, unstructured, and slow to reward. Even gamers who want healthier habits default to long sedentary sessions because movement doesn&rsquo;t fit naturally into the way they already spend their time.</p>
+      <img class="case-media" src="/assets/case-questup/context-gaming.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="Project timeline across six months: research, primary and secondary, in months one and two; ideation, information architecture, sketches and wireframes, in months two and three; visuals and branding, moodboard, design system and high-fidelity wireframes, in months four to six; and prototype and evaluation, formative user evaluations, from month three to month six.">
+
+      <h3>Why This Is a Problem</h3>
+      <p>Extended inactivity during long gaming sessions contributes to low energy, weight gain, back and eye strain, and declining long-term health. Because fitness feels intimidating and easy to postpone, consistency breaks quickly, making it harder for users to build sustainable habits even when motivation exists.</p>
+
+      <h3>Solution Overview</h3>
+      <img class="case-media" src="/assets/case-questup/solution-overview.jpg" data-nocaption loading="lazy" width="1693" height="600"
+        alt="Six Quest Up screens in the app&rsquo;s neon anime style: a profile with an avatar, coin balance and an ongoing quest; avatar customisation with tops, bottoms, accessories and backgrounds; a statistic report with weekly hearts, quests and awards; daily and boss quests; a shop of today&rsquo;s offers; and a leaderboard ranking friends and global players.">
+      <p>I explored how to lower the barrier to fitness by borrowing the mechanics gamers already understand. By reframing movement as short, structured quests with clear progression and rewards, exercise can feel familiar, achievable, and easy to start within a gaming routine.</p>
+
+      <div class="callout">
+        <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
+        <div>
+          <div class="tag">Expected impact</div>
+          <p>Making movement feel game-like reduces friction at decision time and encourages <em>small, repeatable actions</em>. This approach supports safer, more consistent activity, helping users build healthier habits without giving up the experiences they enjoy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-problem" data-nav>
+      <div class="eyebrow">Problem</div>
+      <h2>Motivation Isn&rsquo;t the Problem. The Format Is.</h2>
+      <p>Research with 15+ gamers on Discord and at conventions revealed a paradox: gamers <em>want</em> to be healthy, but fitness lacks the immediate feedback loops of gaming.</p>
+
+      <div class="case-cards">
+        <div class="case-card"><h4>Problem: Long Hours Sitting</h4><p>&ldquo;On average, I spend around 3 to 4 hours a day gaming.&rdquo;</p></div>
+        <div class="case-card"><h4>Pain Point: Exercise Feels Like a Chore</h4><p>&ldquo;I want to be more active, but I don&rsquo;t feel motivated to exercise.&rdquo;</p></div>
+        <div class="case-card"><h4>Opportunity: Open to Gamified Fitness</h4><p>&ldquo;If I can see my daily progress visually, I might be able to stick with it.&rdquo;</p></div>
+      </div>
+
+      <div class="callout">
+        <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
+        <div>
+          <div class="tag">Key insight</div>
+          <p>Fitness feels &ldquo;unstructured and slow,&rdquo; whereas games are &ldquo;structured and rewarding.&rdquo; We don&rsquo;t need to change the gamer; <em>we need to change the interface of fitness</em> to match their mental model.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-user" data-nav>
+      <div class="eyebrow">Target user</div>
+      <h2>Who I Designed For</h2>
+      <div class="case-cards">
+        <div class="case-card"><h4>Primary Users</h4><p>Gamers who want to be more active, but struggle to stay consistent.</p></div>
+        <div class="case-card"><h4>Secondary Users</h4><p>People who find fitness intimidating and need a guided, rewarding structure.</p></div>
+      </div>
+      <p>Meet Adam, a 21-year-old computer science student who loves gaming, but is starting to feel the health impact of long sessions. He wants healthier habits, but struggles to stay consistent without giving up what he enjoys.</p>
+      <img class="case-media" src="/assets/case-questup/persona-adam.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="Meet Adam. His quote: it&rsquo;s hard to find the right balance between what I enjoy and what I need. Behaviours: he often games for six to eight hours, especially on weekends, and skips workouts or outdoor plans. Pain points: exercise is the first thing he drops when time feels limited, leading to low energy, weight gain and back and eye strain. Goals: a simple routine he can sustain, with more movement and better nutrition, without losing enjoyment.">
+
+      <h3>Adam&rsquo;s Journey</h3>
+      <p>I mapped out the typical gamer&rsquo;s lifecycle to identify the exact friction points. Adam&rsquo;s goal: to exercise <em>without breaking his flow state</em> or feeling like he is &ldquo;going to the gym.&rdquo;</p>
+      <img class="case-media" src="/assets/case-questup/user-journey.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="Adam&rsquo;s journey in four steps. One: he games for hours, often late, and feels it hurting his health. Two: he notices weight gain and lower energy, and feels stuck on where to start. Three: he looks for ways to fit exercise into his routine, wanting it as engaging as gaming. Four: he tries gamified fitness and short daily workouts, where small wins build momentum.">
+      <p>The focus became <em>lowering the barrier to fitness</em> by making movement feel familiar, rewarding, and easy to start within a gaming routine.</p>
+
+      <div class="callout">
+        <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
+        <div>
+          <div class="tag">How might we</div>
+          <p>motivate gamers to engage in physical activity to improve their long-term health?</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-solution" data-nav>
+      <div class="eyebrow">Solution</div>
+      <h2>Designing the Core Loop: Move, Reward, Upgrade</h2>
+
+      <div class="decision">
+        <div class="decision-num">Decision 01</div>
+        <h3>The &ldquo;Quest&rdquo; Metaphor</h3>
+        <p>I reframed vague goals (&ldquo;exercise more&rdquo;) into binary quests (&ldquo;do 10 squats&rdquo;). This reduces cognitive load and decision fatigue.</p>
+      </div>
+      <img class="case-media" src="/assets/case-questup/quest-metaphor.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="The core gameplay loop in four wireframes, looping back to choose your next quest. Pick a quest: choose a daily or boss quest that fits your time and energy. Complete the activity: do the exercise and track it by phone or smartwatch. Claim rewards: earn XP and gold, then watch your progress update instantly.">
+
+      <div class="decision">
+        <div class="decision-num">Decision 02</div>
+        <h3>The Retention Layer</h3>
+        <p>To prevent drop-off, I implemented streaks and leaderboards. However, visual progression, levelling up an avatar, proved most effective for this demographic, as it aligns with RPG (role-playing game) tropes.</p>
+      </div>
+      <img class="case-media" src="/assets/case-questup/retention-layer.png" data-nocaption loading="lazy" width="1693" height="672"
+        alt="Retention systems in three wireframes. Track your streak: stats make progress visible through streaks, milestones and quest history. Climb the ranks: leaderboards add friendly competition and a reason to return. Spend your rewards: the shop turns gold into boosts or cosmetics that reinforce the loop.">
+      <p>The retention layer reinforces the loop through progress visibility (stats and streaks), social motivation (leaderboards), and self-expression (shop and customisation). It keeps users coming back without adding complexity to the core action.</p>
+    </section>
+
+    <section id="q-testing" data-nav>
+      <div class="eyebrow">User testing</div>
+      <h2>The Safety Iteration: Solving for &ldquo;Grind&rdquo; Behaviour</h2>
+      <p>During usability testing, I discovered a critical behavioural risk: highly motivated users were &ldquo;grinding&rdquo; exercises solely to earn currency, <em>risking injury</em>.</p>
+      <img class="case-media" src="/assets/case-questup/grind-behavior.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="The safety gap in the core. Risk: rewards and rankings can nudge users to over-exercise to maximise in-game rewards. Why it matters: overtraining raises injury risk and can undermine the product&rsquo;s goal, health first. Design principle: keep the loop rewarding, but add guardrails that prevent unsafe behaviour.">
+
+      <h3>The Fix: An Energy System</h3>
+      <p>I introduced an &ldquo;Energy System,&rdquo; a common gaming mechanic. Users have limited energy to perform quests each day. It enforces pacing, prevents burnout and injury, and paradoxically <em>increases retention</em> by leaving users wanting more for tomorrow.</p>
+      <img class="case-media" src="/assets/case-questup/energy-system.jpg" data-nocaption loading="lazy" width="1693" height="672"
+        alt="Introducing Energy Balance: daily quests cost 100 energy, so two can be completed per day. Energy Balance guardrails drop energy per quest to pace activity and stop reward-chasing turning unsafe. Each quest costs energy, and at zero quests lock and the app nudges recovery.">
+
+      <div class="callout">
+        <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
+        <div>
+          <div class="tag">Design decision trade-off</div>
+          <p>A cap can feel restrictive, so it is <em>framed as recovery and streak protection</em> rather than a limit. The result: safer pacing and more sustainable long-term habits.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-outcome" data-nav>
+      <div class="eyebrow">Outcome &amp; impact</div>
+      <h2>A Winning Idea</h2>
+      <video preload="none" class="case-media" src="/assets/case-questup/outcome.mp4" muted loop playsinline data-nocaption></video>
+      <p>Quest Up was validated not just by user sentiment, but by market viability.</p>
+      <div class="case-stats">
+        <div class="stat"><b>1st</b><span>Grand Spark Winner</span><small>City Ventures&rsquo; startup competition</small></div>
+        <div class="stat"><b>&pound;3K</b><span>Equity-Free Grant</span><small>Awarded alongside acceptance onto the accelerator</small></div>
+        <div class="stat"><b>15+</b><span>Gamers in the Research</span><small>Interviewed on Discord and at conventions</small></div>
+      </div>
+      <p><b>Next steps:</b> developing the MVP to test retention metrics with a live cohort of 50 users.</p>
+    </section>
+
+    <div class="case-next">
+      <div class="eyebrow">Next</div>
       <a href="/pactto" data-page="pactto">
         <video preload="none" src="/assets/videos/pactto.mp4" muted loop playsinline></video>
         <span class="cn-text">
@@ -5089,24 +5608,26 @@ window.onSpotifyIframeApiReady = function (IFrameAPI) {
 
 /* ---------- SPA navigation ---------- */
 const PAGE_NAMES = {
-  jobi: 'Jobi', pactto: 'Pactto', nothing: 'Nothing'
+  jobi: 'Jobi', pactto: 'Pactto', nothing: 'Nothing', 'quest-up': 'Quest Up'
 };
 /* Each page is its own URL, with its own title and description, so an engine
    can rank a case study on its own. Netlify's _redirects serves index.html
    for every path here; the page reads the path on arrival. */
 const PAGE_META = {
   home:       { path: '/',           title: 'Mahin Jahan — Product Designer in London',
-                desc: 'Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto and Nothing, plus a playground of interaction experiments.' },
+                desc: 'Mahin Jahan is a product designer in London shipping AI products people actually use. Case studies for Jobi, Pactto, Quest Up and Nothing, plus a playground of interaction experiments.' },
   about:      { path: '/about',      title: 'About Mahin Jahan \u2014 Product Designer in London',
                 desc: 'How Mahin Jahan came to product design: a startup, an economics degree, a Master\u2019s in Human-Computer Interaction and an internship at Pactto. Off the clock: cooking, League of Legends and running.' },
   playground: { path: '/playground', title: 'Playground \u2014 Interaction and motion experiments by Mahin Jahan',
-                desc: 'Small experiments in motion and interaction by Mahin Jahan: a Discord reply interaction, a Sword Art Online VR scene, TripUp, the Printl Chrome extension and a Deku\u2019s Notebook battle pass.' },
+                desc: 'Small experiments in motion and interaction by Mahin Jahan: a Discord reply interaction, a Sword Art Online VR scene, TripUp, the Printl Chrome extension, a Deku\u2019s Notebook battle pass and Lost in Trafalgar, a VR mystery game.' },
   jobi:       { path: '/jobi',       title: 'Jobi case study \u2014 Mahin Jahan, Product Designer',
                 desc: 'Jobi: a companion for the job hunt, not an autopilot for it. How Mahin Jahan researched, branded and shipped an AI job-search companion as founder and product designer.' },
   pactto:     { path: '/pactto',     title: 'Pactto case study \u2014 Mahin Jahan, Product Designer',
                 desc: 'Pactto: collaboration that doesn\u2019t end when the call does. Mahin Jahan\u2019s product design internship, from research to a feature shipped into a public beta.' },
   nothing:    { path: '/nothing',    title: 'Nothing OS concept: Essential Context \u2014 Mahin Jahan',
                 desc: 'Essential Context, a shape-shifting home screen concept for Nothing OS that surfaces the right tools exactly when you need them. Designed in 48 hours by Mahin Jahan.' },
+  'quest-up': { path: '/quest-up', title: 'Quest Up case study \u2014 Mahin Jahan, Product Designer',
+                desc: 'Quest Up: turning a chore into a quest. How Mahin Jahan founded and designed a gamified fitness app for sedentary gamers, and won the City Ventures Grand Spark startup competition.' },
 };
 /* which page a location names: the path first, the old #hash as a fallback */
 function pageFromLocation() {
@@ -5120,6 +5641,7 @@ const curtain = document.getElementById('curtain');
 let navigating = false;
 
 function setActive(page) {
+  document.body.classList.remove('chrome-away', 'chrome-solid');
   document.body.classList.toggle('home-active', page === 'home');
   document.querySelectorAll('.case-nav').forEach(n =>
     n.classList.toggle('show', n.dataset.page === page));
@@ -5237,7 +5759,18 @@ const projects = [
   { title: 'Nothing', desc: 'The right tools, exactly when you need them.',
     meta: 'Concept \u00b7 48 hours', when: '2026 · Concept', page: 'nothing',
     video: '/assets/videos/nothing.mp4' },
+  { title: 'Quest Up', desc: 'Turning a chore into a quest.',
+    meta: 'Founder \u00b7 Grand Spark winner', when: '2024 \u00b7 Startup', page: 'quest-up',
+    mark: '/assets/case-questup/questup-wordmark.png',
+    /* the case study's own hero, so opening it does not fetch the footage twice */
+    video: '/assets/videos/quest-up.mp4' },
 ];
+
+/* "2026 · Shipped" becomes "Jobi • Shipped 2026", set in mono capitals */
+const capTags = pr => {
+  const [year, status] = (pr.when || '').split('\u00b7').map(s => s.trim());
+  return [pr.title, [status, year].filter(Boolean).join(' ')].filter(Boolean).join(' \u2022 ');
+};
 
 document.getElementById('hp-strip').innerHTML = projects.map(pr => {
   /* a card is a button only when there is a case study behind it. No
@@ -5250,6 +5783,7 @@ document.getElementById('hp-strip').innerHTML = projects.map(pr => {
     <span class="hp-text">
       <span class="hp-title"><span class="hp-label">${pr.title}${
         pr.when ? `<span class="hp-when"> &mdash; ${pr.when}</span>` : ''}</span></span>
+      <span class="hp-cap"><span class="hp-cap-line">${pr.desc}</span><span class="hp-cap-tags">${capTags(pr)}</span></span>
       <span class="hp-reveal">
         ${pr.mark
           ? `<img class="hp-mark hp-mark-${pr.page}" src="${pr.mark}" alt="${pr.title}">`
@@ -5269,16 +5803,48 @@ strip.addEventListener('click', e => {
   if (card) goTo(card.dataset.page);
 });
 
-/* on a phone the playground footage is tapped to read about it; one open at a time */
-if (matchMedia('(hover: none)').matches) {
-  document.querySelectorAll('.pg-card').forEach(c => {
-    c.addEventListener('click', () => {
-      const open = !c.classList.contains('is-open');
-      document.querySelectorAll('.pg-card.is-open').forEach(o => o.classList.remove('is-open'));
-      c.classList.toggle('is-open', open);
+/* the headline's eyes keep an eye on the pointer, like the mascot's do */
+(function () {
+  const pupils = [...document.querySelectorAll('.hp-tile-eyes .pupils')];
+  if (!pupils.length || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  let mx = 0, my = 0, raf = 0;
+  const look = () => {
+    raf = 0;
+    pupils.forEach(p => {
+      const r = p.ownerSVGElement.getBoundingClientRect();
+      if (!r.width) return;
+      const dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2);
+      const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 140);
+      p.style.transform = `translate(${(dx / d * 2.7 * k).toFixed(2)}px, ${(dy / d * 3.3 * k).toFixed(2)}px)`;
     });
-  });
-}
+  };
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!raf) raf = requestAnimationFrame(look);
+  }, { passive: true });
+})();
+
+/* the top bar steps away while you scroll down and comes back on the way up */
+(function () {
+  const PAGES = ['home', 'about', 'playground'];
+  let last = scrollY, ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = scrollY, b = document.body;
+    b.classList.toggle('chrome-solid', y > 4);
+    if (!PAGES.includes(b.dataset.page) || b.classList.contains('menu-open') || y < 80) {
+      b.classList.remove('chrome-away');
+    } else if (y > last + 6) {
+      b.classList.add('chrome-away');
+    } else if (y < last - 6) {
+      b.classList.remove('chrome-away');
+    }
+    last = y;
+  };
+  addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+})();
 
 /* ---------- London clock ---------- */
 /* the home footer that carried it is gone; the script stays harmless in case
@@ -5325,6 +5891,9 @@ const PAGE_WORDMARKS = {
      Pactto's is letterforms only and pairs with its icon. */
   jobi: '/assets/case-jobi/jobi-letters.svg',
   pactto: '/assets/case-pactto/pactto-wordmark.svg',
+  /* the app's own badge: the letters are about half its height, so it is
+     set taller than the others to land on the same optical size */
+  'quest-up': '/assets/case-questup/questup-wordmark.png',
 };
 document.querySelectorAll('.case [id$="-tldr"]').forEach(t => {
   const page = t.closest('.page').id;
@@ -6185,7 +6754,7 @@ updateRail();
     /* the carousel is dragged, and its cards are full of prose the caret
        would otherwise claim, so the rail speaks for everything inside it */
     const rail = e.target.closest('.jr-rail');
-    const tile = e.target.closest('.hp-card:not(.pg-card)');
+    const tile = e.target.closest('.hp-card');
     const link = e.target.closest(LINK);
     const text = e.target.closest(TEXT);
 
@@ -6752,15 +7321,23 @@ updateRail();
 
   for (var i = 0; i < vids.length; i++) vids[i].pause();
 
+  /* what is on screen right now, so it can be put back after the tab is */
+  var onScreen = new Set();
+  var play = function (v) {
+    var p = v.play();
+    /* a browser that refuses to autoplay is not an error worth throwing */
+    if (p && p.catch) p.catch(function () {});
+  };
+
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       var v = e.target;
       if (e.isIntersecting) {
-        var p = v.play();
-        /* a browser that refuses to autoplay is not an error worth throwing */
-        if (p && p.catch) p.catch(function () {});
-      } else if (!v.paused) {
-        v.pause();
+        onScreen.add(v);
+        play(v);
+      } else {
+        onScreen.delete(v);
+        if (!v.paused) v.pause();
       }
     });
   /* a little lead time, so a clip has started fetching by the time it
@@ -6769,11 +7346,32 @@ updateRail();
 
   for (var j = 0; j < vids.length; j++) io.observe(vids[j]);
 
-  /* a hidden tab should not hold decoders open either */
+  /* A hidden tab should not hold decoders open either. Coming back, the
+     observer has nothing new to report, so the clips on screen are started
+     here; before this they stayed paused until scrolled away and back. */
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState !== 'hidden') return;
-    for (var k = 0; k < vids.length; k++) vids[k].pause();
+    if (document.visibilityState === 'hidden') {
+      for (var k = 0; k < vids.length; k++) vids[k].pause();
+      return;
+    }
+    onScreen.forEach(play);
   });
+
+  /* A clip on screen should always be moving. One that the browser paused
+     on its own, or that froze mid-loop waiting on data it already has, is
+     started again. A tab switch, a hidden pane or a scroll away takes it out
+     of onScreen first, so this never fights those. */
+  var last = new Map();
+  setInterval(function () {
+    if (document.visibilityState === 'hidden') return;
+    onScreen.forEach(function (v) {
+      if (!v.isConnected || !v.offsetParent) { onScreen.delete(v); return; }
+      var t = v.currentTime;
+      if (v.paused) play(v);
+      else if (t === last.get(v) && v.readyState >= 3) { v.pause(); play(v); }
+      last.set(v, t);
+    });
+  }, 2500);
 })();
 </script>
 </body>

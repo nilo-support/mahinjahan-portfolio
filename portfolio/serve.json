@@ -4,7 +4,8 @@
     { "source": "/playground", "destination": "/index.html" },
     { "source": "/jobi", "destination": "/index.html" },
     { "source": "/pactto", "destination": "/index.html" },
-    { "source": "/nothing", "destination": "/index.html" }
+    { "source": "/nothing", "destination": "/index.html" },
+    { "source": "/quest-up", "destination": "/index.html" }
   ],
   "headers": [
     { "source": "**/*.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
