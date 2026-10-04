@@ -357,7 +357,7 @@ body.mascot-sun:has(.hello-wrap.is-restless) .sunbeam { --beam: 1.9; }
    shows through them. Everywhere else the moon is a tint over the ordinary
    light page, the way the weathers are, so every case study is built from
    the same components. */
-body.home-active.mascot-moon:has(.nightfall.on) {
+body.sky-page.mascot-moon:has(.nightfall.on) {
   --panel: rgba(226, 236, 255, .075);
   --card:  rgba(226, 236, 255, .14);
   --track: rgba(226, 236, 255, .24);
@@ -489,11 +489,13 @@ body.home-active.mascot-moon:has(.nightfall.on) .hp-mode { color: #16233F; }
 /* :not(.open) throughout, because these colour the nav as chrome sitting on
    the sky. Open, it is a full-page sheet with a ground of its own, and what is
    inside it takes --mascot-ink instead. The layer keeps .on when you leave
-   home (it is only hidden there), so these name the home page too: without
-   it the pale words followed you onto About's light ground and vanished. */
-body.home-active.mascot-moon:has(.nightfall.on) .hp-clock,
-body.home-active.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) a,
-body.home-active.mascot-moon:has(.nightfall.on) .hp-nav:not(.open) .hp-burger { color: #D5E0F7; }
+   home (it is only hidden there), so these name the sky's pages too:
+   without it the pale words followed you onto a case study's light ground
+   and vanished. The nav's are wrapped in :where so the page you are on
+   keeps its dark word on its block of colour, and a hovered one too. */
+body.sky-page.mascot-moon:has(.nightfall.on) .hp-clock { color: #D5E0F7; }
+:where(body.sky-page.mascot-moon:has(.nightfall.on)) .hp-nav:not(.open) a,
+:where(body.sky-page.mascot-moon:has(.nightfall.on)) .hp-nav:not(.open) .hp-burger { color: #D5E0F7; }
 /* the strip's own labels already sit on darkened footage, so they stay put */
 
 /* One sparkle sits exactly where the waving hand lands, so the two never show
@@ -523,12 +525,17 @@ body:has(.hp-card:hover) .moon-mascot .star-hand,
 }
 /* The mascot only lives on the home rail, but its rain layer is fixed to the
    viewport: without this it carries on raining over the case studies. The
-   night's sky and stars stay home too; off it the moon is a tint, the way the
-   weathers are. The sun's light is that tint already, so it travels as it is. */
+   night's sky and stars cover the site's own pages (home, About, the
+   Playground); on a case study the moon is a tint, the way the weathers are.
+   The sun's light is that tint already, so it travels as it is. */
 body:not(.home-active) .rain { display: none !important; }
-body:not(.home-active) .nightfall,
-body:not(.home-active) .nightfall-stars { display: none !important; }
-body.mascot-moon:not(.home-active) .wxwash { display: block; }
+body:not(.sky-page) .nightfall,
+body:not(.sky-page) .nightfall-stars { display: none !important; }
+body.mascot-moon:not(.sky-page) .wxwash { display: block; }
+/* About and the Playground take the night sky, stars and all, but not the
+   dusk at its foot: there the last captions would sit on the pale band in
+   light type. Deep sky all the way down instead. */
+body.sky-page:not(.home-active) .nightfall { background: rgba(5, 11, 33, .96); }
 body.mascot-moon { --wx-wash: linear-gradient(rgba(16, 27, 51, .14), rgba(16, 27, 51, .06)); }
 
 /* Weather at night: the moon keeps its post and the stars give way to what
@@ -4011,7 +4018,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     body.mascot-sun #cursor-orb { --cur-c: #F2A71B; --cur-ink: #14141B; }
     body.mascot-moon #cursor-orb { --cur-c: #4A56B8; --cur-ink: #FFFFFF; }
     /* the night's own stars, on the deep sky */
-    body.home-active.mascot-moon:has(.nightfall.on) #cursor-orb { --cur-c: #FDD989; --cur-ink: #16233F; }
+    body.sky-page.mascot-moon:has(.nightfall.on) #cursor-orb { --cur-c: #FDD989; --cur-ink: #16233F; }
     /* while London is raining, the pointer is in London's teal */
     body.london-rain #cursor-orb { --cur-c: #1F7A8C; --cur-ink: #FFFFFF; }
     body.home-active.mascot-moon.london-rain:has(.nightfall.on) #cursor-orb { --cur-c: #9FD3EA; --cur-ink: #16233F; }
@@ -4036,6 +4043,9 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       transform-origin: 0 0;
       transition: background-color .4s ease, color .4s ease;
     }
+    /* near the right edge a long tag would run off the window, so it hangs
+       to the left of the pointer instead */
+    #cursor-orb.cur-flip .cur-tag { left: auto; right: -2px; transform-origin: 100% 0; }
     /* a new word arrives with a small pop, so the change is noticed */
     #cursor-orb .cur-tag.pop { animation: curPop .16s ease-out; }
     @keyframes curPop { from { transform: scale(.82); } }
@@ -4613,27 +4623,27 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <div class="ab-intro">
       <div class="ab-bio">
         <p>In my second year reading economics I was running a startup, <span class="mk">Quest Up</span>, and wanted to design it properly. A summer at <span class="mk">BrainStation</span> gave me the same kick the startup did: <b>you make something, people use it, and the progress is right there in front of you.</b> A Master&rsquo;s in <span class="mk">Human-Computer Interaction</span> added the theory, and an internship at <span class="mk">Pactto</span> put my first feature into a public beta.</p>
-        <p>Off the clock I cook, play <span class="mk">League of Legends</span> and run. Cooking is the one that maps onto the work: <b>UI is the plating and UX is the food.</b> One attracts, the other keeps them.</p>
+        <p>Off the clock I cook, play <span class="mk">League of Legends</span> and run (next race: London Winter 10K). Cooking is the one that maps onto the work: <b>UI is the plating and UX is the food.</b> One attracts, the other keeps them.</p>
         <p>Say hi on <a href="https://www.linkedin.com/in/mahinjahan/" target="_blank" rel="noopener">LinkedIn</a>, or <a href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">read my CV</a>.</p>
       </div>
     </div>
 
     <div class="ab-gallery">
       <div class="ab-tag ab-tag-amber" style="--ar: .56"><span>01. Designer</span></div>
-      <figure class="ab-g" style="--ar: 1.000"><img src="/assets/about/mahin-pitch.webp" width="900" height="900" alt="Mahin pitching Quest Up at the CitySpark Grand Final, in front of the slide showing the app&rsquo;s solution" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.016"><img src="/assets/about/mahin-demo.webp" width="900" height="886" alt="Mahin showing something on his phone to a visitor at a showcase, both wearing yellow lanyards" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Presenting Quest Up at the CitySpark Grand Final" style="--ar: 1.000"><img src="/assets/about/mahin-pitch.webp" width="900" height="900" alt="Mahin pitching Quest Up at the CitySpark Grand Final, in front of the slide showing the app&rsquo;s solution" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="UX Bootcamp Demo Day" style="--ar: 1.016"><img src="/assets/about/mahin-demo.webp" width="900" height="886" alt="Mahin showing his project on his phone to a visitor at the UX bootcamp&rsquo;s Demo Day, both wearing yellow lanyards" loading="lazy"></figure>
       <div class="ab-tag ab-tag-pink" style="--ar: .56"><span>02. League player</span></div>
-      <figure class="ab-g" style="--ar: 0.648"><img src="/assets/about/mahin-worlds.webp" width="900" height="1388" alt="Mahin at League of Legends Worlds, in a brown puffer jacket in front of the Make Them Believe stage screen" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.778"><video src="/assets/about/zeri-elder.mp4" width="960" height="540" preload="none" muted loop playsinline aria-label="A League of Legends clip: an Elder Dragon fight as Zeri, ending in a double kill"></video></figure>
+      <figure class="ab-g" data-cursor="LoL Worlds Finals 2024" style="--ar: 0.648"><img src="/assets/about/mahin-worlds.webp" width="900" height="1388" alt="Mahin at the 2024 League of Legends Worlds Finals in London, in a brown puffer jacket in front of the Make Them Believe stage screen" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Zeri Elder outplay" style="--ar: 1.778"><video src="/assets/about/zeri-elder.mp4" width="960" height="540" preload="none" muted loop playsinline aria-label="A League of Legends clip: an Elder Dragon fight as Zeri, ending in a double kill"></video></figure>
       <div class="ab-tag ab-tag-green" style="--ar: .56"><span>03. Cook</span></div>
-      <figure class="ab-g" style="--ar: 1.055"><img src="/assets/about/dishes/dish1.webp" width="520" height="493" alt="Spiced fried rice served in a halved pineapple" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.055"><img src="/assets/about/dishes/dish2.webp" width="520" height="493" alt="Charred flatbread beside chicken and pepper skewers" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.061"><img src="/assets/about/dishes/dish3.webp" width="520" height="490" alt="Roast potatoes and greens, finished with basil and a flower" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.016"><img src="/assets/about/dishes/dish4.webp" width="520" height="512" alt="Spiced chicken over yoghurt with grilled lemon, beside saffron rice" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 0.994"><img src="/assets/about/dishes/dish5.webp" width="520" height="523" alt="Glazed bites with a spicy drizzle, in a long white dish" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 1.212"><img src="/assets/about/dishes/dish6.webp" width="520" height="429" alt="A glazed fillet with a herb purée and a dark sauce" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 0.837"><img src="/assets/about/dishes/dish7.webp" width="520" height="621" alt="A pink cocktail with lemon and mint" loading="lazy"></figure>
-      <figure class="ab-g" style="--ar: 0.998"><img src="/assets/about/dishes/dish8.webp" width="520" height="521" alt="Brownies with a strawberry and blueberries" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Pineapple fried rice" style="--ar: 1.055"><img src="/assets/about/dishes/dish1.webp" width="520" height="493" alt="Pineapple fried rice, served in the halved pineapple" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Paneer tikka skewers with naan" style="--ar: 1.055"><img src="/assets/about/dishes/dish2.webp" width="520" height="493" alt="Paneer tikka and pepper skewers beside charred naan" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Roast chicken with potatoes" style="--ar: 1.061"><img src="/assets/about/dishes/dish3.webp" width="520" height="490" alt="Roast chicken on roast potatoes, finished with basil and a flower" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Greek chicken, tzatziki and lemon rice" style="--ar: 1.016"><img src="/assets/about/dishes/dish4.webp" width="520" height="512" alt="Greek-style chicken over tzatziki with charred lemon and red onion, beside a dome of yellow rice" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Takoyaki" style="--ar: 0.994"><img src="/assets/about/dishes/dish5.webp" width="520" height="523" alt="Takoyaki with a spicy drizzle, in a long white dish" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Beef Wellington" style="--ar: 1.212"><img src="/assets/about/dishes/dish6.webp" width="520" height="429" alt="Beef Wellington with a herb purée and a dark sauce" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Watermelon mojito" style="--ar: 0.837"><img src="/assets/about/dishes/dish7.webp" width="520" height="621" alt="A watermelon mojito with lemon and mint" loading="lazy"></figure>
+      <figure class="ab-g" data-cursor="Chocolate brownies" style="--ar: 0.998"><img src="/assets/about/dishes/dish8.webp" width="520" height="521" alt="Chocolate brownies with a strawberry and blueberries" loading="lazy"></figure>
     </div>
 
   </div>
@@ -5731,6 +5741,8 @@ let navigating = false;
 function setActive(page) {
   document.body.classList.remove('chrome-away', 'chrome-solid');
   document.body.classList.toggle('home-active', page === 'home');
+  /* the site's own pages share the night sky; the case studies keep the tint */
+  document.body.classList.toggle('sky-page', page === 'home' || page === 'about' || page === 'playground');
   document.querySelectorAll('.case-nav').forEach(n =>
     n.classList.toggle('show', n.dataset.page === page));
   /* every page except home gets a way back */
@@ -6826,6 +6838,12 @@ updateRail();
   const LINK = 'a, button, summary, [data-page]:not(body)';
   const tag = orb.querySelector('.cur-tag');
   let said = 'You';
+  /* the tag's width, measured when its word changes rather than per move */
+  let tagW = 40;
+  const measure = () => { tagW = tag.offsetWidth; flip(); };
+  const flip = () => orb.classList.toggle('cur-flip', mx + 17 + tagW + 12 > innerWidth);
+  window.addEventListener('mousemove', flip, { passive: true });
+  new MutationObserver(measure).observe(tag, { childList: true, characterData: true, subtree: true });
   const say = word => {
     if (word === said) return;
     said = word;
@@ -6921,11 +6939,12 @@ updateRail();
   var CHROME = { cloud: '#FFFFFF', sun: '#FEF9EF', moon: '#0F152A', drizzle: '#F2F4F8', rain: '#EEF1F6',
                  thunder: '#E9EBEE', fog: '#F1F2F4', snow: '#F5F8FC', wind: '#F3F7F8' };
   var chromeMeta = document.querySelector('meta[name="theme-color"]');
-  /* the moon's chrome is the sky on home and the tint everywhere else, so the
-     page has a say; setActive calls this again on every navigation */
+  /* the moon's chrome is the sky on home, About and the Playground and the
+     tint on a case study, so the page has a say; setActive calls this again
+     on every navigation */
   function rechrome(which) {
     if (!chromeMeta) return;
-    var home = body.classList.contains('home-active');
+    var home = body.classList.contains('sky-page');
     var c = (which === 'moon' && !home) ? '#E4E7EE' : (CHROME[which] || CHROME.cloud);
     chromeMeta.setAttribute('content', c);
   }
