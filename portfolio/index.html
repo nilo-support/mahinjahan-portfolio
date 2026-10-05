@@ -4066,6 +4066,25 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     /* pressing squashes the arrow towards its tip */
     body.cursor-down #cursor-orb .cur-arrow { transform: scale(.86); }
   }
+  /* ---------- case study media: click to enlarge ----------
+     Every image and clip in a case study can be looked at properly: it grows
+     from where it sits to the middle of the window over a dimmed page, and
+     goes back the same way. Square, like everything else. */
+  .zoomable { cursor: zoom-in; }
+  .lb {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(8, 10, 20, .84);
+    opacity: 0; visibility: hidden; cursor: zoom-out;
+    transition: opacity .32s ease, visibility 0s .32s;
+  }
+  .lb.on { opacity: 1; visibility: visible; transition: opacity .32s ease; }
+  .lb-media {
+    position: fixed; top: 0; left: 0; display: block; margin: 0;
+    transform-origin: 0 0; object-fit: contain; background: var(--panel);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+    transition: transform .42s cubic-bezier(.2, .8, .2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) { .lb-media { transition: none; } }
 </style>
 </head>
 <body>
@@ -7713,6 +7732,132 @@ updateRail();
       }
     });
   }, 1000);
+})();
+</script>
+<script>
+/* ---------- case study media: click to enlarge ----------
+   The cursor says so over every image and clip in a case study; a click
+   grows a copy of it from where it sits to the middle of the window, over
+   a dimmed page, and the original steps out of the way until it closes. A
+   click anywhere, Escape, a scroll or a resize puts it back. The feature
+   carousels capture the pointer to drag, so the click is matched to what
+   the pointer went down on, and a drag never opens anything. Logos, the
+   Next cards (they are links) and Jobi's working carousel are left alone. */
+(function () {
+  var CASES = ['jobi', 'pactto', 'nothing', 'quest-up'];
+  var SKIP = '.jr, .case-head, .case-next, a, button';
+  CASES.forEach(function (id) {
+    document.querySelectorAll('#' + id + ' .case img, #' + id + ' .case video').forEach(function (el) {
+      if (el.closest(SKIP)) return;
+      el.classList.add('zoomable');
+      el.setAttribute('data-cursor', 'Click to enlarge');
+    });
+  });
+
+  var lb = document.createElement('div');
+  lb.className = 'lb';
+  lb.setAttribute('aria-hidden', 'true');
+  lb.setAttribute('data-cursor', 'Click to close');
+  document.body.appendChild(lb);
+
+  var px = 0, py = 0;
+  window.addEventListener('mousemove', function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
+  /* the custom cursor reads its word on mouseover, which a still pointer
+     never sends when the page changes under it */
+  var retell = function (el) { if (el) el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); };
+
+  var open = null;          /* { el, copy } */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var place = function (copy, r, w, h, x, y) {
+    copy.style.transform = 'translate(' + (r.left - x) + 'px,' + (r.top - y) + 'px) scale(' + (r.width / w) + ',' + (r.height / h) + ')';
+  };
+
+  function show(el) {
+    if (open) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var video = el.tagName === 'VIDEO';
+    var nw = (video ? el.videoWidth : el.naturalWidth) || r.width;
+    var nh = (video ? el.videoHeight : el.naturalHeight) || r.height;
+    var vector = !video && /\.svg($|\?)/.test(el.currentSrc || el.src || '');
+    /* as large as the window allows, never past the file's own pixels
+       (vectors have none to run out of), and never smaller than it was */
+    var k = Math.min(innerWidth * .92 / nw, innerHeight * .88 / nh);
+    if (!vector) k = Math.min(k, 1);
+    var w = nw * k, h = nh * k;
+    if (w < r.width) { w = r.width; h = r.height; }
+    var x = (innerWidth - w) / 2, y = (innerHeight - h) / 2;
+
+    var copy;
+    if (video) {
+      copy = document.createElement('video');
+      copy.muted = true; copy.loop = true; copy.playsInline = true; copy.autoplay = true;
+      if (el.poster) copy.poster = el.poster;
+      var at = el.currentTime;
+      copy.addEventListener('loadedmetadata', function () { if (at < copy.duration) copy.currentTime = at; }, { once: true });
+      copy.src = el.currentSrc || el.getAttribute('src');
+    } else {
+      copy = new Image();
+      copy.alt = el.alt || '';
+      copy.src = el.currentSrc || el.src;
+    }
+    copy.className = 'lb-media';
+    copy.style.width = w + 'px'; copy.style.height = h + 'px';
+    copy.style.left = x + 'px'; copy.style.top = y + 'px';
+    copy.style.transition = 'none';
+    place(copy, r, w, h, x, y);
+    lb.appendChild(copy);
+    open = { el: el, copy: copy, w: w, h: h, x: x, y: y };
+    el.style.visibility = 'hidden';
+    lb.classList.add('on');
+    if (video) { var q = copy.play(); if (q && q.catch) q.catch(function () {}); }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        copy.style.transition = '';
+        copy.style.transform = 'none';
+      });
+    });
+    retell(lb);
+  }
+
+  function hide() {
+    if (!open) return;
+    var o = open; open = null;
+    var r = o.el.getBoundingClientRect();
+    var done = function () {
+      o.el.style.visibility = '';
+      if (o.copy.parentNode) o.copy.parentNode.removeChild(o.copy);
+    };
+    lb.classList.remove('on');
+    if (reduce.matches || !r.width) { done(); }
+    else {
+      place(o.copy, r, o.w, o.h, o.x, o.y);
+      o.copy.addEventListener('transitionend', done, { once: true });
+      setTimeout(done, 600);
+    }
+    retell(document.elementFromPoint(px, py));
+  }
+
+  /* matched to the pointer's own press, so a drag in a carousel (which
+     captures the pointer) never counts as a click on what it started on */
+  var down = null;
+  document.addEventListener('pointerdown', function (e) {
+    var el = e.target.closest && e.target.closest('.zoomable');
+    down = el ? { el: el, x: e.clientX, y: e.clientY } : null;
+  }, true);
+  document.addEventListener('click', function (e) {
+    if (open) { hide(); return; }
+    if (!down) return;
+    var d = down; down = null;
+    if (Math.abs(e.clientX - d.x) > 6 || Math.abs(e.clientY - d.y) > 6) return;
+    if (!d.el.closest('.page.current')) return;
+    show(d.el);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+  window.addEventListener('wheel', hide, { passive: true });
+  window.addEventListener('touchmove', hide, { passive: true });
+  window.addEventListener('scroll', hide, { passive: true });
+  window.addEventListener('resize', hide);
 })();
 </script>
 </body>
