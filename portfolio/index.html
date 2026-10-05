@@ -7137,6 +7137,19 @@ updateRail();
     decide();
   }, 30000);
 
+  /* A phone freezes a tab it is not showing, timers and all, so one opened
+     in the afternoon comes back at night still showing the sun until the
+     next tick. Coming back into view, or out of the back-forward cache, the
+     mascot is decided again at once. */
+  var recheck = function () {
+    if (document.visibilityState !== 'visible') return;
+    if (!window.mascotReading()) refresh();
+    decide();
+  };
+  document.addEventListener('visibilitychange', recheck);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) recheck(); });
+  window.addEventListener('focus', recheck);
+
 })();
 
 /* ---------- the mobile menu ----------
