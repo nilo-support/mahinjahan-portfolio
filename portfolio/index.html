@@ -60,7 +60,7 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "item": { "@type": "CreativeWork", "name": "Jobi", "url": "https://mahinjahan.com/jobi", "description": "A companion for the job hunt, not an autopilot for it. Founder and product designer; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
         { "@type": "ListItem", "position": 2, "item": { "@type": "CreativeWork", "name": "Pactto", "url": "https://mahinjahan.com/pactto", "description": "Collaboration that doesn’t end when the call does. Product design internship; shipped 2026.", "author": { "@id": "https://mahinjahan.com/#person" } } },
-        { "@type": "ListItem", "position": 4, "item": { "@type": "CreativeWork", "name": "Quest Up", "url": "https://mahinjahan.com/quest-up", "description": "Turning a chore into a quest: a gamified fitness app for sedentary gamers. Founder and product designer; winner of the City Ventures Grand Spark startup competition.", "author": { "@id": "https://mahinjahan.com/#person" } } },
+        { "@type": "ListItem", "position": 4, "item": { "@type": "CreativeWork", "name": "Quest Up", "url": "https://mahinjahan.com/quest-up", "description": "Turning a chore into a quest: a gamified fitness app for sedentary gamers. Founder and product designer; winner of the CitySpark startup competition.", "author": { "@id": "https://mahinjahan.com/#person" } } },
         { "@type": "ListItem", "position": 3, "item": { "@type": "CreativeWork", "name": "Nothing: Essential Context", "url": "https://mahinjahan.com/nothing", "description": "A shape-shifting home screen concept for Nothing OS, made in 48 hours.", "author": { "@id": "https://mahinjahan.com/#person" } } }
       ]
     }
@@ -3812,6 +3812,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   .feature-frame h4 {
     font-size: 17.6px; letter-spacing: .014em; line-height: 1.4; font-weight: 500; color: var(--ink);
   }
+  /* what was mine on a team project, said on the feature itself */
+  .ff-caption .ff-mine {
+    display: inline-block; margin-bottom: 10px; padding: 3px 7px 4px;
+    font-family: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+    font-size: 11px; line-height: 1.3; letter-spacing: .08em; text-transform: uppercase;
+    color: #14141B; background: #F5B83D;
+  }
   .case section .feature-frame .ff-caption p {
     margin-top: 8px; font-size: 17.6px; letter-spacing: .014em; font-weight: 400; line-height: 1.545;
     color: var(--case-body);
@@ -4216,7 +4223,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
         <a href="/jobi" data-page="jobi">Jobi <span class="nav-tag">Shipped 2026</span></a>
         <a href="/pactto" data-page="pactto">Pactto <span class="nav-tag">Shipped 2026</span></a>
         <a href="/nothing" data-page="nothing">Nothing <span class="nav-tag">Concept 2026</span></a>
-        <a href="/quest-up" data-page="quest-up">Quest Up <span class="nav-tag">Startup 2024</span></a>
+        <a href="/quest-up" data-page="quest-up">Quest Up <span class="nav-tag">Startup 2023&ndash;24</span></a>
       </div>
       <div class="nav-out-row">
         <a class="nav-out out-cv" href="https://drive.google.com/file/d/17zRYzeowUOaSz7VyB4aQKXwmTnlfHPGc/view?usp=sharing" target="_blank" rel="noopener">CV <span aria-hidden="true">&nearr;</span></a>
@@ -4509,6 +4516,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   <a href="#n-purpose">Purpose</a>
   <a href="#n-system">System</a>
   <a href="#n-decisions">Decisions</a>
+  <a href="#n-test">Testing</a>
   <a href="#n-future">Future</a>
 </nav>
 <nav class="case-nav" data-page="quest-up" aria-label="Case study sections">
@@ -4517,7 +4525,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
   <a href="#q-problem"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Problem</a>
   <a href="#q-user"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>User</a>
   <a href="#q-solution"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Solution</a>
-  <a href="#q-testing"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Testing</a>
+  <a href="#q-testing"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Iteration</a>
   <a href="#q-outcome"><svg class="puff" viewBox="0 0 49 31" aria-hidden="true"><circle cx="12" cy="19" r="11"/><circle cx="26" cy="14" r="13"/><circle cx="39" cy="21" r="9"/><rect x="1" y="19" width="46" height="11" rx="5.5"/></svg>Outcome</a>
 </nav>
 <a class="case-back" href="/" id="case-back" aria-label="Back to home"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cb-text">Home</span></a>
@@ -4656,7 +4664,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="ci-text">
       <h1>Pactto</h1>
       <p class="case-headline">Collaboration that doesn't end when the call does.</p>
-      <p class="case-sub">Pactto is a canvas-based video production workspace/conferencing tool. I helped design a suite of commenting tools to bridge the gap between live meetings and async work.</p>
+      <p class="case-sub">Pactto is a canvas-based workspace where video teams meet, review and produce together. As a product design intern on a team of five designers I worked on all of it, from research to the final designs; Pin Comments and Smart Voice were my ideas.</p>
       <p class="case-live"><a href="https://www.pactto.com/" target="_blank" rel="noopener">It is live &mdash; see the product site <span aria-hidden="true">&nearr;</span></a></p>
       </div>
 
@@ -4676,35 +4684,34 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
       <div>
         <div class="tag">Too long didn&rsquo;t read</div>
-        <p>Pactto centralises the video production lifecycle on one canvas. <em>My role was to close the gap between live and async work</em>, anchoring feedback to the asset itself so it outlives the meeting.</p>
+        <p>Pactto puts the whole video production workflow on one canvas. The problem we took on was the gap between live and async work: feedback given on a call was lost once it ended. <em>We anchored feedback to the asset itself</em>, so it outlives the meeting.</p>
       </div>
     </div>
 
     <h3 class="metrics-head">Success Metrics</h3>
-    <img class="card-art" src="/assets/case-pactto/success-metrics.svg"
-         alt="Success metrics. Around 65% less tool switching: Pactto keeps conversations and context in one place. Around 40% faster reviews: teams now spend less time switching between tools. 3 methods of commenting: pin, drag and timeline comment types.">
+    <p class="metrics-note">From usability testing with people on the private-beta waitlist: the video teams Pactto is built for.</p>
     <div class="case-stats">
-      <div class="stat"><b>~65%</b><span>Less Tool Switching</span><small>Pactto keeps conversations and context in one place</small></div>
-      <div class="stat"><b>~40%</b><span>Faster Reviews</span><small>Teams now spend less time switching between tools</small></div>
-      <div class="stat"><b>3</b><span>Methods of Commenting</span><small>Pin, Drag and Timeline comment types</small></div>
+      <div class="stat"><b>~65%</b><span>Less Tool Switching</span><small>Feedback, tasks and the conversation stayed in one place instead of across several apps</small></div>
+      <div class="stat"><b>~40%</b><span>Faster Reviews</span><small>A round of review took less time with feedback pinned to the work itself</small></div>
+      <div class="stat"><b>P0</b><span>Shipped in the Open Beta</span><small>The commenting suite, Pin Comments included, was the beta&rsquo;s top priority</small></div>
     </div>
     </div>
 
     <section id="c-context" data-nav>
       <div class="eyebrow">Context</div>
       <h2>Too Many Tools</h2>
-      <p>The video editing workflow is fragmented. Teams are forced to juggle separate tools for feedback, tasks, and communication, losing critical context with every switch.</p>
+      <p>The video editing workflow is fragmented. Teams juggle separate tools for feedback, tasks and communication, and lose context with every switch.</p>
       <img class="case-media" src="/assets/case-pactto/too-many-tools.png" alt="The video editing workflow is fragmented: a scatter of app icons around that line: Miro, Monday, Wondershare Filmora, Slack, Zoom, Descript, Gmail, Premiere Pro, Google Drive, Photoshop, Notes and CapCut" data-nocaption loading="lazy">
 
       <h3>Enter Pactto: One Room, Full Story</h3>
-      <p>Pactto unifies live conferencing and the entire video editing workflow into a single, canvas-based &ldquo;Room.&rdquo; It replaces scattered tools with one intelligent space where feedback, decisions, and production happen together.</p>
+      <p>Pactto brings live calls and the editing workflow into one canvas-based &ldquo;Room&rdquo;, where feedback, decisions and production happen in the same place.</p>
       <video preload="none" class="case-media" src="/assets/case-pactto/one-room.mp4" muted loop playsinline data-nocaption></video>
     </section>
 
     <section id="c-research" data-nav>
       <div class="eyebrow">Research</div>
       <h2>Validating the Friction</h2>
-      <p>We synthesized our research into an affinity map. While we uncovered several friction points, we prioritized <em>one key insight</em> to tackle first.</p>
+      <p>We synthesised the research into an affinity map. It surfaced several friction points, and we chose <em>one key insight</em> to tackle first.</p>
 
       <div class="feature-frame">
         <img src="/assets/case-pactto/research-1.jpg" alt="Research finding, board one" loading="lazy">
@@ -4735,7 +4742,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       </details>
 
       <h3>The Problem We Focused On</h3>
-      <p>We synthesized our research into an affinity map, where <em>one key insight stood out</em> as the root cause of the fragmentation.</p>
+      <p>On the map, <em>one insight stood out</em> as the root cause of the fragmentation.</p>
       <img class="case-media" src="/assets/case-pactto/affinity-map.png" alt="Mapping out Insights: the research affinity map, clustered into pros and perceived negatives of AI usage, what makes a feedback session successful, pain points narrowed down, pain points in presenting work, and the tools used for filmmaking, note taking, video conferencing and design" data-nocaption loading="lazy">
 
       <div class="callout">
@@ -4749,7 +4756,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <details class="deep-dive">
         <summary><svg class="note-icon dd-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg><span class="dd-title"><b>User Insights:</b> Beyond the Async Gap</span><span class="dd-chev"></span></summary>
         <div class="dd-wrap"><div class="dd-body"><div class="dd-inner">
-          <p>While our primary objective was solving the asynchronous feedback gap, our research uncovered three additional insights that heavily influenced our final design.</p>
+          <p>The async gap came first, but the research turned up three more insights that shaped the final design.</p>
           <p><em>Cognitive Load of the Canvas:</em> Video editors found the infinite canvas &ldquo;alien&rdquo; because they are accustomed to working inside linear timelines. This paradigm shift meant we needed to provide structured starting spaces to reduce initial friction.</p>
           <img src="/assets/case-pactto/dd-insight-canvas.png" alt="Structured starting spaces on the canvas" loading="lazy">
           <p><em>The Need for Presentation Control:</em> Presenters lost their flow when audience members jumped ahead or crowded the screen with cursors. Users explicitly noted they needed to control the pace to prevent visual chaos and maintain sharp, focused feedback.</p>
@@ -4767,13 +4774,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
           <p>preserve feedback context in async video reviews so decisions stay clear, traceable, and tied to the work?</p>
         </div>
       </div>
-      <p>This question guided the design of our core feature: a <em>unified intelligent canvas</em> where feedback organizes itself.</p>
+      <p>This question shaped the core feature: <em>one canvas where feedback stays attached to the work</em>.</p>
     </section>
 
     <section id="c-process" data-nav>
       <div class="eyebrow">Design process</div>
-      <h2>We took an Iterative Approach</h2>
-      <p>We followed a classic iterative design approach, testing and updating our prototypes on a rigorous weekly cycle to ensure constant validation.</p>
+      <h2>Build, Test, Review, Every Week</h2>
+      <p>We built, tested and updated prototypes on a weekly cycle, so every week ended in a round of validation.</p>
       <img class="case-media" src="/assets/case-pactto/design-process.jpg" alt="The weekly iterative loop: build, test, update, review" data-nocaption loading="lazy">
 
       <h3>Accelerating Prototyping with AI</h3>
@@ -4799,7 +4806,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <p>We ran group reviews in Google Sheets, weighing Priority against Effort to decide what was critical for the Open Beta and what could wait.</p>
 
       <h3>Prioritizing Async Collaboration</h3>
-      <p>With the live tools already stable, the <em>Commenting Suite</em> became our absolute <em>P0</em>: a persistent feedback layer sitting alongside the real-time workflow.</p>
+      <p>With the live tools already stable, the <em>Commenting Suite</em> became our <em>P0</em>: a feedback layer that persists alongside the real-time workflow.</p>
       <img class="case-media" src="/assets/case-pactto/rejected-sidebar.jpg" alt="The collapsible sidebar proposal that was rejected" data-nocaption loading="lazy">
       <details class="deep-dive">
         <summary><svg class="note-icon dd-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg><span class="dd-title"><b>Rejected Idea:</b> The Collapsible Sidebar Proposal</span><span class="dd-chev"></span></summary>
@@ -4815,11 +4822,12 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       </details>
 
       <h3>Foundations: Contextual Commenting</h3>
-      <p>We designed three distinct commenting primitives to handle every type of creative feedback:</p>
+      <p>We designed three ways to comment, one for each kind of creative feedback. Pin Comments was the one I proposed.</p>
 
       <div class="feature-frame">
         <video preload="none" src="/assets/case-pactto/comment-pin.mp4" muted loop playsinline></video>
         <div class="ff-caption">
+          <span class="ff-mine">My idea</span>
           <h4>Pin Comments (Spatial)</h4>
           <p>Anchors feedback to a precise coordinate on the frame. Click exactly where the issue is, and there is no ambiguity about which pixel needs attention.</p>
         </div>
@@ -4848,7 +4856,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       </div>
 
       <h3>Design Decision: The &ldquo;Comment vs. Task&rdquo; Friction</h3>
-      <p><em>The crossroads:</em> generic comments like Figma's, or strict accountability. For video editors generic simplicity caused paralysis: no way to tell a casual &ldquo;maybe&rdquo; from a critical &ldquo;must-do&rdquo; in a flood of feedback.</p>
+      <p><em>The crossroads:</em> generic comments like Figma&rsquo;s, or strict accountability. For video editors, generic comments meant no way to tell a casual &ldquo;maybe&rdquo; from a critical &ldquo;must-do&rdquo; in a flood of feedback.</p>
       <div class="feature-frame">
         <video preload="none" src="/assets/case-pactto/task-toggle.mp4" muted loop playsinline></video>
         <div class="ff-caption">
@@ -4861,15 +4869,16 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
           <div class="tag">Design decision trade-off</div>
-          <p>The toggle adds a micro-moment of friction: <em>is this a task?</em> We accepted that cost at input to remove a far larger one at review, trading a minimal UI for absolute accountability.</p>
+          <p>The toggle adds a moment of friction: <em>is this a task?</em> We accepted that cost when writing a comment to remove a far larger one at review, trading a minimal UI for clear accountability.</p>
         </div>
       </div>
 
-      <h3>Pactto Intelligence: Smart Voice</h3>
-      <p>While we developed a suite of AI tools, I want to highlight <em>Smart Voice</em>, the feature that solves the conflict between speed and documentation.</p>
+      <h3>Smart Voice: AI Inside the Flow</h3>
+      <p>Of the AI tools we explored, <em>Smart Voice</em> is the one I brought to the team. I wanted AI built into the review itself, not a separate &ldquo;AI island&rdquo; that feels like a gimmick, so it lives in the comment box people are already using and settles the conflict between speed and documentation.</p>
       <div class="feature-frame">
         <video preload="none" src="/assets/case-pactto/smart-voice.mp4" muted loop playsinline></video>
         <div class="ff-caption">
+          <span class="ff-mine">My idea</span>
           <h4>Smart Voice</h4>
           <p>Transcribes spoken feedback and anchors it to the timeline. Reviewers give nuanced context without typing; editors get precise text synced to the exact moment.</p>
         </div>
@@ -4879,7 +4888,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
           <div class="tag">Design constraint: integrated AI</div>
-          <p><em>Baked-in intelligence</em>, never a disconnected &ldquo;AI island.&rdquo; Smart tools live inside the flow, so assistance appears exactly where the user is working, not in a separate tab.</p>
+          <p><em>Built in, never bolted on.</em> Assistance appears where the person is already working, not in another tab.</p>
         </div>
       </div>
     </section>
@@ -4890,9 +4899,9 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <video preload="none" class="case-media" src="/assets/case-pactto/handoff.mp4" muted loop playsinline data-nocaption></video>
 
       <div class="case-cards">
-        <div class="case-card"><h4>The System</h4><p>We expanded Pactto's existing UI into a modular Design System (Typography, Color, Components) to ensure consistency.</p></div>
-        <div class="case-card"><h4>The Logic</h4><p>We mapped every user flow to its corresponding &ldquo;Vibe Coded&rdquo; prototype, giving engineers a reference for exact animation behaviors.</p></div>
-        <div class="case-card"><h4>The Priority</h4><p>Crucially, we tagged every feature with MVP Priority Levels, clearly distinguishing &ldquo;Open Beta Must-Haves&rdquo; from &ldquo;Fast-Follows&rdquo; to prevent scope creep.</p></div>
+        <div class="case-card"><h4>The System</h4><p>We grew Pactto&rsquo;s existing UI into a modular design system (type, colour, components) so every screen stayed consistent.</p></div>
+        <div class="case-card"><h4>The Logic</h4><p>We mapped every user flow to its vibe-coded prototype, so engineers had a reference for exact animation behaviour.</p></div>
+        <div class="case-card"><h4>The Priority</h4><p>We tagged every feature with an MVP priority, separating open-beta must-haves from fast-follows to keep scope in check.</p></div>
       </div>
     </section>
 
@@ -4902,15 +4911,15 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="takeaway">
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
-          <h4>Vibe Coding for Velocity</h4>
-          <p>We let a P1 feature, AI meeting summaries, block our core Commenting System, costing two weeks. The AI was cut from the Open Beta anyway. Enhancements should never hold the core loop hostage.</p>
+          <h4>An Extra Should Never Block the Core</h4>
+          <p>We let a P1 feature, AI meeting summaries, hold up the core commenting system for two weeks, and it was cut from the open beta anyway. An enhancement should never hold the core loop hostage.</p>
         </div>
       </div>
       <div class="takeaway">
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
-          <h4>AI Features Should Be Baked in</h4>
-          <p>Next time I would ship the core utility and the enhancements as separate releases, validating the primary workflow immediately instead of waiting on a secondary feature.</p>
+          <h4>Ship the Core First, the Extras After</h4>
+          <p>Next time I would release the core and the enhancements separately, so the main workflow is validated straight away instead of waiting on a secondary feature.</p>
         </div>
       </div>
 
@@ -5391,7 +5400,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="ci-text">
       <h1>Nothing</h1>
       <p class="case-headline">The right tools, exactly when you need them.</p>
-      <p class="case-sub">Essential Context is a situational environment generator for Nothing OS. I designed a shape-shifting home screen concept that instantly surfaces tailored tools to eliminate the cognitive load of hunting through isolated app grids.</p>
+      <p class="case-sub">Essential Context is a concept for Nothing OS that I designed alone in 48 hours: hold a button, say what you&rsquo;re doing, and the phone builds a temporary home screen with only the tools for that moment.</p>
       </div>
 
       <div class="case-meta">
@@ -5409,36 +5418,36 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
       <div>
         <div class="tag">Too long didn&rsquo;t read</div>
-        <p><b>The Challenge:</b> Current smartphone OS environments force users to dig through endless app grids to navigate a single moment. Hunting for isolated tools like jumping between Uber, Messages, and Wallet just for a date, creates unnecessary cognitive load and friction.</p>
-        <p><b>The Solution:</b> <em>Essential Context intelligently surfaces tools exactly when you need them.</em> By holding a button and stating your situation, the OS instantly generates a personalized, temporary home screen tailored to that specific moment.</p>
+        <p><b>The Challenge:</b> One evening out can mean jumping between Uber, Messages and Wallet, each found by digging through an app grid. That hunting is friction the moment doesn&rsquo;t need.</p>
+        <p><b>The Solution:</b> <em>Hold the essential button and say the situation.</em> Nothing OS builds a temporary home screen for it, then puts the normal one back when it&rsquo;s over.</p>
       </div>
     </div>
     </div>
 
     <section id="n-scenario" data-nav>
       <div class="eyebrow">Scenario</div>
-      <h2>A shape-shifting canvas for real-world moments</h2>
-      <p>Imagine heading out for the evening. Instead of hunting through cluttered app drawers for ride-shares and reservations, the OS does the heavy lifting. It instantly generates a distraction-free, temporary environment containing only the relevant tools, keeping you focused on the physical world.</p>
+      <h2>A Home Screen for the Moment You&rsquo;re In</h2>
+      <p>Heading out for the evening, you don&rsquo;t want to dig through app drawers for a ride and the booking. Essential Context builds a temporary screen with only those tools, so your attention stays on the evening.</p>
       <img class="case-media" src="/assets/case-nothing/scenario-canvas.jpg" alt="The regular home screen beside the Essential Context screen, annotated: a weather widget giving real-time climate for the evening ahead, a reservation widget surfacing booking details, a quick contact widget for one-tap calls and messages to the night's priority contact, and a curated app row filtered to the moment." data-nocaption loading="lazy" width="1693" height="1089">
 
       <h3>Mapping the Journey</h3>
-      <p>Holding the essential button from the lock screen opens the configuration menu alongside a sweeping light animation. After selecting &ldquo;Date Night,&rdquo; the system drops the user into their curated home screen and updates the hardware to display an &ldquo;Auto-Expire&rdquo; progress bar. A persistent yellow status pill remains at the top right, letting users effortlessly tweak settings or exit the context to restore the standard OS.</p>
+      <p>Holding the essential button on the lock screen opens the setup, with a sweep of light. Choosing &ldquo;Date Night&rdquo; drops you into the curated screen, and the Glyphs show the time left before it expires. A yellow pill stays in the top right, so you can change the settings, or leave and get the normal home screen back.</p>
       <img class="case-media" src="/assets/case-nothing/journey-map.jpg" alt="A six-step flow: holding the essential button on the lock screen, configuring Date Night and its preference chips, a brief wait while the system rebuilds, entering the curated screen, managing it from the yellow context pill, and exiting back to the regular home screen." data-nocaption loading="lazy" width="1888" height="539">
     </section>
 
     <section id="n-purpose" data-nav>
       <div class="eyebrow">Purpose</div>
-      <h2>Intentional usage through a unified ecosystem</h2>
-      <p>Nothing&rsquo;s philosophy centers on intentional smartphone usage: less time navigating apps, more time living in the moment. Essential Context realizes this vision by acting as the central intelligence hub for the entire Nothing ecosystem. By synchronizing with other Essential features, it reduces cognitive load and transforms raw data into a highly focused environment.</p>
-      <p>As illustrated in the Date Night example below, each Essential feature works together to silently curate your experience:</p>
+      <h2>Built From Nothing&rsquo;s Own Features</h2>
+      <p>Nothing&rsquo;s pitch is intentional phone use: less time in apps, more time in the moment. Essential Context gets there by drawing on Nothing&rsquo;s Essential features rather than adding another app.</p>
+      <p>In the Date Night example, each one does part of the work:</p>
       <img class="case-media" src="/assets/case-nothing/ecosystem.jpg" alt="Date Night draws on four Essential features: Essential Space extracts your reservation and location data, Essential Apps generates widgets for rides and quick contact, Essential Search pre-loads the restaurant menu and route, and Essential Notifications silences everything except messages from your date." data-nocaption loading="lazy" width="1888" height="879">
-      <p>By unifying these tools, the OS evolves from a passive grid of icons into a shape-shifting, predictive canvas. Ultimately, the more Essential features you use, the more deeply personalized your environment becomes, allowing you to remain fully present in the physical world.</p>
+      <p>Together they turn a grid of icons into a screen built for the moment, and the more Essential features someone uses, the better that screen fits.</p>
     </section>
 
     <section id="n-system" data-nav>
       <div class="eyebrow">System</div>
-      <h2>Synchronizing the system</h2>
-      <p>To truly embed this feature into the Nothing ecosystem, the hardware and software must act as a single, synchronized mechanism:</p>
+      <h2>Hardware and Software Together</h2>
+      <p>To feel native to a Nothing phone, the hardware has a part to play too:</p>
 
       <div class="decision">
         <div class="decision-num">01</div>
@@ -5450,50 +5459,61 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="decision">
         <div class="decision-num">02</div>
         <h3>The Glyph Matrix</h3>
-        <p>When active, the back of the phone displays a minimalist, static icon (like a cocktail glass) to project your &ldquo;focus state&rdquo; to the physical room.</p>
+        <p>While a context is on, the back of the phone shows a simple icon (a cocktail glass for Date Night), so the people around you can see you&rsquo;re focused.</p>
       </div>
       <img class="case-media" src="/assets/case-nothing/system-glyph-matrix.jpg" alt="The Glyph Matrix on the back of the phone lit with a cocktail glass icon, captioned Date Night Focus Mode." data-nocaption loading="lazy" width="1888" height="539">
 
       <div class="decision">
         <div class="decision-num">03</div>
         <h3>The Glyph Lights</h3>
-        <p>Classic Glyphs act as a visual timer for the context&rsquo;s &ldquo;Auto-Expire&rdquo; progress, and strictly limit light notifications to your pinned priority contacts.</p>
+        <p>The Glyph lights count down the context&rsquo;s auto-expire timer, and only light up for your pinned priority contacts.</p>
       </div>
       <img class="case-media" src="/assets/case-nothing/system-glyph-lights.jpg" alt="A Glyph light arc running part-way around the camera housing, captioned Essential Context Auto-Expire Timer." data-nocaption loading="lazy" width="1888" height="539">
     </section>
 
     <section id="n-decisions" data-nav>
       <div class="eyebrow">Design decisions</div>
-      <h2>Minimising clicks, maximizing presence</h2>
-      <p>To ensure the interface felt as frictionless as the concept itself, I focused on two core design choices:</p>
+      <h2>Fewer Taps, More Presence</h2>
+      <p>Two choices kept the interface as light as the idea:</p>
 
       <div class="decision">
         <div class="decision-num">Decision 01</div>
         <h3>Smart Chips over Menus</h3>
-        <p>I utilized 1-tap actionable chips (like &ldquo;Smart App Filter&rdquo; and &ldquo;Priority Contact&rdquo;) to eliminate friction by minimizing clicks.</p>
+        <p>Settings like &ldquo;Smart App Filter&rdquo; and &ldquo;Priority Contact&rdquo; are one-tap chips rather than menus, so setting up a context takes a few taps.</p>
       </div>
       <img class="case-media" src="/assets/case-nothing/decisions-chips.jpg" alt="The Essential Context sheet: saved contexts for Gym, Work and Date Night, one-tap preference chips for Essential Apps, Essential Notifications, Auto-Expire and Priority Contact, and an Add Context field with a microphone." data-nocaption loading="lazy" width="1693" height="840">
 
       <div class="decision">
         <div class="decision-num">Decision 02</div>
         <h3>The Status Pill</h3>
-        <p>I created a persistent, non-intrusive anchor in the top right of the screen. Tapping it drops down a quick-action menu to Edit or Exit, keeping control exactly one thumb-swipe away without burying it in Android Settings.</p>
+        <p>A small pill stays in the top right while a context is on. Tapping it opens Edit and Exit, one thumb&rsquo;s reach away instead of buried in Android settings.</p>
       </div>
       <img class="case-media" src="/assets/case-nothing/decisions-pill.jpg" alt="The status pill across three contexts: Workout Mode in blue, Date Night Mode in yellow and Work Mode in red, each confirming that the mode can be managed from the top right icon." data-nocaption loading="lazy" width="1693" height="485">
     </section>
 
+    <section id="n-test" data-nav>
+      <div class="eyebrow">Testing</div>
+      <h2>What I&rsquo;d Test First</h2>
+      <p>This was a 48-hour concept with no user testing, so these are the assumptions I would check before anything else:</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>Is Saying It Faster?</h4><p>Whether naming the moment, by voice or a chip, is quicker than opening the three apps yourself.</p></div>
+        <div class="case-card"><h4>Does a Timer Fit Real Plans?</h4><p>Whether auto-expire suits evenings that run late or end early, or should end on a signal like leaving the venue.</p></div>
+        <div class="case-card"><h4>How Does the Room Read It?</h4><p>Whether the people nearby read the icon on the back as &ldquo;focused&rdquo;, or as the phone broadcasting.</p></div>
+      </div>
+    </section>
+
     <section id="n-future" data-nav>
       <div class="eyebrow">Future</div>
-      <h2>Where the OS goes next</h2>
-      <p>While the current concept relies on manual triggers, the long-term vision makes the OS entirely proactive:</p>
+      <h2>Where It Could Go Next</h2>
+      <p>Today a context starts by hand. Longer term, the OS could do it for you:</p>
 
       <div class="case-cards">
-        <div class="case-card"><h4>Predictive Environments</h4><p>Moving beyond static home screens, the OS should automatically shape-shift based on your daily habits without requiring manual prompts.</p></div>
-        <div class="case-card"><h4>Intelligent Fallbacks &amp; Learning</h4><p>If a generated context misses a needed tool, Essential Search acts as a frictionless safety net. The system then learns from these manual searches to perfect the environment for your next visit.</p></div>
+        <div class="case-card"><h4>Predictive Contexts</h4><p>Build the screen from your routine, without being asked.</p></div>
+        <div class="case-card"><h4>Fallbacks That Learn</h4><p>When a context misses a tool, Essential Search fills the gap, and the next context includes it.</p></div>
       </div>
       <div class="case-cards">
-        <div class="case-card"><h4>Tactile Hardware Integration</h4><p>Future device generations could allow users to cycle through pre-saved contexts physically, like swiping or tapping the back cover without ever waking the screen.</p></div>
-        <div class="case-card"><h4>Deeper Customization</h4><p>Future iterations should support context-specific widget themes and more complex integrations as Essential Apps develop.</p></div>
+        <div class="case-card"><h4>Tactile Switching</h4><p>Switch between saved contexts with a tap or swipe on the back, without waking the screen.</p></div>
+        <div class="case-card"><h4>Deeper Customisation</h4><p>Context-specific widget themes and richer integrations as Essential Apps grow.</p></div>
       </div>
     </section>
 
@@ -5519,7 +5539,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="ci-text">
       <h1>Quest Up</h1>
       <p class="case-headline">Turning a chore into a quest.</p>
-      <p class="case-sub">Quest Up is a gamified health companion for sedentary gamers. I founded this startup to bridge the gap between high motivation and low consistency, adapting the &ldquo;Quest Loop&rdquo; mechanic to turn physical activity into a game.</p>
+      <p class="case-sub">Quest Up is a fitness companion for gamers who sit for hours, built on the quest loop they already play. As founder and sole designer I took it from research to a high-fidelity concept, and it won the CitySpark startup competition and a &pound;3K grant.</p>
       </div>
 
       <div class="case-meta">
@@ -5537,7 +5557,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
       <div>
         <div class="tag">Too long didn&rsquo;t read</div>
-        <p>Gamers want to be healthier, but the motivation rarely becomes a habit: next to the instant rewards of a game, fitness feels like a chore. Quest Up borrows the game&rsquo;s own loop, <em>short, structured quests with instant rewards</em>, to lower the barrier for sedentary players. It won the City Ventures Grand Spark startup competition.</p>
+        <p>Gamers want to be healthier, but the motivation rarely becomes a habit: next to the instant rewards of a game, fitness feels like a chore. Quest Up borrows the game&rsquo;s own loop, <em>short, structured quests with instant rewards</em>, to lower the barrier for sedentary players. It is a design concept: it won the CitySpark startup competition before an MVP was built.</p>
       </div>
     </div>
     </div>
@@ -5545,23 +5565,23 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     <section id="q-context" data-nav>
       <div class="eyebrow">Context</div>
       <h2>Gaming Is Rewarding by Design, Movement Is Not</h2>
-      <p>Games are built to hold attention through clear goals, instant feedback, and visible progress. Fitness, by contrast, feels effortful, unstructured, and slow to reward. Even gamers who want healthier habits default to long sedentary sessions because movement doesn&rsquo;t fit naturally into the way they already spend their time.</p>
+      <p>Games hold attention with clear goals, instant feedback and visible progress. Fitness feels effortful, unstructured and slow to reward. So even gamers who want healthier habits default to long sessions sitting down: movement doesn&rsquo;t fit the way they already spend their time.</p>
       <img class="case-media" src="/assets/case-questup/context-gaming.webp" data-nocaption loading="lazy" width="2400" height="953"
         alt="Project timeline across six months, drawn as Quest Up cards. Phase one, research: primary and secondary research, months one and two. Phase two, ideation: information architecture, sketches and wireframes, months two and three. Phase three, visuals and branding: moodboard, design system and high-fidelity wireframes, months four to six. Phase four, prototype and evaluation: formative user evaluations, month three to month six.">
 
       <h3>Why This Is a Problem</h3>
-      <p>Extended inactivity during long gaming sessions contributes to low energy, weight gain, back and eye strain, and declining long-term health. Because fitness feels intimidating and easy to postpone, consistency breaks quickly, making it harder for users to build sustainable habits even when motivation exists.</p>
+      <p>Long inactive sessions bring low energy, weight gain, back and eye strain, and worse health over time. Because fitness feels intimidating and easy to put off, consistency breaks quickly, even when the motivation is there.</p>
 
       <h3>Solution Overview</h3>
       <img class="case-media" src="/assets/case-questup/solution-overview.webp" data-nocaption loading="lazy" width="2400" height="851"
         alt="Six Quest Up screens in the app&rsquo;s neon anime style. Home: the player&rsquo;s avatar, level, coins and energy, a daily brief, the current boss quest at 92% and shortcuts to Dailies and the Wardrobe. Wardrobe: the avatar wearing the equipped Pulse Phones, with head, face, tops and gear tabs. Progress: a three-day streak and a skills chart for strength, speed, stamina, agility, flexibility and vitality, above the quests completed this week. Quests: season three&rsquo;s daily and boss quests, filtered by skill, each with its time and XP. Shop: a Pro Plus upgrade, boosts such as an energy cell, streak shield and XP booster, and new cosmetics. Leaderboard: local, friends and global rankings with the top three and the player&rsquo;s own rank.">
-      <p>I explored how to lower the barrier to fitness by borrowing the mechanics gamers already understand. By reframing movement as short, structured quests with clear progression and rewards, exercise can feel familiar, achievable, and easy to start within a gaming routine.</p>
+      <p>Quest Up lowers the barrier by borrowing mechanics gamers already understand. Movement becomes short, structured quests with clear progression and rewards, so exercise feels familiar, achievable and easy to start inside a gaming routine.</p>
 
       <div class="callout">
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
           <div class="tag">Expected impact</div>
-          <p>Making movement feel game-like reduces friction at decision time and encourages <em>small, repeatable actions</em>. This approach supports safer, more consistent activity, helping users build healthier habits without giving up the experiences they enjoy.</p>
+          <p>Making movement feel game-like should cut the friction at the moment of deciding, and encourage <em>small, repeatable actions</em>: healthier habits without giving up the games.</p>
         </div>
       </div>
     </section>
@@ -5627,22 +5647,22 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="decision">
         <div class="decision-num">Decision 02</div>
         <h3>The Retention Layer</h3>
-        <p>To prevent drop-off, I implemented streaks and leaderboards. However, visual progression, levelling up an avatar, proved most effective for this demographic, as it aligns with RPG (role-playing game) tropes.</p>
+        <p>Streaks and leaderboards guard against drop-off, but I made <em>avatar progression</em> the lead reward: levelling up a character is the RPG (role-playing game) trope this audience already plays for.</p>
       </div>
       <img class="case-media" src="/assets/case-questup/retention-layer.webp" data-nocaption loading="lazy" width="2400" height="953"
         alt="Retention systems in three Quest Up screens: Progress with a three-day streak, a skills chart and completed quests; the Leaderboard with the top three and the player&rsquo;s rank of 29; and the Shop with boosts and cosmetics. Track your streak: stats make progress visible through streaks, milestones and quest history. Climb the ranks: leaderboards add friendly competition and a reason to return. Spend your rewards: the shop turns gold into boosts or cosmetics that reinforce the loop.">
-      <p>The retention layer reinforces the loop through progress visibility (stats and streaks), social motivation (leaderboards), and self-expression (shop and customisation). It keeps users coming back without adding complexity to the core action.</p>
+      <p>The layer reinforces the loop with visible progress (stats and streaks), social motivation (leaderboards) and self-expression (the shop and customisation), without adding steps to the core action.</p>
     </section>
 
     <section id="q-testing" data-nav>
-      <div class="eyebrow">User testing</div>
-      <h2>The Safety Iteration: Solving for &ldquo;Grind&rdquo; Behaviour</h2>
-      <p>During usability testing, I discovered a critical behavioural risk: highly motivated users were &ldquo;grinding&rdquo; exercises solely to earn currency, <em>risking injury</em>.</p>
+      <div class="eyebrow">Iteration</div>
+      <h2>The Safety Iteration: Designing Out the &ldquo;Grind&rdquo;</h2>
+      <p>Mapping the reward loop surfaced a risk: a motivated player could &ldquo;grind&rdquo; exercises back to back just to earn currency, and <em>risk injury</em>. Games reward exactly that behaviour; a fitness app can&rsquo;t.</p>
       <img class="case-media" src="/assets/case-questup/grind-behavior.webp" data-nocaption loading="lazy" width="2400" height="953"
         alt="The safety gap in the core. Five different quests completed back to back in one evening, from 21:02 to 21:33: stair sprints, a squat set, a jump rope round, a shadowbox combo and an upper body power lift, the last two turning pink, adding up to 430 XP farmed and an overtraining-risk warning. Risk: rewards and rankings can nudge users to over-exercise to maximise in-game rewards. Why it matters: overtraining raises injury risk and can undermine the product&rsquo;s goal, health first. Design principle: keep the loop rewarding, but add guardrails that prevent unsafe behaviour.">
 
       <h3>The Fix: An Energy System</h3>
-      <p>I introduced an &ldquo;Energy System,&rdquo; a common gaming mechanic. Users have limited energy to perform quests each day. It enforces pacing, prevents burnout and injury, and paradoxically <em>increases retention</em> by leaving users wanting more for tomorrow.</p>
+      <p>I added an energy system, a common gaming mechanic: each quest costs energy, and energy refills daily. It paces activity and guards against burnout and injury, and, as in games, a cap should <em>leave players wanting to come back tomorrow</em>.</p>
       <img class="case-media" src="/assets/case-questup/energy-system.webp" data-nocaption loading="lazy" width="2400" height="953"
         alt="Introducing Energy Balance. A close-up of the Squat Set quest sheet, with its Complete quest button costing 20 energy highlighted, and the app&rsquo;s Out of energy message: needs 20 energy, you have 10; rest up, energy refills tomorrow, or grab an Energy Cell in the shop. Energy Balance guardrails: energy drops per quest to pace activity and stop reward-chasing turning unsafe. How it works: each quest costs energy, and at zero quests lock and the app nudges recovery. Trade-off and impact: framed as recovery and streak protection, not a cap, for safer pacing and longer-lasting habits.">
 
@@ -5650,7 +5670,7 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
         <svg class="note-icon" viewBox="0 0 180 130" aria-hidden="true"><use class="nb-mark nb-cloud" href="#cl-cloud"></use><use class="nb-mark nb-sun" href="#cl-sun"></use><use class="nb-mark nb-moon" href="#cl-moon"></use></svg>
         <div>
           <div class="tag">Design decision trade-off</div>
-          <p>A cap can feel restrictive, so it is <em>framed as recovery and streak protection</em> rather than a limit. The result: safer pacing and more sustainable long-term habits.</p>
+          <p>A cap can feel restrictive, so it is <em>framed as recovery and streak protection</em> rather than a limit. The aim is safer pacing and habits that last.</p>
         </div>
       </div>
     </section>
@@ -5659,13 +5679,20 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
       <div class="eyebrow">Outcome &amp; impact</div>
       <h2>A Winning Idea</h2>
       <video preload="none" class="case-media" src="/assets/case-questup/outcome.mp4" muted loop playsinline data-nocaption></video>
-      <p>Quest Up was validated not just by user sentiment, but by market viability.</p>
+      <p>The concept won the CitySpark Grand Final and a place on the accelerator, before a line of the app was built.</p>
       <div class="case-stats">
-        <div class="stat"><b>1st</b><span>Grand Spark Winner</span><small>City Ventures&rsquo; startup competition</small></div>
+        <div class="stat"><b>1st</b><span>CitySpark Winner</span><small>Startup competition grand final</small></div>
         <div class="stat"><b>&pound;3K</b><span>Equity-Free Grant</span><small>Awarded alongside acceptance onto the accelerator</small></div>
         <div class="stat"><b>15+</b><span>Gamers in the Research</span><small>Interviewed on Discord and at conventions</small></div>
       </div>
-      <p><b>Next steps:</b> developing the MVP to test retention metrics with a live cohort of 50 users.</p>
+
+      <h3>What an MVP Would Test</h3>
+      <p>The progression and the energy system are design decisions, not tested results: you can&rsquo;t usability-test a workout habit with a prototype. A first build for a cohort of 50 players would check three things:</p>
+      <div class="case-cards">
+        <div class="case-card"><h4>Does the Avatar Hold Them?</h4><p>Whether levelling up a character keeps people coming back better than streaks and leaderboards alone.</p></div>
+        <div class="case-card"><h4>Recovery or Limit?</h4><p>Whether the energy cap reads as rest and streak protection, or as the app stopping them.</p></div>
+        <div class="case-card"><h4>Do Quests Match Real Effort?</h4><p>Whether quests logged by phone or watch line up with the exercise people actually did.</p></div>
+      </div>
     </section>
 
     <div class="case-next">
@@ -5725,7 +5752,7 @@ const PAGE_META = {
   nothing:    { path: '/nothing',    title: 'Nothing OS concept: Essential Context \u2014 Mahin Jahan',
                 desc: 'Essential Context, a shape-shifting home screen concept for Nothing OS that surfaces the right tools exactly when you need them. Designed in 48 hours by Mahin Jahan.' },
   'quest-up': { path: '/quest-up', title: 'Quest Up case study \u2014 Mahin Jahan, Product Designer',
-                desc: 'Quest Up: turning a chore into a quest. How Mahin Jahan founded and designed a gamified fitness app for sedentary gamers, and won the City Ventures Grand Spark startup competition.' },
+                desc: 'Quest Up: turning a chore into a quest. How Mahin Jahan founded and designed a gamified fitness app for sedentary gamers, and won the CitySpark startup competition.' },
 };
 /* which page a location names: the path first, the old #hash as a fallback */
 function pageFromLocation() {
@@ -5853,7 +5880,7 @@ const projects = [
     meta: 'Concept \u00b7 48 hours', when: '2026 · Concept', page: 'nothing',
     video: '/assets/videos/nothing.mp4' },
   { title: 'Quest Up', desc: 'Turning a chore into a quest.',
-    meta: 'Founder \u00b7 Grand Spark winner', when: '2024 \u00b7 Startup', page: 'quest-up',
+    meta: 'Founder \u00b7 CitySpark winner', when: '2023\u201324 \u00b7 Startup', page: 'quest-up',
     mark: '/assets/case-questup/questup-wordmark.png',
     /* the case study's own hero, so opening it does not fetch the footage twice */
     video: '/assets/videos/quest-up-trailer.mp4' },
