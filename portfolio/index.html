@@ -1865,6 +1865,13 @@ body.wx-snow .hello-wrap .eyes-happy, body.wx-wind .hello-wrap .eyes-happy { opa
     .ab-gallery { gap: 8px; }
     .ab-tag { padding: 10px; font-size: 10.5px; }
   }
+  /* The three headlines balance their lines on a wide screen, where that
+     means two even lines. On a phone it means five short ones, breaking early
+     and leaving the right of the column empty, so there each line fills up
+     and only the last is kept from ending on a single word. */
+  @media (max-width: 900px) {
+    #home .hp-intro .hp-headline, #playground .pg-title, #about .ab-title { text-wrap: pretty; }
+  }
 
   /* On About and the Playground the way back takes the corner the London
      clock has on home, so the page reads as the same frame. */
